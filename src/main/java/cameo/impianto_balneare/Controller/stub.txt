@@ -1,0 +1,1 @@
+In this folder put all classes that handle the business logic of the system
