@@ -21,15 +21,15 @@ public class UtenteView {
         this.utenteService = utenteService;
     }
 
-    @RequestMapping(value="/user", method= RequestMethod.GET)
-    public ResponseEntity<List<Utente>> getAllUsers(){
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ResponseEntity<List<Utente>> getAllUsers() {
         return new ResponseEntity<>(utenteService.getAllUsers(), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Utente> getUser(@PathVariable Long id){
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Utente> getUser(@PathVariable Long id) {
         var user = utenteService.getUser(id);
-        if(user != null)
+        if (user != null)
             return new ResponseEntity<>(user, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

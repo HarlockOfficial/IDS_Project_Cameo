@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.Entity;
 
+
 import javax.persistence.*;
 
 @Entity
