@@ -40,14 +40,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(User user, String token) {
+    public User updateUser(User user, String uuid) {
         var userToUpdate = userRepository.findById(user.getId());
-        var userFromUUID = tokenService.getUserFromUUID(token);
+        var userFromUUID = tokenService.getUserFromUUID(uuid);
         if (userToUpdate.isPresent() &&
                 (
                         (userFromUUID != null && userFromUUID.getId().equals(user.getId()))
                                 ||
-                        (tokenService.checkToken(token, Role.ADMIN))
+                        (tokenService.checkToken(uuid, Role.ADMIN))
                 )
         ) {
             var userToEdit = userToUpdate.get();
