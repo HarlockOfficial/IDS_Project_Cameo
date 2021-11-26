@@ -5,9 +5,10 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
     @Id
+    @Column(updatable = false, nullable = false, unique=true, columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column
@@ -28,11 +29,12 @@ public class User {
     @Column
     private Date birthDate;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    protected User(){
+    protected User() {
         id = UUID.randomUUID();
+        role = Role.USER;
     }
 
     public User(Long ID, String username, String name, String surname, String email, String password, Date birthDate) {
@@ -63,10 +65,6 @@ public class User {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public void setId(UUID ID) {
-        this.id = ID;
     }
 
     public String getName() {

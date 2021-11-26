@@ -6,9 +6,10 @@ import cameo.impianto_balneare.Repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -23,32 +24,32 @@ public class EventService {
     }
 
 
-    public List<Event> getAllEvents(String uuid) {
-        if (tokenService.checkToken(uuid, Role.ADMIN) || tokenService.checkToken(uuid, Role.EVENT_MANAGER)) {
-            return eventRepository.findAll();
-        }
-        return new ArrayList<>();
+    public List<Event> getAllFutureEvents() {
+        return eventRepository.findAll().stream().filter(e->e.getDate().after(Calendar.getInstance().getTime())).collect(Collectors.toList());
     }
 
-    public Event getEvent(String id, String uuid) {
-        if (tokenService.checkToken(uuid, Role.ADMIN) || tokenService.checkToken(uuid, Role.EVENT_MANAGER)) {
-            var event = eventRepository.findById(UUID.fromString(id));
-            return event.orElse(null);
-        }
-        return null;
+    public Event getEvent(UUID id) {
+        var event = eventRepository.findById(id);
+        return event.orElse(null);
     }
 
-    public Event createEvent(Event event) {
+    public Event createEvent(Event event, String tokenId) {
+        if(!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.checkToken(tokenId, Role.EVENT_MANAGER)) {
+            return null;
+        }
+        if (eventRepository.findAll().stream().anyMatch(e -> event.getName().equals(e.getName()))) {
+            return null;
+        }
         return eventRepository.save(event);
     }
 
-    public Event updateEvent(Event event, String token) {
+    public Event updateEvent(Event event, String tokenId) {
         var eventToUpdate = eventRepository.findById(event.getId());
         if (eventToUpdate.isPresent() &&
                 (
-                        (tokenService.checkToken(token, Role.EVENT_MANAGER))
+                        (tokenService.checkToken(tokenId, Role.EVENT_MANAGER))
                                 ||
-                                (tokenService.checkToken(token, Role.ADMIN))
+                                (tokenService.checkToken(tokenId, Role.ADMIN))
                 )
         ) {
             var eventToEdit = eventToUpdate.get();
@@ -62,13 +63,13 @@ public class EventService {
         return null;
     }
 
-    public Event deleteEvent(String id, String token) {
-        var eventToDelete = eventRepository.findById(UUID.fromString(id));
+    public Event deleteEvent(UUID id, String tokenId) {
+        var eventToDelete = eventRepository.findById(id);
         if (eventToDelete.isPresent() &&
                 (
-                        (tokenService.checkToken(token, Role.EVENT_MANAGER))
+                        (tokenService.checkToken(tokenId, Role.EVENT_MANAGER))
                                 ||
-                                (tokenService.checkToken(token, Role.ADMIN))
+                                (tokenService.checkToken(tokenId, Role.ADMIN))
                 )
         ) {
             eventRepository.delete(eventToDelete.get());

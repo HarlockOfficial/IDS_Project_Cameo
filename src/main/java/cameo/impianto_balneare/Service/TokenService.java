@@ -11,20 +11,28 @@ import java.util.UUID;
 
 @Service
 public class TokenService {
-    private TokenRepository tokenRepository;
+    private final TokenRepository tokenRepository;
 
     @Autowired
     public TokenService(TokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
     }
 
-    public boolean checkToken(String uuid, Role role) {
-        var token = tokenRepository.findById(UUID.fromString(uuid));
-        return token.map(value -> value.getRole().equals(role)).orElse(false);
+    public boolean checkToken(String tokenId, Role role) {
+        var user = getUserFromUUID(tokenId);
+        if(user == null) return false;
+        return user.getRole().equals(role);
     }
 
-    public User getUserFromUUID(String uuid) {
-        var token = tokenRepository.findById(UUID.fromString(uuid));
+    public User getUserFromUUID(String tokenId) {
+        if (tokenId == null) return null;
+        var token = tokenRepository.findById(UUID.fromString(tokenId));
         return token.map(Token::getUser).orElse(null);
+    }
+
+    public String createToken(User user) {
+        var token = new Token(user);
+        tokenRepository.save(token);
+        return token.getId().toString();
     }
 }

@@ -7,43 +7,27 @@ import java.util.UUID;
 @Table(name = "token")
 public class Token {
     @Id
-    private UUID token;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(updatable = false, nullable = false, unique=true, columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private User user;
 
-    protected Token() {}
+    protected Token() {
+        id = UUID.randomUUID();
+    }
 
     public Token(User user) {
-        this.token = UUID.randomUUID();
+        this.id = UUID.randomUUID();
         this.user = user;
     }
 
-    public UUID getToken() {
-        return token;
-    }
-
-    public void setToken(UUID token) {
-        this.token = token;
+    public UUID getId() {
+        return id;
     }
 
     public User getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

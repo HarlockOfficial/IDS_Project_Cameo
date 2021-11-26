@@ -6,7 +6,6 @@ import cameo.impianto_balneare.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,33 +20,30 @@ public class UserService {
         this.tokenService = tokenService;
     }
 
-    public List<User> getAllUsers(String uuid) {
-        if (tokenService.checkToken(uuid, Role.ADMIN)) {
+    public List<User> getAllUsers(String tokenId) {
+        if (tokenService.checkToken(tokenId, Role.ADMIN)) {
             return userRepository.findAll();
         }
-        return new ArrayList<>();
+        return null;
     }
 
-    public User getUser(String id, String uuid) {
-        if (tokenService.checkToken(uuid, Role.ADMIN)) {
-            var user = userRepository.findById(UUID.fromString(id));
+    public User getUser(UUID id, String tokenId) {
+        if (tokenService.checkToken(tokenId, Role.ADMIN)) {
+            var user = userRepository.findById(id);
             return user.orElse(null);
         }
         return null;
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public User updateUser(User user, String uuid) {
+    public User updateUser(User user, String tokenId) {
         var userToUpdate = userRepository.findById(user.getId());
-        var userFromUUID = tokenService.getUserFromUUID(uuid);
+        var userFromUUID = tokenService.getUserFromUUID(tokenId);
+        var isChangeRequestedByAdmin = tokenService.checkToken(tokenId, Role.ADMIN);
         if (userToUpdate.isPresent() &&
                 (
                         (userFromUUID != null && userFromUUID.getId().equals(user.getId()))
                                 ||
-                        (tokenService.checkToken(uuid, Role.ADMIN))
+                                isChangeRequestedByAdmin
                 )
         ) {
             var userToEdit = userToUpdate.get();
@@ -57,24 +53,42 @@ public class UserService {
             userToEdit.setName(user.getName());
             userToEdit.setSurname(user.getSurname());
             userToEdit.setUsername(user.getUsername());
+            if(isChangeRequestedByAdmin)
+                userToEdit.setRole(user.getRole());
             return userRepository.save(userToEdit);
         }
         return null;
     }
 
-    public User deleteUser(String id, String uuid) {
-        var userToDelete = userRepository.findById(UUID.fromString(id));
-        var userFromUUID = tokenService.getUserFromUUID(uuid);
+    public User deleteUser(UUID id, String tokenId) {
+        var userToDelete = userRepository.findById(id);
+        var userFromUUID = tokenService.getUserFromUUID(tokenId);
         if (userToDelete.isPresent() &&
                 (
-                        (userFromUUID != null && userFromUUID.getId().equals(UUID.fromString(id)))
+                        (userFromUUID != null && userFromUUID.getId().equals(id))
                                 ||
-                        (tokenService.checkToken(uuid, Role.ADMIN))
+                                (tokenService.checkToken(tokenId, Role.ADMIN))
                 )
         ) {
             userRepository.delete(userToDelete.get());
             return userToDelete.get();
         }
         return null;
+    }
+
+    public String login(String username, String password) {
+        var user = userRepository.findAll().stream().filter(u -> username.equals(u.getUsername()) &&
+                password.equals(u.getPassword())).findFirst();
+        return user.map(tokenService::createToken).orElse(null);
+    }
+
+    public User register(User user) {
+        user.setRole(Role.USER);
+        if (userRepository.findAll().stream().anyMatch(u ->
+                user.getEmail().equals(u.getEmail()) ||
+                        user.getUsername().equals(u.getUsername()))) {
+            return null;
+        }
+        return userRepository.save(user);
     }
 }

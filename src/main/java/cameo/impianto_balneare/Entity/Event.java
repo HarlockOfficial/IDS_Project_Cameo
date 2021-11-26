@@ -1,13 +1,18 @@
 package cameo.impianto_balneare.Entity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
+@Table(name="event")
 public class Event {
 
     @Id
+    @Column(updatable = false, nullable = false, unique=true, columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column
@@ -23,7 +28,11 @@ public class Event {
     private String description;
 
     @Column
-    private int price;
+    private float price;
+
+    protected Event(){
+        id = UUID.randomUUID();
+    }
 
     public Event(UUID id, String name, String location, Date date, String description, int price) {
         this.id = id;
@@ -70,11 +79,11 @@ public class Event {
         this.description = description;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 }
