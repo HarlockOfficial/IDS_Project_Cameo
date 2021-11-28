@@ -27,8 +27,8 @@ public class UserView {
      * @return lista di tutti gli utenti con i loro dati
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsers(@RequestHeader Map<String, String> header) {
-        var users = userService.getAllUsers(header.get("token"));
+    public ResponseEntity<List<User>> getAllUsers(@RequestHeader("token") String token) {
+        var users = userService.getAllUsers(token);
         if (users == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -42,8 +42,8 @@ public class UserView {
      * @return i dati dell'utente.
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUser(@PathVariable UUID id, @RequestHeader Map<String, String> header) {
-        var user = userService.getUser(id, header.get("token"));
+    public ResponseEntity<User> getUser(@PathVariable UUID id, @RequestHeader("token") String token) {
+        var user = userService.getUser(id, token);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -57,8 +57,8 @@ public class UserView {
      * @return user
      */
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@RequestBody User user, @RequestHeader Map<String, String> header) {
-        var updatedUser = userService.updateUser(user, header.get("token"));
+    public ResponseEntity<User> updateUser(@RequestBody User user, @RequestHeader("token") String token) {
+        var updatedUser = userService.updateUser(user, token);
         if (updatedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -72,8 +72,8 @@ public class UserView {
      * @return user
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteUser(@PathVariable UUID id, @RequestHeader Map<String, String> header) {
-        var deletedUser = userService.deleteUser(id, header.get("token"));
+    public ResponseEntity<User> deleteUser(@PathVariable UUID id, @RequestHeader("token") String token) {
+        var deletedUser = userService.deleteUser(id, token);
         if (deletedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

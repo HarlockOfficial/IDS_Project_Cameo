@@ -46,4 +46,17 @@ public class AutenticationView {
         }
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
+
+    /**
+     * Effettua il logout di un utente
+     *
+     * @param token il token dell'utente presente nell'header http
+     * @return json string with error or confirmation of logout
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ResponseEntity<String> logout(@RequestHeader("token") String token) {
+        userService.logout(token);
+        return ResponseEntity.ok().body("{\"message\":\"Logout successful\"}");
+    }
+
 }

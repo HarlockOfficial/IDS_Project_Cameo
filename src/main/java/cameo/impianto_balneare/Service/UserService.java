@@ -91,4 +91,8 @@ public class UserService {
         }
         return userRepository.save(user);
     }
+
+    public void logout(String token) {
+        tokenService.deleteToken(token);
+    }
 }

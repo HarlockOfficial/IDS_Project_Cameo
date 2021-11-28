@@ -55,8 +55,8 @@ public class EventView {
      * @return l'evento creato
      */
     @RequestMapping(value = "/event", method = RequestMethod.POST)
-    public ResponseEntity<Event> createEvent(@RequestBody Event event, @RequestHeader Map<String, String> header) {
-        var newEvent = eventService.createEvent(event, header.get("token"));
+    public ResponseEntity<Event> createEvent(@RequestBody Event event, @RequestHeader("token") String token) {
+        var newEvent = eventService.createEvent(event, token);
         if (newEvent == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -71,8 +71,8 @@ public class EventView {
      * @return l'evento modificato
      */
     @RequestMapping(value = "/event", method = RequestMethod.PUT)
-    public ResponseEntity<Event> updateEvent(@RequestBody Event event, @RequestHeader Map<String, String> header) {
-        var updatedEvent = eventService.updateEvent(event, header.get("token"));
+    public ResponseEntity<Event> updateEvent(@RequestBody Event event, @RequestHeader("token") String token) {
+        var updatedEvent = eventService.updateEvent(event, token);
         if (updatedEvent == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -87,8 +87,8 @@ public class EventView {
      * @return l'evento eliminato
      */
     @RequestMapping(value = "/event/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Event> deleteEvent(@PathVariable UUID id, @RequestHeader Map<String, String> header) {
-        var deletedEvent = eventService.deleteEvent(id, header.get("token"));
+    public ResponseEntity<Event> deleteEvent(@PathVariable UUID id, @RequestHeader("token") String token) {
+        var deletedEvent = eventService.deleteEvent(id, token);
         if (deletedEvent == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -35,4 +35,8 @@ public class TokenService {
         tokenRepository.save(token);
         return token.getId().toString();
     }
+
+    public void deleteToken(String token) {
+        tokenRepository.deleteById(UUID.fromString(token));
+    }
 }
