@@ -20,7 +20,7 @@ public class TokenService {
 
     public boolean checkToken(String tokenId, Role role) {
         var user = getUserFromUUID(tokenId);
-        if(user == null) return false;
+        if (user == null) return false;
         return user.getRole().equals(role);
     }
 

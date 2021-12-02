@@ -3,12 +3,11 @@ package cameo.impianto_balneare.View;
 import cameo.impianto_balneare.Entity.Event;
 import cameo.impianto_balneare.Service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -30,8 +29,8 @@ public class EventView {
     public ResponseEntity<List<Event>> getAllEvents() {
         var events = eventService.getAllFutureEvents();
         if (events == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(events, HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(events);
     }
 
     /**
@@ -44,8 +43,8 @@ public class EventView {
     public ResponseEntity<Event> getEvent(@PathVariable UUID id) {
         var event = eventService.getEvent(id);
         if (event == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(event, HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(event);
     }
 
     /**
@@ -58,40 +57,40 @@ public class EventView {
     public ResponseEntity<Event> createEvent(@RequestBody Event event, @RequestHeader("token") String token) {
         var newEvent = eventService.createEvent(event, token);
         if (newEvent == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<>(newEvent, HttpStatus.CREATED);
+        return ResponseEntity.created(URI.create("/event")).body(newEvent);
     }
 
     /**
      * Modifica un evento
      *
-     * @param event  l'evento da modificare
-     * @param header gli header della richiesta http
+     * @param event l'evento da modificare
+     * @param token il token di autenticazione dell'utente
      * @return l'evento modificato
      */
     @RequestMapping(value = "/event", method = RequestMethod.PUT)
     public ResponseEntity<Event> updateEvent(@RequestBody Event event, @RequestHeader("token") String token) {
         var updatedEvent = eventService.updateEvent(event, token);
         if (updatedEvent == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
+        return ResponseEntity.ok(updatedEvent);
     }
 
     /**
      * Elimina l'evento
      *
-     * @param id     id dell'evento da eliminare
-     * @param header gli header della richiesta http
+     * @param id    id dell'evento da eliminare
+     * @param token il token di autenticazione dell'utente
      * @return l'evento eliminato
      */
     @RequestMapping(value = "/event/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Event> deleteEvent(@PathVariable UUID id, @RequestHeader("token") String token) {
         var deletedEvent = eventService.deleteEvent(id, token);
         if (deletedEvent == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<>(deletedEvent, HttpStatus.OK);
+        return ResponseEntity.ok(deletedEvent);
     }
 }

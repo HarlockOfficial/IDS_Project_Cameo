@@ -3,16 +3,17 @@ package cameo.impianto_balneare.View;
 import cameo.impianto_balneare.Entity.User;
 import cameo.impianto_balneare.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
-public class AutenticationView {
+public class AuthenticationView {
     private final UserService userService;
 
     @Autowired
-    public AutenticationView(UserService userService) {
+    public AuthenticationView(UserService userService) {
         this.userService = userService;
     }
 
@@ -26,7 +27,7 @@ public class AutenticationView {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         String token = userService.login(username, password);
-        if(token == null) {
+        if (token == null) {
             return ResponseEntity.badRequest().body("{\"error\":\"Invalid username or password\"}");
         }
         return ResponseEntity.ok().header("token", token).body("{\"token\":\"" + token + "\"}");
@@ -42,9 +43,9 @@ public class AutenticationView {
     public ResponseEntity<User> createUser(@RequestBody User user) {
         var newUser = userService.register(user);
         if (newUser == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        return ResponseEntity.created(URI.create("/login")).body(newUser);
     }
 
     /**
@@ -56,7 +57,7 @@ public class AutenticationView {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ResponseEntity<String> logout(@RequestHeader("token") String token) {
         userService.logout(token);
-        return ResponseEntity.ok().body("{\"message\":\"Logout successful\"}");
+        return ResponseEntity.ok("{\"message\":\"Logout successful\"}");
     }
 
 }

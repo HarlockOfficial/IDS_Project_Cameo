@@ -7,7 +7,7 @@ import java.util.UUID;
 @Table(name = "token")
 public class Token {
     @Id
-    @Column(updatable = false, nullable = false, unique=true, columnDefinition = "BINARY(16)")
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -19,7 +19,12 @@ public class Token {
     }
 
     public Token(User user) {
-        this.id = UUID.randomUUID();
+        this();
+        this.user = user;
+    }
+
+    public Token(UUID id, User user) {
+        this.id = id;
         this.user = user;
     }
 

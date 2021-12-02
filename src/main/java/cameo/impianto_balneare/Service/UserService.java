@@ -36,16 +36,12 @@ public class UserService {
     }
 
     public User updateUser(User user, String tokenId) {
-        var userToUpdate = userRepository.findById(user.getId());
-        var userFromUUID = tokenService.getUserFromUUID(tokenId);
         var isChangeRequestedByAdmin = tokenService.checkToken(tokenId, Role.ADMIN);
-        if (userToUpdate.isPresent() &&
-                (
-                        (userFromUUID != null && userFromUUID.getId().equals(user.getId()))
-                                ||
-                                isChangeRequestedByAdmin
-                )
-        ) {
+        if (!isChangeRequestedByAdmin && !tokenService.getUserFromUUID(tokenId).getId().equals(user.getId())) {
+            return null;
+        }
+        var userToUpdate = userRepository.findById(user.getId());
+        if (userToUpdate.isPresent()) {
             var userToEdit = userToUpdate.get();
             userToEdit.setEmail(user.getEmail());
             userToEdit.setPassword(user.getPassword());
@@ -53,7 +49,7 @@ public class UserService {
             userToEdit.setName(user.getName());
             userToEdit.setSurname(user.getSurname());
             userToEdit.setUsername(user.getUsername());
-            if(isChangeRequestedByAdmin)
+            if (isChangeRequestedByAdmin)
                 userToEdit.setRole(user.getRole());
             return userRepository.save(userToEdit);
         }
@@ -61,15 +57,11 @@ public class UserService {
     }
 
     public User deleteUser(UUID id, String tokenId) {
+        if (!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.getUserFromUUID(tokenId).getId().equals(id)) {
+            return null;
+        }
         var userToDelete = userRepository.findById(id);
-        var userFromUUID = tokenService.getUserFromUUID(tokenId);
-        if (userToDelete.isPresent() &&
-                (
-                        (userFromUUID != null && userFromUUID.getId().equals(id))
-                                ||
-                                (tokenService.checkToken(tokenId, Role.ADMIN))
-                )
-        ) {
+        if (userToDelete.isPresent()) {
             userRepository.delete(userToDelete.get());
             return userToDelete.get();
         }

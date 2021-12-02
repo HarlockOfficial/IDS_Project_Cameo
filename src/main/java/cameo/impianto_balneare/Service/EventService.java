@@ -25,7 +25,7 @@ public class EventService {
 
 
     public List<Event> getAllFutureEvents() {
-        return eventRepository.findAll().stream().filter(e->e.getDate().after(Calendar.getInstance().getTime())).collect(Collectors.toList());
+        return eventRepository.findAll().stream().filter(e -> e.getDate().after(Calendar.getInstance().getTime())).collect(Collectors.toList());
     }
 
     public Event getEvent(UUID id) {
@@ -34,24 +34,21 @@ public class EventService {
     }
 
     public Event createEvent(Event event, String tokenId) {
-        if(!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.checkToken(tokenId, Role.EVENT_MANAGER)) {
+        if (!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.checkToken(tokenId, Role.EVENT_MANAGER)) {
             return null;
         }
-        if (eventRepository.findAll().stream().anyMatch(e -> event.getName().equals(e.getName()))) {
+        if (eventRepository.findAll().stream().anyMatch(e -> event.getName().equalsIgnoreCase(e.getName()))) {
             return null;
         }
         return eventRepository.save(event);
     }
 
     public Event updateEvent(Event event, String tokenId) {
+        if (!tokenService.checkToken(tokenId, Role.EVENT_MANAGER) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
+            return null;
+        }
         var eventToUpdate = eventRepository.findById(event.getId());
-        if (eventToUpdate.isPresent() &&
-                (
-                        (tokenService.checkToken(tokenId, Role.EVENT_MANAGER))
-                                ||
-                                (tokenService.checkToken(tokenId, Role.ADMIN))
-                )
-        ) {
+        if (eventToUpdate.isPresent()) {
             var eventToEdit = eventToUpdate.get();
             eventToEdit.setDate(event.getDate());
             eventToEdit.setDescription(event.getDescription());
@@ -64,14 +61,11 @@ public class EventService {
     }
 
     public Event deleteEvent(UUID id, String tokenId) {
+        if (!tokenService.checkToken(tokenId, Role.EVENT_MANAGER) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
+            return null;
+        }
         var eventToDelete = eventRepository.findById(id);
-        if (eventToDelete.isPresent() &&
-                (
-                        (tokenService.checkToken(tokenId, Role.EVENT_MANAGER))
-                                ||
-                                (tokenService.checkToken(tokenId, Role.ADMIN))
-                )
-        ) {
+        if (eventToDelete.isPresent()) {
             eventRepository.delete(eventToDelete.get());
             return eventToDelete.get();
         }

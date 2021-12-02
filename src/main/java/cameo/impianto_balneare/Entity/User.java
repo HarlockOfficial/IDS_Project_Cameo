@@ -8,7 +8,7 @@ import java.util.UUID;
 @Table(name = "user")
 public class User {
     @Id
-    @Column(updatable = false, nullable = false, unique=true, columnDefinition = "BINARY(16)")
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column
@@ -37,14 +37,25 @@ public class User {
         role = Role.USER;
     }
 
-    public User(Long ID, String username, String name, String surname, String email, String password, Date birthDate) {
-        this.id = UUID.randomUUID();
+    public User(String username, String name, String surname, String email, String password, Date birthDate) {
+        this();
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.birthDate = birthDate;
+    }
+
+    public User(UUID id, String username, String name, String surname, String email, String password, Date birthDate, Role role) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.birthDate = birthDate;
+        this.role = role;
     }
 
     public Role getRole() {
