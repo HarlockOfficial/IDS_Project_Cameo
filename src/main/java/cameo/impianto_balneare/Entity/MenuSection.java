@@ -15,7 +15,7 @@ public class MenuSection {
     @Column
     private String sectionName;
 
-    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL)
     private final List<MenuElement> elements;
 
     protected MenuSection() {
@@ -36,6 +36,14 @@ public class MenuSection {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public List<MenuElement> getElements() {
+        return elements;
     }
 
     public String getSectionName() {

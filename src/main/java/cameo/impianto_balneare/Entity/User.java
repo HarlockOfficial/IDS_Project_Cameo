@@ -74,6 +74,10 @@ public class User {
         return birthDate;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }

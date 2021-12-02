@@ -20,7 +20,6 @@ public class MenuElement {
     private float price;
 
     @ManyToOne
-    @JoinColumn(name = "id")
     private MenuSection section;
 
     protected MenuElement() {
@@ -45,6 +44,10 @@ public class MenuElement {
         return id;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -67,5 +70,13 @@ public class MenuElement {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public MenuSection getSection() {
+        return section;
+    }
+
+    public void setSection(MenuSection section) {
+        this.section = section;
     }
 }
