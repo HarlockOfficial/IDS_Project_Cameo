@@ -23,7 +23,6 @@ public class EventService {
         this.tokenService = tokenService;
     }
 
-
     public List<Event> getAllFutureEvents() {
         return eventRepository.findAll().stream().filter(e -> e.getDate().after(Calendar.getInstance().getTime())).collect(Collectors.toList());
     }
