@@ -15,31 +15,31 @@ public class Sdraio {
     private UUID id;
 
     @Column
-    private float prezzo;
+    private float price;
 
     protected Sdraio() {
         id = UUID.randomUUID();
     }
 
-    public Sdraio(UUID id, float prezzo) {
+    public Sdraio(UUID id, float price) {
         this.id = id;
-        this.prezzo = prezzo;
+        this.price = price;
     }
 
-    public Sdraio(float prezzo) {
+    public Sdraio(float price) {
         this.id = id;
-        this.prezzo = prezzo;
+        this.price = price;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public float getPrezzo() {
-        return prezzo;
+    public float getPrice() {
+        return price;
     }
 
-    public void setPrezzo(float prezzo) {
-        this.prezzo = prezzo;
+    public void setPrice(float prezzo) {
+        this.price = prezzo;
     }
 }

@@ -73,7 +73,7 @@ public class SdraioService {
         var sdraioToUpdate = sdraioRepository.findById(sdraio.getId());
         if (sdraioToUpdate.isPresent()) {
             var sdraioToEdit = sdraioToUpdate.get();
-            sdraioToEdit.setPrezzo(sdraio.getPrezzo());
+            sdraioToEdit.setPrice(sdraio.getPrice());
             return sdraioRepository.save(sdraioToEdit);
         }
         return null;
