@@ -1,11 +1,11 @@
 package cameo.impianto_balneare.Repository;
 
-import cameo.impianto_balneare.Entity.Ombrellone;
+import cameo.impianto_balneare.Entity.Sdraio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface OmbrelloneRepository extends JpaRepository<Ombrellone, UUID> {
+public interface SdraioRepository extends JpaRepository<Sdraio, UUID> {
 }

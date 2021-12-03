@@ -17,4 +17,29 @@ public class Sdraio {
     @Column
     private float prezzo;
 
+    protected Sdraio() {
+        id = UUID.randomUUID();
+    }
+
+    public Sdraio(UUID id, float prezzo) {
+        this.id = id;
+        this.prezzo = prezzo;
+    }
+
+    public Sdraio(float prezzo) {
+        this.id = id;
+        this.prezzo = prezzo;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public float getPrezzo() {
+        return prezzo;
+    }
+
+    public void setPrezzo(float prezzo) {
+        this.prezzo = prezzo;
+    }
 }
