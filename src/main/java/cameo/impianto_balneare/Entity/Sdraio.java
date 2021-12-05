@@ -21,16 +21,6 @@ public class Sdraio {
         id = UUID.randomUUID();
     }
 
-    public Sdraio(UUID id, float price) {
-        this.id = id;
-        this.price = price;
-    }
-
-    public Sdraio(float price) {
-        this.id = id;
-        this.price = price;
-    }
-
     public UUID getId() {
         return id;
     }

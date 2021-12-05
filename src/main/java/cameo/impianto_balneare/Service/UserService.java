@@ -4,6 +4,7 @@ import cameo.impianto_balneare.Entity.Role;
 import cameo.impianto_balneare.Entity.User;
 import cameo.impianto_balneare.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +14,13 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, TokenService tokenService) {
+    public UserService(UserRepository userRepository, TokenService tokenService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers(String tokenId) {
@@ -70,7 +73,7 @@ public class UserService {
 
     public String login(String username, String password) {
         var user = userRepository.findAll().stream().filter(u -> username.equals(u.getUsername()) &&
-                password.equals(u.getPassword())).findFirst();
+                passwordEncoder.matches(password, u.getPassword())).findFirst();
         return user.map(tokenService::createToken).orElse(null);
     }
 
@@ -81,6 +84,7 @@ public class UserService {
                         user.getUsername().equals(u.getUsername()))) {
             return null;
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

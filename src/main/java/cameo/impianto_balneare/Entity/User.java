@@ -2,6 +2,7 @@ package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +32,9 @@ public class User {
 
     @Enumerated(EnumType.ORDINAL)
     private Role role;
+
+    @OneToMany(targetEntity = MenuOrder.class, mappedBy="user")
+    private List<MenuOrder> menuOrders;
 
     protected User() {
         id = UUID.randomUUID();

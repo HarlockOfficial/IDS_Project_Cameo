@@ -24,22 +24,11 @@ public class Ombrellone {
     @ManyToMany(mappedBy = "ombrellone")
     private List<Prenotazione> listaPrenotazioni;
 
+    @OneToMany(targetEntity = MenuOrder.class, mappedBy = "ombrellone")
+    private List<MenuOrder> listaOrdini;
+
     protected Ombrellone() {
         id = UUID.randomUUID();
-    }
-
-    public Ombrellone(int rowNumber, int columnNumber, float prezzo) {
-        this();
-        this.rowNumber = rowNumber;
-        this.columnNumber = columnNumber;
-        this.prezzo = prezzo;
-    }
-
-    public Ombrellone(UUID id, int rowNumber, int columnNumber, float prezzo) {
-        this.id = id;
-        this.rowNumber = rowNumber;
-        this.columnNumber = columnNumber;
-        this.prezzo = prezzo;
     }
 
     public UUID getId() {

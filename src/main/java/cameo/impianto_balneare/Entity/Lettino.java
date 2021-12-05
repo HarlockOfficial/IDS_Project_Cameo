@@ -20,16 +20,6 @@ public class Lettino {
         id = UUID.randomUUID();
     }
 
-    public Lettino(UUID id, float price) {
-        this.id = id;
-        this.price = price;
-    }
-
-    public Lettino(float price) {
-        this.id = id;
-        this.price = price;
-    }
-
     public UUID getId() {
         return id;
     }

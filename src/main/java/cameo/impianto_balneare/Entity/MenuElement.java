@@ -1,6 +1,7 @@
 package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,22 +23,11 @@ public class MenuElement {
     @ManyToOne
     private MenuSection section;
 
+    @ManyToMany(targetEntity = MenuOrder.class, mappedBy = "menuElements")
+    private List<MenuOrder> orders;
+
     protected MenuElement() {
         this.id = UUID.randomUUID();
-    }
-
-    public MenuElement(String name, String description, float price) {
-        this();
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
-
-    public MenuElement(UUID id, String name, String description, float price) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
     }
 
     public UUID getId() {

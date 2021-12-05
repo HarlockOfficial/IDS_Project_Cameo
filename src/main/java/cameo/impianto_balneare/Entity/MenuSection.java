@@ -23,17 +23,6 @@ public class MenuSection {
         elements = new ArrayList<>();
     }
 
-    public MenuSection(UUID id, String sectionName) {
-        this.id = id;
-        this.sectionName = sectionName;
-        elements = new ArrayList<>();
-    }
-
-    public MenuSection(String sectionName) {
-        this();
-        this.sectionName = sectionName;
-    }
-
     public UUID getId() {
         return id;
     }

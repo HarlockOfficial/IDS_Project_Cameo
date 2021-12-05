@@ -23,11 +23,6 @@ public class Token {
         this.user = user;
     }
 
-    public Token(UUID id, User user) {
-        this.id = id;
-        this.user = user;
-    }
-
     public void setId(UUID id) {
         this.id = id;
     }

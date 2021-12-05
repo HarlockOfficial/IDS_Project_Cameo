@@ -34,24 +34,6 @@ public class Event {
         id = UUID.randomUUID();
     }
 
-    public Event(String name, String location, Date date, String description, float price) {
-        this();
-        this.name = name;
-        this.location = location;
-        this.date = date;
-        this.description = description;
-        this.price = price;
-    }
-
-    public Event(UUID id, String name, String location, Date date, String description, int price) {
-        this.id = id;
-        this.name = name;
-        this.location = location;
-        this.date = date;
-        this.description = description;
-        this.price = price;
-    }
-
     public UUID getId() {
         return id;
     }
