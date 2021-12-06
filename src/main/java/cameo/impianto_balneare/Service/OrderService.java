@@ -86,7 +86,7 @@ public class OrderService {
 
     public MenuOrder createOrder(MenuOrder menuOrder, String token) {
         if(!tokenService.checkToken(token, Role.USER)) return null;
-        //TODO check that user is in the ombrellone
+        menuOrder.setUser(tokenService.getUserFromUUID(token));
         return menuOrderRepository.save(menuOrder);
     }
 

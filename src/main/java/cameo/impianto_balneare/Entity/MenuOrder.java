@@ -18,7 +18,7 @@ public class MenuOrder {
     @Enumerated(EnumType.ORDINAL)
     private OrderStatus orderStatus;
 
-    @ManyToMany(targetEntity = MenuElement.class, mappedBy = "orders")
+    @ManyToMany(targetEntity = MenuElement.class)
     private List<MenuElement> menuElements;
 
     @ManyToOne(targetEntity = User.class)

@@ -18,9 +18,13 @@ public class MenuSection {
     @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL)
     private final List<MenuElement> elements;
 
+    @Column
+    private boolean isSectionVisible;
+
     protected MenuSection() {
         this.id = UUID.randomUUID();
         elements = new ArrayList<>();
+        isSectionVisible = true;
     }
 
     public UUID getId() {
@@ -47,7 +51,15 @@ public class MenuSection {
         return elements;
     }
 
-    public void addMenuElement(MenuElement element) {
-        elements.add(element);
+    public boolean isSectionVisible() {
+        return isSectionVisible;
+    }
+
+    public void setSectionVisible(boolean sectionVisible) {
+        isSectionVisible = sectionVisible;
+    }
+
+    public void toggleVisibility(){
+        isSectionVisible = !isSectionVisible;
     }
 }

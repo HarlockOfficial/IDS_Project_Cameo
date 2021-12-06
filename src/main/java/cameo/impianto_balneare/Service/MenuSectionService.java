@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuSectionService {
@@ -20,10 +21,15 @@ public class MenuSectionService {
         this.tokenService = tokenService;
     }
 
-    public List<MenuSection> getMenuSections() {
-        return menuSectionRepository.findAll();
+    public List<MenuSection> getMenuSections(String token) {
+        if (tokenService.checkToken(token, Role.BAR) || tokenService.checkToken(token, Role.ADMIN)) {
+            return menuSectionRepository.findAll();
+        }
+        return menuSectionRepository.findAll().stream().filter(MenuSection::isSectionVisible).collect(Collectors.toList());
     }
-
+    public List<MenuSection> getMenuSections() {
+        return getMenuSections(null);
+    }
     public MenuSection addSection(MenuSection section, String tokenId) {
         if (!tokenService.checkToken(tokenId, Role.BAR) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
@@ -56,6 +62,19 @@ public class MenuSectionService {
         if (sectionToDelete.isPresent()) {
             menuSectionRepository.delete(sectionToDelete.get());
             return sectionToDelete.get();
+        }
+        return null;
+    }
+
+    public MenuSection toggleMenuSectionVisibility(UUID id, String token) {
+        if (!tokenService.checkToken(token, Role.BAR) && !tokenService.checkToken(token, Role.ADMIN)) {
+            return null;
+        }
+        var sectionToToggle = menuSectionRepository.findById(id);
+        if (sectionToToggle.isPresent()) {
+            var sectionToEdit = sectionToToggle.get();
+            sectionToEdit.toggleVisibility();
+            return menuSectionRepository.save(sectionToEdit);
         }
         return null;
     }

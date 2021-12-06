@@ -13,10 +13,10 @@ public class Ombrellone {
     private UUID id;
 
     @Column
-    private int rowNumber;
+    private int ombrelloneRowNumber;
 
     @Column
-    private int columnNumber;
+    private int ombrelloneColumnNumber;
 
     @Column
     private float prezzo;
@@ -47,20 +47,20 @@ public class Ombrellone {
         this.id = id;
     }
 
-    public int getRowNumber() {
-        return rowNumber;
+    public int getOmbrelloneRowNumber() {
+        return ombrelloneRowNumber;
     }
 
-    public void setRowNumber(int row) {
-        this.rowNumber = row;
+    public void setOmbrelloneRowNumber(int row) {
+        this.ombrelloneRowNumber = row;
     }
 
-    public int getColumnNumber() {
-        return columnNumber;
+    public int getOmbrelloneColumnNumber() {
+        return ombrelloneColumnNumber;
     }
 
-    public void setColumnNumber(int number) {
-        this.columnNumber = number;
+    public void setOmbrelloneColumnNumber(int number) {
+        this.ombrelloneColumnNumber = number;
     }
 
     public float getPrezzo() {

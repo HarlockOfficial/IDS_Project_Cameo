@@ -6,6 +6,7 @@ import cameo.impianto_balneare.Repository.MenuElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -41,7 +42,7 @@ public class MenuElementService {
             elementToEdit.setName(element.getName());
             elementToEdit.setDescription(element.getDescription());
             elementToEdit.setPrice(element.getPrice());
-            menuElementRepository.save(elementToEdit);
+            return menuElementRepository.save(elementToEdit);
         }
         return null;
     }
@@ -56,5 +57,25 @@ public class MenuElementService {
             return elementToDelete.get();
         }
         return null;
+    }
+
+    public MenuElement toggleMenuElementVisibility(UUID id, String token) {
+        if (!tokenService.checkToken(token, Role.BAR) && !tokenService.checkToken(token, Role.ADMIN)) {
+            return null;
+        }
+        var elementToToggle = menuElementRepository.findById(id);
+        if (elementToToggle.isPresent()) {
+            var elementToEdit = elementToToggle.get();
+            elementToEdit.toggleElementVisibility();
+            return menuElementRepository.save(elementToEdit);
+        }
+        return null;
+    }
+
+    public List<MenuElement> getMenuElements(String token) {
+        if(!tokenService.checkToken(token, Role.BAR) && !tokenService.checkToken(token, Role.ADMIN)) {
+            return null;
+        }
+        return menuElementRepository.findAll();
     }
 }

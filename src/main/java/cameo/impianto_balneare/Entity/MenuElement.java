@@ -26,6 +26,9 @@ public class MenuElement {
     @ManyToMany(targetEntity = MenuOrder.class, mappedBy = "menuElements")
     private List<MenuOrder> orders;
 
+    @Column
+    private boolean isElementVisible;
+
     protected MenuElement() {
         this.id = UUID.randomUUID();
     }
@@ -68,5 +71,25 @@ public class MenuElement {
 
     public void setSection(MenuSection section) {
         this.section = section;
+    }
+
+    public List<MenuOrder> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<MenuOrder> orders) {
+        this.orders = orders;
+    }
+
+    public boolean isElementVisible() {
+        return isElementVisible;
+    }
+
+    public void setElementVisible(boolean elementVisible) {
+        isElementVisible = elementVisible;
+    }
+
+    public void toggleElementVisibility(){
+        isElementVisible = !isElementVisible;
     }
 }

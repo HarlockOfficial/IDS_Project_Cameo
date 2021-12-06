@@ -57,7 +57,7 @@ public class OmbrelloneService {
         if (!tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        if (ombrelloneRepository.findAll().stream().anyMatch(e -> ((ombrellone.getColumnNumber() == e.getColumnNumber()) && (ombrellone.getRowNumber() == ombrellone.getRowNumber())))) {
+        if (ombrelloneRepository.findAll().stream().anyMatch(e -> ((ombrellone.getOmbrelloneColumnNumber() == e.getOmbrelloneColumnNumber()) && (ombrellone.getOmbrelloneRowNumber() == ombrellone.getOmbrelloneRowNumber())))) {
             return null;
         }
         return ombrelloneRepository.save(ombrellone);
@@ -76,9 +76,9 @@ public class OmbrelloneService {
         var ombrelloneToUpdate = ombrelloneRepository.findById(ombrellone.getId());
         if (ombrelloneToUpdate.isPresent()) {
             var ombrelloneToEdit = ombrelloneToUpdate.get();
-            ombrelloneToEdit.setColumnNumber(ombrellone.getColumnNumber());
+            ombrelloneToEdit.setOmbrelloneColumnNumber(ombrellone.getOmbrelloneColumnNumber());
             ombrelloneToEdit.setPrezzo(ombrellone.getPrezzo());
-            ombrelloneToEdit.setRowNumber(ombrellone.getRowNumber());
+            ombrelloneToEdit.setOmbrelloneRowNumber(ombrellone.getOmbrelloneRowNumber());
             return ombrelloneRepository.save(ombrelloneToEdit);
         }
         return null;

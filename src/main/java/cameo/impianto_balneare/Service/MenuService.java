@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -24,7 +25,7 @@ public class MenuService {
     public Map<MenuSection, List<MenuElement>> getMenu() {
         var sections = menuSectionService.getMenuSections();
         var outputMap = new HashMap<MenuSection, List<MenuElement>>();
-        sections.forEach(section -> outputMap.put(section, section.getMenuElements()));
+        sections.forEach(section -> outputMap.put(section, section.getMenuElements().stream().filter(MenuElement::isElementVisible).collect(Collectors.toList())));
         return outputMap;
     }
 
@@ -50,5 +51,21 @@ public class MenuService {
 
     public MenuElement deleteElement(UUID id, String tokenId) {
         return menuElementService.deleteElement(id, tokenId);
+    }
+
+    public MenuElement toggleMenuElementVisibility(UUID id, String token) {
+        return menuElementService.toggleMenuElementVisibility(id, token);
+    }
+
+    public MenuSection toggleMenuSectionVisibility(UUID id, String token) {
+        return menuSectionService.toggleMenuSectionVisibility(id, token);
+    }
+
+    public List<MenuSection> getAllSections(String token) {
+        return menuSectionService.getMenuSections(token);
+    }
+
+    public List<MenuElement> getAllElements(String token) {
+        return menuElementService.getMenuElements(token);
     }
 }

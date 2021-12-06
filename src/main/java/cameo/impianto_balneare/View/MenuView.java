@@ -21,7 +21,7 @@ public class MenuView {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public ResponseEntity<Map<MenuSection, List<MenuElement>>> getMenu() {
+    public ResponseEntity<Map<MenuSection, List<MenuElement>>> getVisibleMenu() {
         var menu = menuService.getMenu();
         return ResponseEntity.ok(menu);
     }
@@ -78,5 +78,41 @@ public class MenuView {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(element);
+    }
+
+    @RequestMapping(value = "/menu/element/visibility/{id}", method = RequestMethod.POST)
+    public ResponseEntity<MenuElement> toggleMenuElementVisibility(@PathVariable UUID id, @RequestHeader("token") String token) {
+        var element = menuService.toggleMenuElementVisibility(id, token);
+        if (element == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(element);
+    }
+
+    @RequestMapping(value = "/menu/section/visibility/{id}", method = RequestMethod.POST)
+    public ResponseEntity<MenuSection> toggleMenuSectionVisibility(@PathVariable UUID id, @RequestHeader("token") String token) {
+        var element = menuService.toggleMenuSectionVisibility(id, token);
+        if (element == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(element);
+    }
+
+    @RequestMapping(value = "/menu/section", method = RequestMethod.GET)
+    public ResponseEntity<List<MenuSection>> getAllSections(@RequestHeader("token") String token) {
+        var sections = menuService.getAllSections(token);
+        if (sections == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(sections);
+    }
+
+    @RequestMapping(value = "/menu/element", method = RequestMethod.GET)
+    public ResponseEntity<List<MenuElement>> getAllElements(@RequestHeader("token") String token) {
+        var elements = menuService.getAllElements(token);
+        if (elements == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(elements);
     }
 }
