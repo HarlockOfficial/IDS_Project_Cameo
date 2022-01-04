@@ -1,10 +1,8 @@
 package cameo.impianto_balneare.Entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +27,9 @@ public class Event {
 
     @Column
     private float price;
+
+    @ManyToMany(targetEntity = Prenotazione.class, mappedBy = "prenotazioni")
+    public List<Prenotazione> prenotazione;
 
     protected Event() {
         id = UUID.randomUUID();

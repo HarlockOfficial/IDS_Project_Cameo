@@ -36,6 +36,9 @@ public class User {
     @OneToMany(targetEntity = MenuOrder.class, mappedBy="user")
     private List<MenuOrder> menuOrders;
 
+    @OneToMany(targetEntity = Prenotazione.class, mappedBy="utente")
+    private List<Prenotazione> prenotazioni;
+
     protected User() {
         id = UUID.randomUUID();
         role = Role.USER;

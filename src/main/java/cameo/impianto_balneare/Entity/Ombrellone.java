@@ -1,6 +1,7 @@
 package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,13 @@ public class Ombrellone {
     @Column
     private float prezzo;
 
-    @ManyToMany(mappedBy = "ombrellone")
+    @Column
+    private ZonedDateTime dataInizio;
+
+    @Column
+    private ZonedDateTime dataFine;
+
+    @ManyToMany(mappedBy = "ombrelloni")
     private List<Prenotazione> listaPrenotazioni;
 
     @OneToMany(targetEntity = MenuOrder.class, mappedBy = "ombrellone")
@@ -35,16 +42,32 @@ public class Ombrellone {
         return id;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public ZonedDateTime getDataInizio() {
+        return dataInizio;
+    }
+
+    public void setDataInizio(ZonedDateTime dataInizio) {
+        this.dataInizio = dataInizio;
+    }
+
+    public ZonedDateTime getDataFine() {
+        return dataFine;
+    }
+
+    public void setDataFine(ZonedDateTime dataFine) {
+        this.dataFine = dataFine;
+    }
+
     public List<Prenotazione> getListaPrenotazioni() {
         return listaPrenotazioni;
     }
 
     public void setListaPrenotazioni(List<Prenotazione> listaPrenotazioni) {
         this.listaPrenotazioni = listaPrenotazioni;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public int getOmbrelloneRowNumber() {
