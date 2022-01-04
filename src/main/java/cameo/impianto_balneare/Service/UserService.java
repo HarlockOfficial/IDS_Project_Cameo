@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public List<User> getAllUsers(String tokenId) {
-        if (tokenService.checkToken(tokenId, Role.ADMIN)) {
+        if (tokenService.checkToken(tokenId, Role.ADMIN) || tokenService.checkToken(tokenId, Role.RECEPTION)) {
             return userRepository.findAll();
         }
         return null;

@@ -11,7 +11,7 @@ public class PrenotazioneSpiaggia {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Ombrellone.class)
     private Ombrellone ombrellone;
 
     @Column

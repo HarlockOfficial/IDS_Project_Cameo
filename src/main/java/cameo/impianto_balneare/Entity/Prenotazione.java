@@ -2,6 +2,7 @@ package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class Prenotazione {
     private User utente;
 
     @Enumerated(EnumType.ORDINAL)
-    private TipoPrenotazione statoPrenotazione;
+    private StatoPrenotazione statoPrenotazione;
 
     @Column(nullable = false)
     private ZonedDateTime data;
@@ -30,9 +31,11 @@ public class Prenotazione {
 
     protected Prenotazione() {
         this.id = UUID.randomUUID();
+        prenotazioni = new ArrayList<>();
+        prenotazioneSpiaggia = new ArrayList<>();
     }
 
-    public Prenotazione(User utente, TipoPrenotazione statoPrenotazione, ZonedDateTime data) {
+    public Prenotazione(User utente, StatoPrenotazione statoPrenotazione, ZonedDateTime data) {
         this();
         this.utente = utente;
         this.statoPrenotazione = statoPrenotazione;
@@ -55,11 +58,11 @@ public class Prenotazione {
         this.utente = utente;
     }
 
-    public TipoPrenotazione getStatoPrenotazione() {
+    public StatoPrenotazione getStatoPrenotazione() {
         return statoPrenotazione;
     }
 
-    public void setStatoPrenotazione(TipoPrenotazione statoPrenotazione) {
+    public void setStatoPrenotazione(StatoPrenotazione statoPrenotazione) {
         this.statoPrenotazione = statoPrenotazione;
     }
 

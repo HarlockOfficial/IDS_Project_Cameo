@@ -1,6 +1,7 @@
 package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +43,8 @@ public class User {
     protected User() {
         id = UUID.randomUUID();
         role = Role.USER;
+        menuOrders = new ArrayList<>();
+        prenotazioni = new ArrayList<>();
     }
 
     public User(String username, String name, String surname, String email, String password, Date birthDate) {
@@ -127,5 +130,21 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<MenuOrder> getMenuOrders() {
+        return menuOrders;
+    }
+
+    public void setMenuOrders(List<MenuOrder> menuOrders) {
+        this.menuOrders = menuOrders;
+    }
+
+    public List<Prenotazione> getPrenotazioni() {
+        return prenotazioni;
+    }
+
+    public void setPrenotazioni(List<Prenotazione> prenotazioni) {
+        this.prenotazioni = prenotazioni;
     }
 }

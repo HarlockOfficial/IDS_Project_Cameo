@@ -2,6 +2,7 @@ package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,7 @@ public class MenuOrder {
         id = UUID.randomUUID();
         orderDateTime = ZonedDateTime.now();
         orderStatus = OrderStatus.ORDERED;
+        menuElements = new ArrayList<>();
     }
 
     public UUID getId() {

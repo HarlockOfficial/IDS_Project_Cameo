@@ -1,6 +1,7 @@
 package cameo.impianto_balneare.View;
 
 import cameo.impianto_balneare.Entity.Ombrellone;
+import cameo.impianto_balneare.Entity.Prenotazione;
 import cameo.impianto_balneare.Service.OmbrelloneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -106,5 +107,15 @@ public class OmbrelloneView {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(deletedOmbrellone);
+    }
+
+    @RequestMapping(value = "/ombrellone/{id}/book", method = RequestMethod.GET)
+    public ResponseEntity<List<Prenotazione>> getPrenotazioniByOmbrellone(@PathVariable UUID id,
+                                                                          @RequestParam ZonedDateTime dataInizio,
+                                                                          @RequestParam ZonedDateTime dataFine, @RequestHeader("token") String token) {
+        var prenotazioni = ombrelloneService.getPrenotazioneByOmbrellone(id, dataInizio, dataFine, token);
+        if(prenotazioni == null || prenotazioni.size() == 0)
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(prenotazioni);
     }
 }

@@ -1,6 +1,8 @@
 package cameo.impianto_balneare.Service;
 
 import cameo.impianto_balneare.Entity.Ombrellone;
+import cameo.impianto_balneare.Entity.Prenotazione;
+import cameo.impianto_balneare.Entity.PrenotazioneSpiaggia;
 import cameo.impianto_balneare.Entity.Role;
 import cameo.impianto_balneare.Repository.OmbrelloneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OmbrelloneService {
@@ -103,4 +106,19 @@ public class OmbrelloneService {
         return null;
     }
 
+    public List<Prenotazione> getPrenotazioneByOmbrellone(UUID ombrelloneId, ZonedDateTime dataInizio, ZonedDateTime dataFine, String tokenId) {
+        var ombrellone = ombrelloneRepository.findById(ombrelloneId);
+        if (!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.checkToken(tokenId, Role.RECEPTION)) {
+            return null;
+        }
+        if (ombrellone.isPresent()) {
+            return ombrellone.get()
+                    .getListaPrenotazioni().stream().filter(
+                            prenotazione ->
+                                    (prenotazione.getDataInizio().isAfter(dataInizio) || prenotazione.getDataInizio().equals(dataInizio)) &&
+                                    (prenotazione.getDataFine().isBefore(dataFine) || prenotazione.getDataFine().equals(dataFine))
+                    ).map(PrenotazioneSpiaggia::getPrenotazione).collect(Collectors.toList());
+        }
+        return null;
+    }
 }

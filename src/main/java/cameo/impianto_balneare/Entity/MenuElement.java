@@ -1,6 +1,7 @@
 package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,7 @@ public class MenuElement {
 
     protected MenuElement() {
         this.id = UUID.randomUUID();
+        orders = new ArrayList<>();
     }
 
     public UUID getId() {
