@@ -1,2 +1,0 @@
-In this folder put all classes that handle the system models.
-(All interfaces that extend JPA)

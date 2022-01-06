@@ -1,7 +1,8 @@
 package cameo.impianto_balneare.Entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,24 +14,79 @@ public class Prenotazione {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @ManyToMany
-    @JoinTable(name = "ombrelloni_list",joinColumns = @JoinColumn (name = "ombrellone_id"),
-    inverseJoinColumns = @JoinColumn (name = "id"))
-    private List<Ombrellone> ombrellone;
+    @ManyToOne(targetEntity = User.class)
+    private User utente;
 
-    //todo vedi bene queste cose aggiunte
-    @Column
-    private int lettiniNumber;
+    @Enumerated(EnumType.ORDINAL)
+    private StatoPrenotazione statoPrenotazione;
 
-    @Column
-    private int sdraioNumber;
+    @Column(nullable = false)
+    private ZonedDateTime data;
 
-    @Column
-    private Date dataPrenotazione;
+    @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL)
+    private List<Event> prenotazioni;
 
-    //aggiungi la correlazione con la tabella ;) manytoone o onetomany nun sacc quale mettere
-    @Column
-    private User user;
+    @OneToMany(targetEntity = PrenotazioneSpiaggia.class, mappedBy = "prenotazione")
+    private List<PrenotazioneSpiaggia> prenotazioneSpiaggia;
 
+    protected Prenotazione() {
+        this.id = UUID.randomUUID();
+        prenotazioni = new ArrayList<>();
+        prenotazioneSpiaggia = new ArrayList<>();
+    }
 
+    public Prenotazione(User utente, StatoPrenotazione statoPrenotazione, ZonedDateTime data) {
+        this();
+        this.utente = utente;
+        this.statoPrenotazione = statoPrenotazione;
+        this.data = data;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public User getUtente() {
+        return utente;
+    }
+
+    public void setUtente(User utente) {
+        this.utente = utente;
+    }
+
+    public StatoPrenotazione getStatoPrenotazione() {
+        return statoPrenotazione;
+    }
+
+    public void setStatoPrenotazione(StatoPrenotazione statoPrenotazione) {
+        this.statoPrenotazione = statoPrenotazione;
+    }
+
+    public ZonedDateTime getData() {
+        return data;
+    }
+
+    public void setData(ZonedDateTime data) {
+        this.data = data;
+    }
+
+    public List<Event> getPrenotazioni() {
+        return prenotazioni;
+    }
+
+    public void setPrenotazioni(List<Event> prenotazioni) {
+        this.prenotazioni = prenotazioni;
+    }
+
+    public List<PrenotazioneSpiaggia> getPrenotazioneSpiaggia() {
+        return prenotazioneSpiaggia;
+    }
+
+    public void setPrenotazioneSpiaggia(List<PrenotazioneSpiaggia> prenotazioneSpiaggia) {
+        this.prenotazioneSpiaggia = prenotazioneSpiaggia;
+    }
 }
