@@ -10,6 +10,7 @@ import java.util.UUID;
 @Table(name="menu_order")
 public class MenuOrder {
     @Id
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column

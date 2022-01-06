@@ -32,6 +32,9 @@ public class Event {
     @ManyToMany(targetEntity = Prenotazione.class, mappedBy = "prenotazioni")
     public List<Prenotazione> prenotazione;
 
+    @OneToOne(targetEntity = Newsletter.class, mappedBy = "event")
+    private Newsletter newsletter;
+
     protected Event() {
         id = UUID.randomUUID();
         prenotazione = new ArrayList<>();
@@ -83,5 +86,21 @@ public class Event {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public List<Prenotazione> getPrenotazione() {
+        return prenotazione;
+    }
+
+    public void setPrenotazione(List<Prenotazione> prenotazione) {
+        this.prenotazione = prenotazione;
+    }
+
+    public Newsletter getNewsletter() {
+        return newsletter;
+    }
+
+    public void setNewsletter(Newsletter newsletter) {
+        this.newsletter = newsletter;
     }
 }
