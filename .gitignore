@@ -670,3 +670,4 @@ FodyWeavers.xsd
 /backend/.mvn/wrapper/maven-wrapper.properties
 /backend/mvnw
 /backend/mvnw.cmd
+/backend/src/test/**
