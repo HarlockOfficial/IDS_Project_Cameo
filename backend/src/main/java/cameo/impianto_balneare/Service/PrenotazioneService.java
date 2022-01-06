@@ -100,7 +100,7 @@ public class PrenotazioneService {
         }
         var prenotazioneToEdit = prenotazioneToUpdate.get();
         prenotazioneToEdit.setStatoPrenotazione(prenotazione.getStatoPrenotazione());
-        prenotazioneToEdit.setPrenotazioni(prenotazione.getPrenotazioni());
+        prenotazioneToEdit.setPrenotazioniEventi(prenotazione.getPrenotazioniEventi());
         prenotazioneToEdit.setData(prenotazione.getData());
         prenotazioneToEdit.setPrenotazioneSpiaggia(prenotazione.getPrenotazioneSpiaggia());
         prenotazioneToEdit.setUtente(prenotazione.getUtente());

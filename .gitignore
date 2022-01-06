@@ -246,7 +246,6 @@ node_modules/
 bower_components/
 
 # IDEs and editors
-.idea/
 
 # misc
 .sass-cache/
@@ -375,7 +374,6 @@ StyleCopReport.xml
 *.tmp
 *.tmp_proj
 *_wpftmp.csproj
-*.log
 *.tlog
 *.vspscc
 *.vssscc
@@ -667,3 +665,8 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/angular,visualstudiocode,visualstudio
+/backend/src/main/java/cameo/impianto_balneare/Configs/DatabaseConfig.java
+/backend/.mvn/wrapper/MavenWrapperDownloader.java
+/backend/.mvn/wrapper/maven-wrapper.properties
+/backend/mvnw
+/backend/mvnw.cmd

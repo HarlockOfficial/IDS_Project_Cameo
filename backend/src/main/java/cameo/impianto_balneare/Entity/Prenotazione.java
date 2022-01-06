@@ -24,22 +24,15 @@ public class Prenotazione {
     private ZonedDateTime data;
 
     @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL)
-    private List<Event> prenotazioni;
+    private List<Event> prenotazioniEventi;
 
     @OneToMany(targetEntity = PrenotazioneSpiaggia.class, mappedBy = "prenotazione")
     private List<PrenotazioneSpiaggia> prenotazioneSpiaggia;
 
     protected Prenotazione() {
         this.id = UUID.randomUUID();
-        prenotazioni = new ArrayList<>();
+        prenotazioniEventi = new ArrayList<>();
         prenotazioneSpiaggia = new ArrayList<>();
-    }
-
-    public Prenotazione(User utente, StatoPrenotazione statoPrenotazione, ZonedDateTime data) {
-        this();
-        this.utente = utente;
-        this.statoPrenotazione = statoPrenotazione;
-        this.data = data;
     }
 
     public UUID getId() {
@@ -74,12 +67,12 @@ public class Prenotazione {
         this.data = data;
     }
 
-    public List<Event> getPrenotazioni() {
-        return prenotazioni;
+    public List<Event> getPrenotazioniEventi() {
+        return prenotazioniEventi;
     }
 
-    public void setPrenotazioni(List<Event> prenotazioni) {
-        this.prenotazioni = prenotazioni;
+    public void setPrenotazioniEventi(List<Event> prenotazioniEventi) {
+        this.prenotazioniEventi = prenotazioniEventi;
     }
 
     public List<PrenotazioneSpiaggia> getPrenotazioneSpiaggia() {
