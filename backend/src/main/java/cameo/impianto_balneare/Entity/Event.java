@@ -29,10 +29,10 @@ public class Event {
     @Column
     private float price;
 
-    @ManyToMany(targetEntity = Prenotazione.class, mappedBy = "prenotazioniEventi")
+    @ManyToMany(targetEntity = Prenotazione.class)
     public List<Prenotazione> prenotazione;
 
-    @OneToOne(targetEntity = Newsletter.class, mappedBy = "event")
+    @OneToOne
     private Newsletter newsletter;
 
     protected Event() {
