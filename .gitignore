@@ -672,3 +672,8 @@ FodyWeavers.xsd
 /backend/mvnw.cmd
 /backend/src/test/**
 /idsCameoFrontEnd/README.md
+/idsCameoFrontEnd/.browserslistrc
+/idsCameoFrontEnd/.editorconfig
+/idsCameoFrontEnd/src/assets/.gitkeep
+/idsCameoFrontEnd/src/assets/img/chalet.jpg
+/idsCameoFrontEnd/src/favicon.ico
