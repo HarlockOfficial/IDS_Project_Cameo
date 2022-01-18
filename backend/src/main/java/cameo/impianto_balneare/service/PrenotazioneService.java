@@ -106,4 +106,8 @@ public class PrenotazioneService {
         prenotazioneToEdit.setUtente(prenotazione.getUtente());
         return prenotazioneRepository.save(prenotazioneToEdit);
     }
+
+    public List<Prenotazione> getAllPrenotazioni() {
+        return prenotazioneRepository.findAll();
+    }
 }
