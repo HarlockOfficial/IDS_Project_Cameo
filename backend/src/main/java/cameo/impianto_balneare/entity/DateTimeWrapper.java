@@ -9,11 +9,12 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "DateTimeWrapper")
+@Table(name = "date_time_wrapper")
 @Getter
 @Setter
 public class DateTimeWrapper implements GlobalExceptionHandler {
     @Id
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column
