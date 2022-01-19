@@ -4,6 +4,7 @@ import cameo.impianto_balneare.entity.User;
 import cameo.impianto_balneare.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,6 +15,12 @@ public class AuthenticationView implements GlobalExceptionHandler{
     @Autowired
     public AuthenticationView(UserService userService) {
         this.userService = userService;
+    }
+
+    //Method required by spring security
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ResponseEntity<String> logoutConfirm(@Nullable @RequestParam String successful) {
+        return ResponseEntity.ok("{\"message\":\"Logout successful\"}");
     }
 
     /**

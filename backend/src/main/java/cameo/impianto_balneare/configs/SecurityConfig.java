@@ -15,6 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity security) throws Exception
     {
         getHttp().cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        security.logout().logoutUrl("/logout").logoutSuccessUrl("/login?successful=1").invalidateHttpSession(true);
         getHttp().cors().and().csrf().disable();
         security.httpBasic().disable();
     }
