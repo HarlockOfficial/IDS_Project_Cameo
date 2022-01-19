@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 
 @RestController
 public class AuthenticationView implements GlobalExceptionHandler{
@@ -45,7 +44,7 @@ public class AuthenticationView implements GlobalExceptionHandler{
         if (newUser == null) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.created(URI.create("/login")).body(newUser);
+        return ResponseEntity.ok().body(newUser);
     }
 
     /**
