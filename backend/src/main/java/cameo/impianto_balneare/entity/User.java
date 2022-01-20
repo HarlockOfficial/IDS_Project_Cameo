@@ -47,8 +47,8 @@ public class User {
     @OneToMany(targetEntity = Prenotazione.class, mappedBy = "utente")
     private List<Prenotazione> prenotazioni;
 
-    @OneToOne(targetEntity = Token.class)
-    private Token token;
+    @OneToMany(targetEntity = Token.class, mappedBy = "id")
+    private List<Token> token;
 
     protected User() {
         id = UUID.randomUUID();
