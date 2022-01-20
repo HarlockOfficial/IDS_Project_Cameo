@@ -29,6 +29,7 @@ public class UserService {
             return userRepository.findAll();
         }
         var user = tokenService.getUserFromUUID(tokenId);
+        System.out.println(user);
         var users = new ArrayList<User>();
         users.add(user);
         return users;
