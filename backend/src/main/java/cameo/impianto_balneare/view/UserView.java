@@ -27,7 +27,7 @@ public class UserView implements GlobalExceptionHandler {
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers(@RequestHeader("token") String token) {
         var users = userService.getAllUsers(token);
-        if (users == null) {
+        if (users == null || users.size() == 0) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(users);
