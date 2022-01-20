@@ -15,7 +15,7 @@ public class Token {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "token")
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     protected Token() {
