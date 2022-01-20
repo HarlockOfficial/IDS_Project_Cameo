@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,13 +28,20 @@ public class UserService {
         if (tokenService.checkToken(tokenId, Role.ADMIN) || tokenService.checkToken(tokenId, Role.RECEPTION)) {
             return userRepository.findAll();
         }
-        return null;
+        var user = tokenService.getUserFromUUID(tokenId);
+        var users = new ArrayList<User>();
+        users.add(user);
+        return users;
     }
 
     public User getUser(UUID id, String tokenId) {
         if (tokenService.checkToken(tokenId, Role.ADMIN)) {
             var user = userRepository.findById(id);
             return user.orElse(null);
+        }
+        var requestUser = tokenService.getUserFromUUID(tokenId);
+        if(requestUser.getId().equals(id)) {
+            return tokenService.getUserFromUUID(tokenId);
         }
         return null;
     }
