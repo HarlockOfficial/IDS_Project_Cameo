@@ -10,38 +10,17 @@
 
 <body>
   <ul class="navbar">
-    <li><a href="#prenota">Prenota</a></li>
-    <li><a href="#about">About</a></li>
+    <li><a routerLink="">Home</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a routerLink="/prenota">Prenota</a></li>
+    <li><a routerLink="/profile" *ngIf="isLoggedIn">Profile</a></li>
+    <li><a routerLink="/login" *ngIf="!isLoggedIn">Login</a></li>
+    <li><a routerLink="/register" *ngIf="!isLoggedIn">Register</a></li>
+    <li><a routerLink="/login" *ngIf="isLoggedIn">Logout</a></li>
   </ul>
 
-  <div class="center">
-    <img src="../assets/img/chalet.jpg" alt="Onde">
-    <div class="centerText">
-      <h1>Balneare Cameo</h1>
-      <h2>Prenota il tuo ombrellone ora!</h2>
-      <a href="#" class="centerButton">Prenota</a>
-    </div>
-  </div>
-
-  <div id="about" class="about">
-    <h2>Stabilimento balneare cameo</h2>
-    <p>Sul litorale Marchigiano, incastonata tra scogli secolari e acque cristalline, lo stabilimento balneare Cameo ti
-      aspetta con i suoi colori intensi e brillanti.
-      <br> Lasciati cullare dalle onde, dal profumo del mare, dalla piacevole
-      sensazione della finissima sabbia.
-      <br>Goditi il mare meraviglioso del nostro litorale.
-      A tutto il resto penseremo noi!
-    </p>
-  </div>
-
-  <div id="contact" class="contact">
-    <h2>Hai delle domande? Contattaci!</h2>
-    <p>Siamo sempre disponibili per ogni informazione riguardante il nostro balneare, i nostri clienti possono
-      contattarci in vari modi.
-      <br>Puoi contattarci usando la nostra mail: <a href="mailto:cameoBeach@gmail.com">cameoBeach@gmail.com</a>
-      <br>Usando il nostro numero telefonico: +39 123456789
-    </p>
+  <div>
+    <router-outlet></router-outlet>
   </div>
 
   <div class="footer">
