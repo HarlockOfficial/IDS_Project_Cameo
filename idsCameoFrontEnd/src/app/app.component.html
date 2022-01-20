@@ -10,9 +10,11 @@
 
 <body>
   <ul class="navbar">
-    <li><a href="#prenota">Prenota</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a routerLink="/">Prenota</a></li>
+    <li><a routerLink="/about">About</a></li>
+    <li><a routerLink="/Contact">Contact</a></li>
+    <li><a routerLink="/login">Login</a></li>
+    <li><a routerLink="/register">Register</a></li>
   </ul>
 
   <div class="center">
@@ -22,6 +24,10 @@
       <h2>Prenota il tuo ombrellone ora!</h2>
       <a href="#" class="centerButton">Prenota</a>
     </div>
+  </div>
+
+  <div>
+    <router-outlet></router-outlet>
   </div>
 
   <div id="about" class="about">
