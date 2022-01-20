@@ -29,5 +29,4 @@ export class UserService {
     const configs = { 'token': token };
     return this.http.get(API + 'user', { headers: configs });;
   }
-  //{{url}}/user/{{$randomUUID}}
 }

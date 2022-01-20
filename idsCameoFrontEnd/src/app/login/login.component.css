@@ -1,9 +1,72 @@
 
-form{
-    padding: 2vw;
+.form-wrapper{
     text-align: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
-label{
-    margin-right: 1vw;
+form{
+    height: 100%;
+    width: 35%;
+    padding: 2vw;
+    background-color: #449DD1;
+    text-align: center;
+    border-radius: 10px;
+    display: inline-block;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+    font-size: 2vw;
+    font-weight: 500;
+}
+
+.form-group input{
+    display: block;
+    height: 2.5vh;
+    width: 70%;
+    margin-left: 15%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.3vw;
+    padding: 0.5vh 0; 
+    font-size: 0.7em;
+}
+
+.btn{
+    margin-top: 5vh;
+    width: 50%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 0.5vw 0;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: 0.5vw;
+    cursor: pointer;
+}
+
+.btn:hover{
+    background-color: #78C0E0;
+    transition: ease-in 0.5s;
+}
+
+.form-group label{
+    display: block;
+    margin-top: 2vh;
+    margin-bottom: 0.5vh;
+    font-size: 0.8em;
+    font-weight: 800;
+}
+
+.alert{
+    color: rgb(153, 0, 0);
+    font-weight: 800;
+}
+
+.alert-success{
+    color: rgb(0, 168, 98);
+    font-weight: 800;
+    display: block;
+}
+
+h1{
+    font-size: 1.3em;
 }

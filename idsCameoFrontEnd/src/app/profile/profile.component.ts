@@ -21,7 +21,8 @@ export class ProfileComponent implements OnInit {
   onGetUser(): void {
     this.userService.userInfo(this.tokenStorage.getToken())?.subscribe(
       data => {
-        this.reloadPage();
+        //this.reloadPage();
+        console.log(data)
       },
       err => {
         this.errorMessage = err.error.message;
