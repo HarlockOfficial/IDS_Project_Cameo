@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Cameo Beach</title>
+</head>
+
+<body>
+  <ul class="navbar">
+    <li><a routerLink="">Home</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a routerLink="/prenota">Prenota</a></li>
+    <li><a routerLink="/profile" *ngIf="isLoggedIn">Profile</a></li>
+    <li><a routerLink="/login" *ngIf="!isLoggedIn">Login</a></li>
+    <li><a routerLink="/register" *ngIf="!isLoggedIn">Register</a></li>
+    <li><a routerLink="/login" *ngIf="isLoggedIn">Logout</a></li>
+  </ul>
+
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="footer">
+    <p>Cameo Beach, All rights reserved</p>
+    <p><a href="mailto:cameoBeach@gmail.com">cameoBeach@gmail.com</a></p>
+    <div class="footerIcon">
+      <a href="#"><i class="fa fa-instagram"></i></a>
+      <a href="#"><i class="fa fa-facebook-f"></i></a>
+    </div>
+  </div>
+</body>
+
+</html>

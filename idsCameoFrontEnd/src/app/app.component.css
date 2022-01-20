@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+:root {
+    --background: #fffdf5;
+    --background2: #375858;
+    --textColor: #000000;
+    --textColor2: #fffdf5;
+    --footerColor: #4388d1;
+    --underTextColor: #2f343593;
+    --textHoverColor: #98ccf5;
+    --backgroundFooter: #b6b6b6;
+}
+  
+html {
+    background-color: var(--background);
+    font-family: "Open Sans", sans-serif;
+}
+
+body{
+    border: none !important;
+    margin: 0px !important;
+    padding: 0 !important;
+}
+
+.navbar{
+    list-style-type: none;
+    text-align: center;
+    background-color: #4388d1;
+    padding: 1vw;
+    font-size: 0;
+}
+
+.navbar li{
+    display: inline;
+    margin-right: 10vw;
+}
+
+.navbar li:last-child{
+    margin-right: 0;
+}
+
+.navbar a{
+    text-decoration: none;
+    color: black;
+    font-size: 1.5rem;
+}
+
+.navbar a:hover{
+    color:white;
+    transition-duration: 0.5s;
+}
+
+/* Footer */
+.footer{
+    background-color: #4388d1;
+    padding: 1vw;
+    font-size: 1.1em;
+}
+
+.footerIcon{
+    margin-bottom: 3vh;
+}
+
+.footerIcon i{
+    float: right;
+    margin-right: 2vw;
+    color: black;
+}
+
+
+
+
