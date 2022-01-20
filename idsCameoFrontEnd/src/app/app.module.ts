@@ -8,14 +8,17 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
-import { HomeComponent } from './home';
+import { HomeComponent } from './home/home.component';
+import { PrenotaComponent } from './prenota/prenota.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    HomeComponent,
+    PrenotaComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,7 @@ import { HomeComponent } from './home';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [LoginComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

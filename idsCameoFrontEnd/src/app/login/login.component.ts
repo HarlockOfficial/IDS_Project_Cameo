@@ -8,6 +8,7 @@ import { TokenStorageService } from '../_services/token-storage.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
   form: any = {
     username: null,
     password: null
@@ -50,6 +51,7 @@ export class LoginComponent implements OnInit {
     this.authService.logout(this.tokenStorage.getToken())?.subscribe(
       data => {
         this.tokenStorage.signOut();
+        this.reloadPage();
       },
       err => {
         this.errorMessage = err.error.message;

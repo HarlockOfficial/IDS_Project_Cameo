@@ -17,17 +17,13 @@ const requestOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class PrenotazioniService {
 
   constructor(private http: HttpClient) { }
 
-  //Ritorna le informazioni di un utente specifio 
-  userInfo(token: string | null): Observable<any> | null {
-    if (token == null) {
-      return null;
-    }
-    const configs = { 'token': token };
-    return this.http.get(API + 'user', { headers: configs });;
+  //Restituisce tutti gli ombrelloni
+  allOmbrelloni(): Observable<any> | null {
+    return this.http.get(API + 'ombrellone/all', { headers: headerDict });;
   }
-  //{{url}}/user/{{$randomUUID}}
+
 }

@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const AUTH_API = 'http://localhost:8080/';
-
-/*
-const headers = new HttpHeaders().append('Content-Type', 'application/json');*/
+const API = 'http://localhost:8080/';
 
 const headerDict = {
   'Content-Type': 'application/json',
@@ -24,15 +21,17 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  //Chiamata per effettuare login
   login(username: string, password: string): Observable<any> {
     let params = new HttpParams()
       .append('username', username)
       .append('password', password);
-    return this.http.post(AUTH_API + 'login', null, { headers: headerDict, params: params })
+    return this.http.post(API + 'login', null, { headers: headerDict, params: params })
   }
 
+  //Chiamata per registrarsi
   register(username: string, name: string, surname: string, email: string, password: string, birthDate: Date): Observable<any> {
-    return this.http.post(AUTH_API + 'register', {
+    return this.http.post(API + 'register', {
       username,
       name,
       surname,
@@ -42,19 +41,12 @@ export class AuthService {
     }, { headers: headerDict });
   }
 
+  //Chiamata per logout
   logout(token: string | null): Observable<any> | null {
-    console.log("test2");
-
     if (token == null) {
-      console.log("test3");
-
       return null;
     }
-
-    const headerDict2 = { 'token': token };
-    console.log(headerDict2);
-
-    const test = this.http.get(AUTH_API + 'logout', { headers: headerDict2 });
-    return test;
+    const configs = { 'token': token };
+    return this.http.get(API + 'logout', { headers: configs });;
   }
 }

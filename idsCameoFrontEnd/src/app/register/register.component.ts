@@ -27,7 +27,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log("asd");
     const { username, name, surname, email, password, birthDate } = this.form;
 
     this.authService.register(username, name, surname, email, password, birthDate).subscribe(
