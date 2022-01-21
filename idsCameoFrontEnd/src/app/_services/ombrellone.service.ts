@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Ombrellone } from '../ombrellone';
 const API = 'http://localhost:8080/';
 
 const headerDict = {
@@ -17,13 +17,13 @@ const requestOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class PrenotazioniService {
+export class OmbrelloneService {
 
   constructor(private http: HttpClient) { }
 
   //Restituisce tutti gli ombrelloni
-  allOmbrelloni(): Observable<any> | null {
-    return this.http.get(API + 'ombrellone/all', { headers: headerDict });;
+  allOmbrelloni(): Observable<Ombrellone[]> | null {
+    return this.http.get<Ombrellone[]>(API + 'ombrellone/all', { headers: headerDict });;
   }
 
 }

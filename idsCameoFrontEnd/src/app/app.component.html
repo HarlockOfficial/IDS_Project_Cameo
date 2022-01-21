@@ -13,10 +13,11 @@
     <li><a routerLink="">Home</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a routerLink="/prenota">Prenota</a></li>
-    <li><a routerLink="/profile" *ngIf="isLoggedIn">Profile</a></li>
-    <li><a routerLink="/login" *ngIf="!isLoggedIn">Login</a></li>
-    <li><a routerLink="/register" *ngIf="!isLoggedIn">Register</a></li>
-    <li><a routerLink="/login" *ngIf="isLoggedIn">Logout</a></li>
+    <li *ngIf="isLoggedIn"><a routerLink="/profile">Profile</a></li>
+    <li *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
+    <li *ngIf="!isLoggedIn"><a routerLink="/register">Register</a></li>
+    <li *ngIf="isLoggedIn && isAdmin"><a routerLink="/dashboard">DashBoard</a></li>
+    <li *ngIf="isLoggedIn"><a routerLink="/login">Logout</a></li>
   </ul>
 
   <div>

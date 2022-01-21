@@ -10,6 +10,7 @@ import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { PrenotaComponent } from './prenota/prenota.component';
+import { AdminBoardComponent } from './admin-board/admin-board.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PrenotaComponent } from './prenota/prenota.component';
     RegisterComponent,
     ProfileComponent,
     HomeComponent,
-    PrenotaComponent
+    PrenotaComponent,
+    AdminBoardComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,7 @@ import { PrenotaComponent } from './prenota/prenota.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [LoginComponent],
+  providers: [LoginComponent, ProfileComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

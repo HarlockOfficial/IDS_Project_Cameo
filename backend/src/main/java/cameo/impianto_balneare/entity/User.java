@@ -16,7 +16,7 @@ import java.util.UUID;
 @Table(name = "user")
 @Getter
 @Setter
-@JsonIgnoreProperties({"menuOrders", "prenotazioni", "token", "password"})
+@JsonIgnoreProperties(value = {"menuOrders", "prenotazioni", "token", "password"})
 public class User {
     @Id
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")

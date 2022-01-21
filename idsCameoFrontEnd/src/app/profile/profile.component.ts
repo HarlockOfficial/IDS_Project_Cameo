@@ -12,6 +12,7 @@ export class ProfileComponent implements OnInit {
 
   currentUser!: User;
   errorMessage = '';
+  isAdmin = false;
 
   constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
 
@@ -27,6 +28,9 @@ export class ProfileComponent implements OnInit {
         const filteredData = data.find(e => e.username == myUser.username)!;
         this.currentUser = filteredData as User;
         this.tokenStorage.saveUser(this.currentUser);
+        if (filteredData.role == 'ADMIN') {
+          this.isAdmin = true;
+        }
       },
       err => {
         this.errorMessage = err.error.message;
