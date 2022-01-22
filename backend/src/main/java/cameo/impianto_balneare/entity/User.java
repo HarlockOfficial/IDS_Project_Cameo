@@ -47,7 +47,7 @@ public class User {
     @OneToMany(targetEntity = Prenotazione.class, mappedBy = "utente")
     private List<Prenotazione> prenotazioni;
 
-    @OneToMany(targetEntity = Token.class, mappedBy = "id")
+    @OneToMany(targetEntity = Token.class, mappedBy = "id", fetch = FetchType.EAGER)
     private List<Token> token;
 
     protected User() {
@@ -55,5 +55,6 @@ public class User {
         role = Role.USER;
         menuOrders = new ArrayList<>();
         prenotazioni = new ArrayList<>();
+        token = new ArrayList<>();
     }
 }

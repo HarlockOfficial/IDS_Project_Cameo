@@ -31,7 +31,10 @@ public class TokenService {
     }
 
     public String createToken(User user) {
-        tokenRepository.findAll().stream().filter(token -> token.getUser().getId().equals(user.getId())).forEach(tokenRepository::delete);
+        var tokenList = user.getToken();
+        if (tokenList != null && !tokenList.isEmpty()) {
+            tokenRepository.deleteAll(tokenList);
+        }
         var token = new Token(user);
         tokenRepository.save(token);
         return token.getId().toString();
