@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Table(name = "user")
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"menuOrders", "prenotazioni", "password"}, allowSetters = true)
 public class User {
     @Id
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
