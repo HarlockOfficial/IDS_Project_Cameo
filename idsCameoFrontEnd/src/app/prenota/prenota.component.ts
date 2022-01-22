@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { OmbrelloneService } from '../_services/ombrellone.service';
-import { Ombrellone } from '../ombrellone';
+import { Ombrellone } from '../interfaces/ombrellone';
 
 @Component({
   selector: 'app-prenota',

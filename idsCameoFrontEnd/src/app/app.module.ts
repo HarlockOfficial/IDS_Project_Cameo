@@ -11,6 +11,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { PrenotaComponent } from './prenota/prenota.component';
 import { AdminBoardComponent } from './admin-board/admin-board.component';
+import { MenuComponent } from './menu/menu.component';
+import { EventiComponent } from './eventi/eventi.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { AdminBoardComponent } from './admin-board/admin-board.component';
     ProfileComponent,
     HomeComponent,
     PrenotaComponent,
-    AdminBoardComponent
+    AdminBoardComponent,
+    MenuComponent,
+    EventiComponent
   ],
   imports: [
     BrowserModule,

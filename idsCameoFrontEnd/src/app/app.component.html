@@ -11,8 +11,9 @@
 <body>
   <ul class="navbar">
     <li><a routerLink="">Home</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a routerLink="/prenota">Prenota</a></li>
+    <li><a routerLink="/eventi">Eventi</a></li>
+    <li><a routerLink="/menu">Menu</a></li>
     <li *ngIf="isLoggedIn"><a routerLink="/profile">Profile</a></li>
     <li *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
     <li *ngIf="!isLoggedIn"><a routerLink="/register">Register</a></li>
