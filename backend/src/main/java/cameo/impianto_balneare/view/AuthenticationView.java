@@ -17,9 +17,16 @@ public class AuthenticationView implements GlobalExceptionHandler{
         this.userService = userService;
     }
 
-    //Method required by spring security
+    /**
+     * Effettua il logout di un utente
+     *
+     * @param token il token dell'utente presente nell'header http
+     * @return json string with error or confirmation of logout
+     */
+    //mapping required by spring security
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ResponseEntity<String> logoutConfirm(@Nullable @RequestParam String successful) {
+    public ResponseEntity<String> logoutConfirm(@Nullable @RequestParam String successful, @RequestHeader("token") String token) {
+        userService.logout(token);
         return ResponseEntity.ok("{\"message\":\"Logout successful\"}");
     }
 
@@ -53,17 +60,4 @@ public class AuthenticationView implements GlobalExceptionHandler{
         }
         return ResponseEntity.ok().body(newUser);
     }
-
-    /**
-     * Effettua il logout di un utente
-     *
-     * @param token il token dell'utente presente nell'header http
-     * @return json string with error or confirmation of logout
-     */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ResponseEntity<String> logout(@RequestHeader("token") String token) {
-        userService.logout(token);
-        return ResponseEntity.ok("{\"message\":\"Logout successful\"}");
-    }
-
 }

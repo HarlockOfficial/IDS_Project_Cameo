@@ -43,13 +43,13 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    @OneToMany(targetEntity = MenuOrder.class, mappedBy = "user")
+    @OneToMany(targetEntity = MenuOrder.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<MenuOrder> menuOrders;
 
-    @OneToMany(targetEntity = Prenotazione.class, mappedBy = "utente")
+    @OneToMany(targetEntity = Prenotazione.class, mappedBy = "utente", cascade = CascadeType.ALL)
     private List<Prenotazione> prenotazioni;
 
-    @OneToMany(targetEntity = Token.class, mappedBy = "id", fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Token.class, mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Token> token;
 
     protected User() {
