@@ -29,6 +29,7 @@
         {{ currentUser.role }}
     </p>
 </div>
+<button *ngIf="isAdmin"><a routerLink="/dashboard">DashBoard</a></button>
 
 <ng-template #loggedOut>
     Please login.

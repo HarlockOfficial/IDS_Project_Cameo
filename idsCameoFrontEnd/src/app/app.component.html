@@ -17,7 +17,6 @@
     <li *ngIf="isLoggedIn"><a routerLink="/profile">Profile</a></li>
     <li *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
     <li *ngIf="!isLoggedIn"><a routerLink="/register">Register</a></li>
-    <li *ngIf="isLoggedIn && isAdmin"><a routerLink="/dashboard">DashBoard</a></li>
     <li *ngIf="isLoggedIn"><a routerLink="/login">Logout</a></li>
   </ul>
 
