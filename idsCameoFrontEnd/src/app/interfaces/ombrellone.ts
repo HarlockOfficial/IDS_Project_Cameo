@@ -1,8 +1,7 @@
 export interface Ombrellone {
-    id: any;
-    row: number;
-    column: number;
-    price: number;
+    ombrelloneRowNumber: number;
+    ombrelloneColumnNumber: number;
+    prezzo: number;
     dataInizio: Date;
     dataFine: Date;
 }
