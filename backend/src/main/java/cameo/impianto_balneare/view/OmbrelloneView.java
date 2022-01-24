@@ -70,9 +70,14 @@ public class OmbrelloneView implements GlobalExceptionHandler{
      */
     @RequestMapping(value = "/ombrellone", method = RequestMethod.POST)
     public ResponseEntity<Ombrellone> createOmbrellone(@RequestBody Ombrellone ombrellone, @RequestHeader("token") String token) {
+        System.out.println(ombrellone.getOmbrelloneRowNumber() + " " + ombrellone.getOmbrelloneColumnNumber() + " " + ombrellone.getDataInizio() + " " + ombrellone.getDataFine()
+        + " " + ombrellone.getPrezzo() + " " + ombrellone.getId());
         var newOmbrellone = ombrelloneService.createOmbrellone(ombrellone, token);
+        System.out.println(newOmbrellone);
+        System.out.println(newOmbrellone.getOmbrelloneRowNumber() + " " + newOmbrellone.getOmbrelloneColumnNumber() + " " + newOmbrellone.getDataInizio() + " " + newOmbrellone.getDataFine()
+                + " " + newOmbrellone.getPrezzo() + " " + newOmbrellone.getId());
         if (newOmbrellone == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.created(URI.create("/ombrellone")).body(newOmbrellone);
     }

@@ -82,11 +82,14 @@ public class OmbrelloneService {
      */
     public Ombrellone createOmbrellone(Ombrellone ombrellone, String tokenId) {
         if (!tokenService.checkToken(tokenId, Role.ADMIN)) {
+            System.out.println("Token non valido");
             return null;
         }
         if (ombrelloneRepository.findAll().stream().anyMatch(e -> ((ombrellone.getOmbrelloneColumnNumber() == e.getOmbrelloneColumnNumber()) && (ombrellone.getOmbrelloneRowNumber() == ombrellone.getOmbrelloneRowNumber())))) {
+            System.out.println("Ombrellone già esistente");
             return null;
         }
+        System.out.println("Ombrellone creato");
         return ombrelloneRepository.save(ombrellone);
     }
 
