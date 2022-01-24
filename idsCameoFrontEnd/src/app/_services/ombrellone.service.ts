@@ -30,9 +30,7 @@ export class OmbrelloneService {
   addOmbrellone(ombrellone: Ombrellone, token: string): Observable<any> {
     const configs = { 'token': token };
 
-    return this.http.post(API + 'ombrellone', {
-      ombrellone
-    }, { headers: configs });
+    return this.http.post(API + 'ombrellone', ombrellone, { headers: configs });
   }
 
 }

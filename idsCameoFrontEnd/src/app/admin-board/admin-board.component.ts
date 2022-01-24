@@ -21,6 +21,7 @@ export class AdminBoardComponent implements OnInit {
   };
 
   isAdmin!: boolean;
+  ombrelloneCreated!: boolean;
 
   constructor(private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
@@ -39,15 +40,15 @@ export class AdminBoardComponent implements OnInit {
       ombrelloneRowNumber: this.form.ombrelloneRowNumber,
       ombrelloneColumnNumber: this.form.ombrelloneColumnNumber,
       prezzo: this.form.prezzo,
-      dataInizio: this.form.dataInizio,
-      dataFine: this.form.dataFine
+      dataInizio: new Date(this.form.dataInizio),
+      dataFine: new Date(this.form.dataFine)
     };
 
     const token = this.tokenStorage.getToken()!;
 
     this.ombrelloneService.addOmbrellone(newOmbrellone, token).subscribe(
       data => {
-
+        this.ombrelloneCreated = true;
       }
     );
   }

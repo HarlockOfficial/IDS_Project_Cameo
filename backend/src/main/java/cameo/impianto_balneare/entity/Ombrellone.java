@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Table(name = "ombrellone")
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"listaOrdini", "listaPrenotazioni"}, allowSetters = true)
 public class Ombrellone {
 
     @Id
