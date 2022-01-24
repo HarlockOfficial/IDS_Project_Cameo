@@ -4,6 +4,8 @@ import { OmbrelloneService } from '../_services/ombrellone.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Evento } from '../interfaces/eventi';
 import { EventiService } from '../_services/eventi.service';
+import { MenuSection } from '../interfaces/menuSection';
+import { MenuService } from '../_services/menu.service';
 import { Router } from '@angular/router';
 
 
@@ -30,15 +32,33 @@ export class AdminBoardComponent implements OnInit {
     price: null,
   }
 
+  formMenuSection: any = {
+    sectionName: null,
+    isSectionVisible: null,
+  }
+
+  formMenuElement: any = {
+    name: null,
+    description: null,
+    price: null,
+    menuSection: null,
+    isElementVisible: null,
+  }
+
   isAdmin!: boolean;
+  isEventManager!: boolean;
   ombrelloneCreated!: boolean;
   eventCreated!: boolean;
+  sectionCreated!: boolean;
 
-  constructor(private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       this.isAdmin = true;
+    }
+    else if (this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
+      this.isEventManager = true;
     }
     else {
       this.router.navigate(['/home']);
@@ -79,7 +99,24 @@ export class AdminBoardComponent implements OnInit {
 
       this.eventService.addEvento(newEvent, token).subscribe(
         data => {
-          this.ombrelloneCreated = true;
+          this.eventCreated = true;
+        }
+      );
+    }
+  }
+
+  onCreateMenuSection() {
+    if (this.tokenStorage.getUser()?.role == "ADMIN") {
+      const newMenuSection: MenuSection = {
+        sectionName: this.formMenuSection.sectionName,
+        isSectionVisible: true,
+      };
+
+      const token = this.tokenStorage.getToken()!;
+
+      this.menuService.addMenuSection(newMenuSection, token).subscribe(
+        data => {
+          this.sectionCreated = true;
         }
       );
     }

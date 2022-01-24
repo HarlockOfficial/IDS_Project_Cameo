@@ -1,2 +1,3 @@
 <p>Ombrelloni disponibli per essere prenotati</p>
-<p>{{listaOmbrelloni}}</p>
+<div *ngFor="let evento of listaOmbrelloni; index as i">{{listaOmbrelloni[i].ombrelloneRowNumber}}
+    {{listaOmbrelloni[i].ombrelloneColumnNumber}}</div>

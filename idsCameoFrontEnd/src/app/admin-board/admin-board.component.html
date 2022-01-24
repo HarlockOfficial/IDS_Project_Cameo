@@ -41,7 +41,7 @@
     </div>
 </form>
 
-<form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateEvent()" #f="ngForm" novalidate>
+<form *ngIf="isAdmin || isEventManager" name="form" (ngSubmit)="onCreateEvent()" #f="ngForm" novalidate>
     <div class="title">
         <h1>Crea un nuovo Evento</h1>
     </div>
@@ -80,6 +80,66 @@
 
         <div class="alert-success" *ngIf="eventCreated">
             Evento creato con successo
+        </div>
+    </div>
+</form>
+
+<form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateMenuSection()" #f="ngForm" novalidate>
+    <div class="title">
+        <h1>Crea una nuova sezione del menu</h1>
+    </div>
+    <div class="form-inside">
+        <div class="form-group">
+            <label for="sectionName">Nome</label>
+            <input type="text" class="form-control" name="sectionName" [(ngModel)]="formMenuSection.sectionName"
+                required #name="ngModel" />
+        </div>
+        <div class="form-group">
+            <button class="btn">
+                Crea Sezione
+            </button>
+        </div>
+
+        <div class="alert-success" *ngIf="sectionCreated">
+            Sezione creata con successo
+        </div>
+    </div>
+</form>
+
+<form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateMenuElement()" #f="ngForm" novalidate>
+    <div class="title">
+        <h1>Crea un nuovo elemento del menu</h1>
+    </div>
+    <div class="form-inside">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="formMenuElement.name" required
+                #name="ngModel" />
+        </div>
+        <div class="form-group">
+            <label for="description">Descrizione</label>
+            <input type="text" class="form-control" name="description" [(ngModel)]="formMenuElement.description"
+                required #name="ngModel" />
+        </div>
+        <div class="form-group">
+            <label for="price">Prezzo</label>
+            <input type="text" class="form-control" name="price" [(ngModel)]="formMenuElement.price" required
+                #name="ngModel" />
+        </div>
+        <div class="form-group">
+            <label for="menuSection">Sezione del menu</label>
+            <input type="text" class="form-control" name="menuSection" [(ngModel)]="formMenuElement.menuSection"
+                required #name="ngModel" />
+        </div>
+
+        <div class="form-group">
+            <button class="btn">
+                Crea Sezione
+            </button>
+        </div>
+
+        <div class="alert-success" *ngIf="sectionCreated">
+            Sezione creata con successo
         </div>
     </div>
 </form>
