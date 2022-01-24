@@ -85,7 +85,13 @@ public class OmbrelloneService {
             System.out.println("Token non valido");
             return null;
         }
-        if (ombrelloneRepository.findAll().stream().anyMatch(e -> ((ombrellone.getOmbrelloneColumnNumber() == e.getOmbrelloneColumnNumber()) && (ombrellone.getOmbrelloneRowNumber() == ombrellone.getOmbrelloneRowNumber())))) {
+        if (ombrelloneRepository.findAll()
+                .stream().anyMatch(e ->
+                        ombrellone.getOmbrelloneColumnNumber() == e.getOmbrelloneColumnNumber()
+                                &&
+                        ombrellone.getOmbrelloneRowNumber() == e.getOmbrelloneRowNumber()
+                )
+        ) {
             System.out.println("Ombrellone già esistente");
             return null;
         }
