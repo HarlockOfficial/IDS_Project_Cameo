@@ -21,4 +21,10 @@ export class EventiService {
   allEventi(): Observable<Evento[]> | null {
     return this.http.get<Evento[]>(API + 'event', { headers: headerDict });;
   }
+
+  addEvento(evento: Evento, token: string): Observable<any> {
+    const configs = { 'token': token };
+
+    return this.http.post(API + 'event', evento, { headers: configs });
+  }
 }

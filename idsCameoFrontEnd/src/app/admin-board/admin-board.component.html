@@ -1,31 +1,31 @@
-<form *ngIf="isAdmin" name="form" (ngSubmit)="onAddOmbrellone()" #f="ngForm" novalidate>
+<form *ngIf="isAdmin" name="formOmbrellone" (ngSubmit)="onAddOmbrellone()" #f="ngForm" novalidate>
     <div class="title">
         <h1>Crea un nuovo ombrellone</h1>
     </div>
     <div class="form-inside">
         <div class="form-group">
             <label for="ombrelloneRowNumber">Numero riga ombrellone</label>
-            <input type="text" class="form-control" name="ombrelloneRowNumber" [(ngModel)]="form.ombrelloneRowNumber"
-                required #ombrelloneRowNumber="ngModel" />
+            <input type="text" class="form-control" name="ombrelloneRowNumber"
+                [(ngModel)]="formOmbrellone.ombrelloneRowNumber" required #ombrelloneRowNumber="ngModel" />
         </div>
         <div class="form-group">
             <label for="ombrelloneColumnNumber">Numero colonna ombrellone</label>
             <input type="text" class="form-control" name="ombrelloneColumnNumber"
-                [(ngModel)]="form.ombrelloneColumnNumber" required #ombrelloneColumnNumber="ngModel" />
+                [(ngModel)]="formOmbrellone.ombrelloneColumnNumber" required #ombrelloneColumnNumber="ngModel" />
         </div>
         <div class="form-group">
             <label for="prezzo">Prezzo</label>
-            <input type="text" class="form-control" name="prezzo" [(ngModel)]="form.prezzo" required
+            <input type="text" class="form-control" name="prezzo" [(ngModel)]="formOmbrellone.prezzo" required
                 #prezzo="ngModel" />
         </div>
         <div class="form-group">
             <label for="dataInizio">Data inizio</label>
-            <input type="date" class="form-control" name="dataInizio" [(ngModel)]="form.dataInizio" required
+            <input type="date" class="form-control" name="dataInizio" [(ngModel)]="formOmbrellone.dataInizio" required
                 #dataInizio="ngModel" />
         </div>
         <div class="form-group">
             <label for="dataFine">Data fine</label>
-            <input type="date" class="form-control" name="dataFine" [(ngModel)]="form.dataFine" required
+            <input type="date" class="form-control" name="dataFine" [(ngModel)]="formOmbrellone.dataFine" required
                 #dataFine="ngModel" />
         </div>
 
@@ -37,6 +37,49 @@
 
         <div class="alert-success" *ngIf="ombrelloneCreated">
             Hai creato l'ombrellone
+        </div>
+    </div>
+</form>
+
+<form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateEvent()" #f="ngForm" novalidate>
+    <div class="title">
+        <h1>Crea un nuovo Evento</h1>
+    </div>
+    <div class="form-inside">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="formEvento.name" required
+                #name="ngModel" />
+        </div>
+        <div class="form-group">
+            <label for="location">Posizione</label>
+            <input type="text" class="form-control" name="location" [(ngModel)]="formEvento.location" required
+                #location="ngModel" />
+        </div>
+        <div class="form-group">
+            <label for="date">Data</label>
+            <input type="date" class="form-control" name="date" [(ngModel)]="formEvento.date" required
+                #dataFine="ngModel" />
+        </div>
+        <div class="form-group">
+            <label for="description">Descrizione</label>
+            <input type="text" class="form-control" name="description" [(ngModel)]="formEvento.description" required
+                #description="ngModel" />
+        </div>
+        <div class="form-group">
+            <label for="price">Prezzo</label>
+            <input type="text" class="form-control" name="price" [(ngModel)]="formEvento.price" required
+                #price="ngModel" />
+        </div>
+
+        <div class="form-group">
+            <button class="btn">
+                Crea Evento
+            </button>
+        </div>
+
+        <div class="alert-success" *ngIf="eventCreated">
+            Evento creato con successo
         </div>
     </div>
 </form>

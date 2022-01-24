@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
-import { ProfileComponent } from '../profile/profile.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   role: string | undefined;
 
-  constructor(private profileComponent: ProfileComponent, private authService: AuthService, private tokenStorage: TokenStorageService) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
@@ -41,7 +40,6 @@ export class LoginComponent implements OnInit {
         this.role = this.tokenStorage.getUser()?.role;
 
         //Prendo i dati dell'utente
-        this.profileComponent.onGetUser();
         this.reloadPage();
       },
       err => {
