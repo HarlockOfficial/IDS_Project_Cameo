@@ -7,6 +7,7 @@ import { EventiService } from '../_services/eventi.service';
 import { MenuSection } from '../interfaces/menuSection';
 import { MenuService } from '../_services/menu.service';
 import { Router } from '@angular/router';
+import { MenuElement } from '../interfaces/menuElement';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class AdminBoardComponent implements OnInit {
   ombrelloneCreated!: boolean;
   eventCreated!: boolean;
   sectionCreated!: boolean;
+  elementCreated!: boolean;
 
   constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
@@ -117,6 +119,26 @@ export class AdminBoardComponent implements OnInit {
       this.menuService.addMenuSection(newMenuSection, token).subscribe(
         data => {
           this.sectionCreated = true;
+        }
+      );
+    }
+  }
+
+  onCreateMenuElement() {
+    if (this.tokenStorage.getUser()?.role == "ADMIN") {
+      const newMenuElement: MenuElement = {
+        name: this.formMenuElement.name,
+        description: this.formMenuElement.description,
+        price: this.formMenuElement.price,
+        menuSection: this.formMenuElement.menuSection,
+        isElementVisible: true,
+      };
+
+      const token = this.tokenStorage.getToken()!;
+
+      this.menuService.addMenuElement(newMenuElement, token).subscribe(
+        data => {
+          this.elementCreated = true;
         }
       );
     }
