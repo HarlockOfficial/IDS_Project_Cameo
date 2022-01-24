@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuElement } from '../interfaces/menuElement';
+import { MenuSection } from '../interfaces/menuSection';
 import { MenuService } from '../_services/menu.service';
 
 @Component({
@@ -8,9 +10,21 @@ import { MenuService } from '../_services/menu.service';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  listaMenu!: Map<MenuSection, MenuElement[]>;
+
+  constructor(private menuService: MenuService) { }
 
   ngOnInit(): void {
+    this.onGetMenu();
+  }
+
+  onGetMenu(): void {
+    this.menuService.allMenu()?.subscribe(
+      data => {
+        this.listaMenu = data;
+        console.log(this.listaMenu);
+      }
+    );
   }
 
 }

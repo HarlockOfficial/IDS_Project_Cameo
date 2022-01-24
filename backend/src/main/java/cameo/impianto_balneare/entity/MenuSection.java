@@ -22,7 +22,7 @@ public class MenuSection {
     @Column
     private String sectionName;
 
-    @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<MenuElement> menuElementsList;
 
     @Column
