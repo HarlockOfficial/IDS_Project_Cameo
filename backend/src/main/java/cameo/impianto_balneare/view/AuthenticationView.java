@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.view;
 
+import cameo.impianto_balneare.entity.AuthCredentials;
 import cameo.impianto_balneare.entity.User;
 import cameo.impianto_balneare.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class AuthenticationView implements GlobalExceptionHandler{
      * @return json string with error or token
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        String token = userService.login(username, password);
+    public ResponseEntity<String> login(@RequestBody AuthCredentials authCredentials) {
+        String token = userService.login(authCredentials.getUsername(), authCredentials.getPassword());
         if (token == null) {
             return ResponseEntity.badRequest().body("{\"error\":\"Invalid username or password\"}");
         }
