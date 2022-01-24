@@ -20,23 +20,23 @@ public class Prenotazione {
     private UUID id;
 
     @ManyToOne(targetEntity = User.class)
-    private User utente;
+    private User user;
 
     @Enumerated(EnumType.ORDINAL)
     private StatoPrenotazione statoPrenotazione;
 
     @Column(nullable = false)
-    private ZonedDateTime data;
+    private ZonedDateTime date;
 
     @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL)
-    private List<Event> prenotazioniEventi;
+    private List<Event> eventiPrenotatiList;
 
     @OneToMany(targetEntity = PrenotazioneSpiaggia.class, mappedBy = "prenotazione")
-    private List<PrenotazioneSpiaggia> prenotazioneSpiaggia;
+    private List<PrenotazioneSpiaggia> spiaggiaPrenotazioniList;
 
     protected Prenotazione() {
         this.id = UUID.randomUUID();
-        prenotazioniEventi = new ArrayList<>();
-        prenotazioneSpiaggia = new ArrayList<>();
+        eventiPrenotatiList = new ArrayList<>();
+        spiaggiaPrenotazioniList = new ArrayList<>();
     }
 }

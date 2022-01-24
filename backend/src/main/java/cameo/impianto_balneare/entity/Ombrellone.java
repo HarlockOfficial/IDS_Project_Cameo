@@ -22,19 +22,19 @@ public class Ombrellone {
     private UUID id;
 
     @Column
-    private int ombrelloneRowNumber;
+    private int row;
 
     @Column
-    private int ombrelloneColumnNumber;
+    private int column;
 
     @Column
-    private float prezzo;
+    private float price;
 
     @Column
-    private ZonedDateTime dataInizio;
+    private ZonedDateTime startDate;
 
     @Column
-    private ZonedDateTime dataFine;
+    private ZonedDateTime endDate;
 
     @OneToMany(mappedBy = "ombrellone", cascade = CascadeType.ALL)
     private List<PrenotazioneSpiaggia> listaPrenotazioni;

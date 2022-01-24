@@ -77,7 +77,7 @@ public class SendMailJob implements Job {
             return false;
         }
         var mailingList = prenotazione.stream()
-                .map(p -> p.getUtente().getEmail()).collect(Collectors.toList());
+                .map(p -> p.getUser().getEmail()).collect(Collectors.toList());
         var subject = "Evento: " + event.getName() + " - Newsletter Impianto Balneare";
         return sendMail(mailingList, subject, mailContent);
     }

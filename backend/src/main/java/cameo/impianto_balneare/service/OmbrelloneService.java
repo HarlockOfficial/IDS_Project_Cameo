@@ -37,22 +37,22 @@ public class OmbrelloneService {
 
     public List<Ombrellone> getAllFreeOmbrelloni(ZonedDateTime startDate, ZonedDateTime endDate) {
         var ombrelloniOccupati = prenotazioneService.getAllPrenotazioni().stream()
-                .filter(e -> e.getPrenotazioneSpiaggia() != null)
-                .flatMap(e -> e.getPrenotazioneSpiaggia().stream())
+                .filter(e -> e.getSpiaggiaPrenotazioniList() != null)
+                .flatMap(e -> e.getSpiaggiaPrenotazioniList().stream())
                 //la prenotazione deve iniziare prima della data finale decisa dall'utente
-                .filter(e -> e.getDataInizio().isBefore(endDate) &&
+                .filter(e -> e.getStartDate().isBefore(endDate) &&
                         // e deve iniziare dopo la data iniziale decisa dall'utente
-                        (e.getDataInizio().isAfter(startDate) || e.getDataInizio().equals(startDate)) &&
+                        (e.getStartDate().isAfter(startDate) || e.getStartDate().equals(startDate)) &&
                         // e deve finire dopo della data iniziale decisa dall'utente
-                        e.getDataFine().isAfter(startDate) &&
+                        e.getEndDate().isAfter(startDate) &&
                         // e deve finire prima della data finale decisa dall'utente
-                        (e.getDataFine().isBefore(endDate) || e.getDataFine().equals(endDate)) &&
+                        (e.getEndDate().isBefore(endDate) || e.getEndDate().equals(endDate)) &&
                         // e la data di fine deve essere successiva a quella d'inizio
-                        e.getDataInizio().isBefore(e.getDataFine()) &&
+                        e.getStartDate().isBefore(e.getEndDate()) &&
                         // e l'ombrellone deve essere disponibile, quindi deve avere data d'inizio successiva a quella decisa dall'utente
-                        (e.getOmbrellone().getDataInizio().isAfter(startDate) || e.getOmbrellone().getDataInizio().equals(startDate)) &&
+                        (e.getOmbrellone().getStartDate().isAfter(startDate) || e.getOmbrellone().getStartDate().equals(startDate)) &&
                         // e l'ombrellone deve avere data di fine precedente a quella decisa dall'utente
-                        (e.getOmbrellone().getDataFine().isAfter(endDate) || e.getOmbrellone().getDataFine().equals(endDate)))
+                        (e.getOmbrellone().getEndDate().isAfter(endDate) || e.getOmbrellone().getEndDate().equals(endDate)))
                 .map(PrenotazioneSpiaggia::getOmbrellone).collect(Collectors.toList());
         var ombrelloniList = getAllOmbrelloni();
         ombrelloniOccupati.forEach(e ->
@@ -87,9 +87,9 @@ public class OmbrelloneService {
         }
         if (ombrelloneRepository.findAll()
                 .stream().anyMatch(e ->
-                        ombrellone.getOmbrelloneColumnNumber() == e.getOmbrelloneColumnNumber()
+                        ombrellone.getColumn() == e.getColumn()
                                 &&
-                        ombrellone.getOmbrelloneRowNumber() == e.getOmbrelloneRowNumber()
+                        ombrellone.getRow() == e.getRow()
                 )
         ) {
             System.out.println("Ombrellone già esistente");
@@ -112,9 +112,9 @@ public class OmbrelloneService {
         var ombrelloneToUpdate = ombrelloneRepository.findById(ombrellone.getId());
         if (ombrelloneToUpdate.isPresent()) {
             var ombrelloneToEdit = ombrelloneToUpdate.get();
-            ombrelloneToEdit.setOmbrelloneColumnNumber(ombrellone.getOmbrelloneColumnNumber());
-            ombrelloneToEdit.setPrezzo(ombrellone.getPrezzo());
-            ombrelloneToEdit.setOmbrelloneRowNumber(ombrellone.getOmbrelloneRowNumber());
+            ombrelloneToEdit.setColumn(ombrellone.getColumn());
+            ombrelloneToEdit.setPrice(ombrellone.getPrice());
+            ombrelloneToEdit.setRow(ombrellone.getRow());
             return ombrelloneRepository.save(ombrelloneToEdit);
         }
         return null;
@@ -134,15 +134,15 @@ public class OmbrelloneService {
         if (ombrelloneToDelete.isPresent()) {
             var now = ZonedDateTime.now();
             var hasPrenotazioniPendenti = prenotazioneService.getAllPrenotazioni().stream()
-                    .filter(e -> e.getPrenotazioneSpiaggia() != null)
-                    .flatMap(e -> e.getPrenotazioneSpiaggia().stream())
-                    .filter(e -> e.getDataInizio().isAfter(now) ||
-                            e.getDataInizio().equals(now) ||
-                            e.getDataFine().isAfter(now) ||
-                            e.getDataFine().equals(now))
+                    .filter(e -> e.getSpiaggiaPrenotazioniList() != null)
+                    .flatMap(e -> e.getSpiaggiaPrenotazioniList().stream())
+                    .filter(e -> e.getStartDate().isAfter(now) ||
+                            e.getStartDate().equals(now) ||
+                            e.getEndDate().isAfter(now) ||
+                            e.getEndDate().equals(now))
                     .anyMatch(e -> e.getOmbrellone().getId().equals(id));
             if (hasPrenotazioniPendenti) {
-                ombrelloneToDelete.get().setDataFine(now);
+                ombrelloneToDelete.get().setEndDate(now);
                 //TODO create cron task to remove ombrellone when all current prenotazioni are past
             }else {
                 ombrelloneRepository.delete(ombrelloneToDelete.get());
@@ -160,8 +160,8 @@ public class OmbrelloneService {
         return ombrellone.map(value -> value
                 .getListaPrenotazioni().stream().filter(
                         prenotazione ->
-                                (prenotazione.getDataInizio().isAfter(dataInizio) || prenotazione.getDataInizio().equals(dataInizio)) &&
-                                        (prenotazione.getDataFine().isBefore(dataFine) || prenotazione.getDataFine().equals(dataFine))
+                                (prenotazione.getStartDate().isAfter(dataInizio) || prenotazione.getStartDate().equals(dataInizio)) &&
+                                        (prenotazione.getEndDate().isBefore(dataFine) || prenotazione.getEndDate().equals(dataFine))
                 ).map(PrenotazioneSpiaggia::getPrenotazione).collect(Collectors.toList())).orElse(null);
     }
 }

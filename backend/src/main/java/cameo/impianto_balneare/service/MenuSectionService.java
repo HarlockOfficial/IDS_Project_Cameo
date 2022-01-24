@@ -35,7 +35,7 @@ public class MenuSectionService {
             return null;
         }
         if (menuSectionRepository.findAll().stream().anyMatch(s ->
-                section.getSectionName().equalsIgnoreCase(s.getSectionName()))) {
+                section.getName().equalsIgnoreCase(s.getName()))) {
             return null;
         }
         return menuSectionRepository.save(section);
@@ -48,7 +48,7 @@ public class MenuSectionService {
         var sectionToUpdate = menuSectionRepository.findById(section.getId());
         if (sectionToUpdate.isPresent()) {
             var sectionToEdit = sectionToUpdate.get();
-            sectionToEdit.setSectionName(section.getSectionName());
+            sectionToEdit.setName(section.getName());
             return menuSectionRepository.save(sectionToEdit);
         }
         return null;

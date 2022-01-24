@@ -70,12 +70,12 @@ public class OmbrelloneView implements GlobalExceptionHandler{
      */
     @RequestMapping(value = "/ombrellone", method = RequestMethod.POST)
     public ResponseEntity<Ombrellone> createOmbrellone(@RequestBody Ombrellone ombrellone, @RequestHeader("token") String token) {
-        System.out.println(ombrellone.getOmbrelloneRowNumber() + " " + ombrellone.getOmbrelloneColumnNumber() + " " + ombrellone.getDataInizio() + " " + ombrellone.getDataFine()
-        + " " + ombrellone.getPrezzo() + " " + ombrellone.getId());
+        System.out.println(ombrellone.getRow() + " " + ombrellone.getColumn() + " " + ombrellone.getStartDate() + " " + ombrellone.getEndDate()
+        + " " + ombrellone.getPrice() + " " + ombrellone.getId());
         var newOmbrellone = ombrelloneService.createOmbrellone(ombrellone, token);
         System.out.println(newOmbrellone);
-        System.out.println(newOmbrellone.getOmbrelloneRowNumber() + " " + newOmbrellone.getOmbrelloneColumnNumber() + " " + newOmbrellone.getDataInizio() + " " + newOmbrellone.getDataFine()
-                + " " + newOmbrellone.getPrezzo() + " " + newOmbrellone.getId());
+        System.out.println(newOmbrellone.getRow() + " " + newOmbrellone.getColumn() + " " + newOmbrellone.getStartDate() + " " + newOmbrellone.getEndDate()
+                + " " + newOmbrellone.getPrice() + " " + newOmbrellone.getId());
         if (newOmbrellone == null) {
             return ResponseEntity.noContent().build();
         }

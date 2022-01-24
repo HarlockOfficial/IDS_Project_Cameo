@@ -46,7 +46,7 @@ public class User {
     @OneToMany(targetEntity = MenuOrder.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<MenuOrder> menuOrders;
 
-    @OneToMany(targetEntity = Prenotazione.class, mappedBy = "utente", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Prenotazione.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Prenotazione> prenotazioni;
 
     @OneToMany(targetEntity = Token.class, mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
