@@ -18,8 +18,8 @@ import { MenuElement } from '../interfaces/menuElement';
 export class AdminBoardComponent implements OnInit {
 
   formOmbrellone: any = {
-    rowOmbrellone: null,
-    columnOmbrellone: null,
+    numberRow: null,
+    numberColumn: null,
     price: null,
     startDate: null,
     endDate: null,
@@ -70,8 +70,8 @@ export class AdminBoardComponent implements OnInit {
   onAddOmbrellone() {
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       const newOmbrellone: Ombrellone = {
-        rowOmbrellone: this.formOmbrellone.rowOmbrellone,
-        columnOmbrellone: this.formOmbrellone.columnOmbrellone,
+        numberRow: this.formOmbrellone.numberRow,
+        numberColumn: this.formOmbrellone.numberColumn,
         price: this.formOmbrellone.price,
         startDate: new Date(this.formOmbrellone.startDate),
         endDate: new Date(this.formOmbrellone.endDate),
