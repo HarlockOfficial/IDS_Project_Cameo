@@ -28,7 +28,6 @@ export class ProfileComponent implements OnInit {
         const filteredData = data.find(e => e.username == myUser.username)!;
         this.currentUser = filteredData as User;
         this.tokenStorage.saveUser(this.currentUser);
-        console.log(filteredData.role);
         if (filteredData.role == 'ADMIN') {
           this.isAdmin = true;
         }

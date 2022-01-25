@@ -13,6 +13,7 @@ import { PrenotaComponent } from './prenota/prenota.component';
 import { AdminBoardComponent } from './admin-board/admin-board.component';
 import { MenuComponent } from './menu/menu.component';
 import { EventiComponent } from './eventi/eventi.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { EventiComponent } from './eventi/eventi.component';
     PrenotaComponent,
     AdminBoardComponent,
     MenuComponent,
-    EventiComponent
+    EventiComponent,
+    ShoppingCartComponent
   ],
   imports: [
     BrowserModule,

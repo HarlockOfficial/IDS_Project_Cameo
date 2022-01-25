@@ -1,3 +1,12 @@
 <h1>Ombrelloni disponibli per essere prenotati</h1>
-<div *ngFor="let evento of listaOmbrelloni; index as i">{{listaOmbrelloni[i].numberRow}}
-    {{listaOmbrelloni[i].numberColumn}}</div>
+<div *ngFor="let evento of listaOmbrelloni; index as i">
+    <div class="card">
+        <h4>Ombrellone</h4>
+        <div class="container">
+            <p>In riga: {{listaOmbrelloni[i].numberRow}}</p>
+            <p>In colonna: {{listaOmbrelloni[i].numberColumn}}</p>
+            <h4><b>Prezzo: {{listaOmbrelloni[i].price}}€</b></h4>
+            <button class="addToCart">Aggiungi al carrello</button>
+        </div>
+    </div>
+</div>
