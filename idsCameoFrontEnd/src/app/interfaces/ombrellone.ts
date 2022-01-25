@@ -1,7 +1,7 @@
 export interface Ombrellone {
-    ombrelloneRowNumber: number;
-    ombrelloneColumnNumber: number;
-    prezzo: number;
-    dataInizio: Date;
-    dataFine: Date;
+    row: number;
+    column: number;
+    price: number;
+    startDate: Date;
+    endDate: Date;
 }

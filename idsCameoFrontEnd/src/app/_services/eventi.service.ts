@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Evento } from '../interfaces/eventi';
+import { Evento } from '../interfaces/evento';
 
 const API = 'http://localhost:8080/';
 

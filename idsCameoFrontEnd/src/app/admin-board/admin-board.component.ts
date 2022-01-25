@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Ombrellone } from '../interfaces/ombrellone';
 import { OmbrelloneService } from '../_services/ombrellone.service';
 import { TokenStorageService } from '../_services/token-storage.service';
-import { Evento } from '../interfaces/eventi';
+import { Evento } from '../interfaces/evento';
 import { EventiService } from '../_services/eventi.service';
 import { MenuSection } from '../interfaces/menuSection';
 import { MenuService } from '../_services/menu.service';
@@ -18,11 +18,11 @@ import { MenuElement } from '../interfaces/menuElement';
 export class AdminBoardComponent implements OnInit {
 
   formOmbrellone: any = {
-    ombrelloneRowNumber: null,
-    ombrelloneColumnNumber: null,
-    prezzo: null,
-    dataInizio: null,
-    dataFine: null,
+    row: null,
+    column: null,
+    price: null,
+    startDate: null,
+    endDate: null,
   };
 
   formEvento: any = {
@@ -70,11 +70,11 @@ export class AdminBoardComponent implements OnInit {
   onAddOmbrellone() {
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       const newOmbrellone: Ombrellone = {
-        ombrelloneRowNumber: this.formOmbrellone.ombrelloneRowNumber,
-        ombrelloneColumnNumber: this.formOmbrellone.ombrelloneColumnNumber,
-        prezzo: this.formOmbrellone.prezzo,
-        dataInizio: new Date(this.formOmbrellone.dataInizio),
-        dataFine: new Date(this.formOmbrellone.dataFine)
+        row: this.formOmbrellone.ombrelloneRowNumber,
+        column: this.formOmbrellone.ombrelloneColumnNumber,
+        price: this.formOmbrellone.prezzo,
+        startDate: new Date(this.formOmbrellone.dataInizio),
+        endDate: new Date(this.formOmbrellone.dataFine),
       };
 
       const token = this.tokenStorage.getToken()!;
