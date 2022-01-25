@@ -9,6 +9,8 @@ import { Evento } from '../interfaces/evento';
 export class EventiComponent implements OnInit {
 
   listaEventi!: Evento[];
+  listaOrdine: Evento[] = [];
+  isEvento: boolean = false;
 
   constructor(private eventiService: EventiService) { }
 
@@ -24,5 +26,48 @@ export class EventiComponent implements OnInit {
       }
     );
   }
+
+  //Rimuove un ombrellone dalla lista degli ombrelloni prenotabili
+  removeFromListaOmbrelloni(evento: Evento) {
+    this.listaEventi.forEach((element, index) => {
+      if (element == evento) this.listaEventi.splice(index, 1);
+    });
+  }
+
+  addToOrder(evento: Evento) {
+    if (this.listaOrdine.length == 0) {
+      this.listaOrdine.push(evento);
+      this.removeFromListaOmbrelloni(evento);
+    }
+    else {
+      this.listaOrdine.forEach((element, index) => {
+        if (element == evento) {
+          console.log("gia aggiunto");
+        }
+        else {
+          this.listaOrdine.push(evento);
+          this.removeFromListaOmbrelloni(evento);
+        }
+      });
+    }
+    this.isEvento = true;
+  }
+
+  removeFromOrder(evento: Evento) {
+    this.listaOrdine.forEach((element, index) => {
+      if (element == evento) {
+        this.listaOrdine.splice(index, 1);
+        this.listaEventi.push(evento);
+      }
+    });
+    if (this.listaOrdine.length == 0) {
+      this.isEvento = false;
+    }
+  }
+
+  addToCart() {
+
+  }
+
 
 }

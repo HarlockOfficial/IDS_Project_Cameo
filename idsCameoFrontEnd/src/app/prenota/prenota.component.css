@@ -2,7 +2,8 @@ h1 {
     text-align: center;
 }
 
-.card {
+
+.card {    
     margin: 1vw;
     width: 20%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);

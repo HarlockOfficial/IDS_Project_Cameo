@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { privateDecrypt } from 'crypto';
-import { type } from 'os';
-import { Observable } from 'rxjs';
-import { CartItem } from '../interfaces/cartItem'; ù
+import { CartItem } from '../interfaces/cartItem';
 
 @Injectable({
   providedIn: 'root'

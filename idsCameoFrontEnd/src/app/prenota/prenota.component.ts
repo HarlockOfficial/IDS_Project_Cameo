@@ -11,6 +11,8 @@ export class PrenotaComponent implements OnInit {
 
   errorMessage = '';
   listaOmbrelloni!: Ombrellone[];
+  listaOrdine: Ombrellone[] = [];
+  isOrder: boolean = false;
 
   constructor(private ombrelloneService: OmbrelloneService) { }
 
@@ -29,4 +31,50 @@ export class PrenotaComponent implements OnInit {
       }
     );
   }
+
+  //Rimuove un ombrellone dalla lista degli ombrelloni prenotabili
+  removeFromListaOmbrelloni(ombrellone: Ombrellone) {
+    this.listaOmbrelloni.forEach((element, index) => {
+      if (element == ombrellone) this.listaOmbrelloni.splice(index, 1);
+    });
+  }
+
+  addToOrder(ombrellone: Ombrellone) {
+    if (this.listaOrdine.length == 0) {
+      this.listaOrdine.push(ombrellone);
+      this.removeFromListaOmbrelloni(ombrellone);
+    }
+    else {
+      this.listaOrdine.forEach((element, index) => {
+        if (element == ombrellone) {
+          console.log("gia aggiunto");
+        }
+        else {
+          this.listaOrdine.push(ombrellone);
+          this.removeFromListaOmbrelloni(ombrellone);
+        }
+      });
+    }
+    this.isOrder = true;
+  }
+
+  removeFromOrder(ombrellone: Ombrellone) {
+    this.listaOrdine.forEach((element, index) => {
+      if (element == ombrellone) {
+        this.listaOrdine.splice(index, 1);
+        this.listaOmbrelloni.push(ombrellone);
+      }
+    });
+    if (this.listaOrdine.length == 0) {
+      this.isOrder = false;
+    }
+  }
+
+  addToCart() {
+
+  }
+
+
+
+
 }
