@@ -1,6 +1,6 @@
 export interface Ombrellone {
-    row: number;
-    column: number;
+    rowOmbrellone: number;
+    columnOmbrellone: number;
     price: number;
     startDate: Date;
     endDate: Date;

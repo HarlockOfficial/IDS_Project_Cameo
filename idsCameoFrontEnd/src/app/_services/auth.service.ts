@@ -29,7 +29,6 @@ export class AuthService {
     return this.http.post(API + 'login', null, { headers: headerDict, params: params })
   }
 
-  //Chiamata per registrarsi
   register(username: string, name: string, surname: string, email: string, password: string, birthDate: Date): Observable<any> {
     return this.http.post(API + 'register', {
       username,
@@ -41,7 +40,6 @@ export class AuthService {
     }, { headers: headerDict });
   }
 
-  //Chiamata per logout
   logout(token: string | null): Observable<any> | null {
     if (token == null) {
       return null;
