@@ -70,11 +70,11 @@ export class AdminBoardComponent implements OnInit {
   onAddOmbrellone() {
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       const newOmbrellone: Ombrellone = {
-        row: this.formOmbrellone.ombrelloneRowNumber,
-        column: this.formOmbrellone.ombrelloneColumnNumber,
-        price: this.formOmbrellone.prezzo,
-        startDate: new Date(this.formOmbrellone.dataInizio),
-        endDate: new Date(this.formOmbrellone.dataFine),
+        row: this.formOmbrellone.row,
+        column: this.formOmbrellone.column,
+        price: this.formOmbrellone.price,
+        startDate: new Date(this.formOmbrellone.startDate),
+        endDate: new Date(this.formOmbrellone.endDate),
       };
 
       const token = this.tokenStorage.getToken()!;
