@@ -21,7 +21,7 @@ public class ComponenteSpiaggiaService {
 
     public ComponenteSpiaggia getComponenteSpiaggia(String name) {
         return getComponenteSpiaggiaList().stream()
-                .filter(e -> e.getNome().equalsIgnoreCase(name)).findFirst().orElse(null);
+                .filter(e -> e.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     public List<ComponenteSpiaggia> getComponenteSpiaggiaList() {
@@ -33,8 +33,8 @@ public class ComponenteSpiaggiaService {
             return null;
         }
         var list = getComponenteSpiaggiaList();
-        componenteSpiaggia.setNome(componenteSpiaggia.getNome().toLowerCase());
-        var componente = list.stream().filter(e -> e.getNome().equalsIgnoreCase(componenteSpiaggia.getNome())).findFirst();
+        componenteSpiaggia.setName(componenteSpiaggia.getName().toLowerCase());
+        var componente = list.stream().filter(e -> e.getName().equalsIgnoreCase(componenteSpiaggia.getName())).findFirst();
         if(componente.isPresent()){
             var comp = componente.get();
             comp.setQuantity(comp.getQuantity() + componenteSpiaggia.getQuantity());
@@ -48,7 +48,7 @@ public class ComponenteSpiaggiaService {
             return null;
         }
         var list = getComponenteSpiaggiaList();
-        var componente = list.stream().filter(e -> e.getNome().equalsIgnoreCase(componenteSpiaggia.getNome())).findFirst();
+        var componente = list.stream().filter(e -> e.getName().equalsIgnoreCase(componenteSpiaggia.getName())).findFirst();
         if(componente.isPresent()){
             var comp = componente.get();
             comp.setQuantity(componenteSpiaggia.getQuantity());
@@ -62,7 +62,7 @@ public class ComponenteSpiaggiaService {
             return null;
         }
         var list = getComponenteSpiaggiaList();
-        var componente = list.stream().filter(e -> e.getNome().equalsIgnoreCase(name)).findFirst();
+        var componente = list.stream().filter(e -> e.getName().equalsIgnoreCase(name)).findFirst();
         if(componente.isPresent()){
             var comp = componente.get();
             componenteSpiaggiaRepository.delete(comp);

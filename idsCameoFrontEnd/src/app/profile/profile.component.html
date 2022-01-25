@@ -1,24 +1,35 @@
 <div class="container" *ngIf="currentUser; else loggedOut">
     <header class="jumbotron">
         <h3>
-            <strong>{{ currentUser.username }}</strong> Profile
+            Profilo di <strong>{{ currentUser.username }}</strong>
         </h3>
     </header>
     <p>
-        <strong>Token:</strong>
-        {{ currentUser.accessToken}}
+        <strong>Username:</strong>
+        {{ currentUser.username}}
+    </p>
+    <p>
+        <strong>Name:</strong>
+        {{ currentUser.name}}
+    </p>
+    <p>
+        <strong>Surname:</strong>
+        {{ currentUser.surname}}
     </p>
     <p>
         <strong>Email:</strong>
         {{ currentUser.email }}
     </p>
-    <strong>Roles:</strong>
-    <ul>
-        <li *ngFor="let role of currentUser.roles">
-            {{ role }}
-        </li>
-    </ul>
+    <p>
+        <strong>Data di nascita:</strong>
+        {{ currentUser.birthDate }}
+    </p>
+    <p>
+        <strong>Ruolo:</strong>
+        {{ currentUser.role }}
+    </p>
 </div>
+<button *ngIf="isAdmin"><a routerLink="/dashboard">DashBoard</a></button>
 
 <ng-template #loggedOut>
     Please login.

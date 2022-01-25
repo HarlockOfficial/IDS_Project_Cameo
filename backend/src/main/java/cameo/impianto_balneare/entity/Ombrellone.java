@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Table(name = "ombrellone")
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"listaOrdini", "listaPrenotazioni"}, allowSetters = true)
 public class Ombrellone {
 
     @Id
@@ -20,19 +22,19 @@ public class Ombrellone {
     private UUID id;
 
     @Column
-    private int ombrelloneRowNumber;
+    private int numberRow;
 
     @Column
-    private int ombrelloneColumnNumber;
+    private int numberColumn;
 
     @Column
-    private float prezzo;
+    private float price;
 
     @Column
-    private ZonedDateTime dataInizio;
+    private ZonedDateTime startDate;
 
     @Column
-    private ZonedDateTime dataFine;
+    private ZonedDateTime endDate;
 
     @OneToMany(mappedBy = "ombrellone", cascade = CascadeType.ALL)
     private List<PrenotazioneSpiaggia> listaPrenotazioni;

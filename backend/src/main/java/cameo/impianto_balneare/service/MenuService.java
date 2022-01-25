@@ -25,7 +25,7 @@ public class MenuService {
     public Map<MenuSection, List<MenuElement>> getMenu() {
         var sections = menuSectionService.getMenuSections();
         var outputMap = new HashMap<MenuSection, List<MenuElement>>();
-        sections.forEach(section -> outputMap.put(section, section.getMenuElementsList().stream().filter(MenuElement::isElementVisible).collect(Collectors.toList())));
+        sections.forEach(section -> outputMap.put(section, section.getMenuElementList().stream().filter(MenuElement::isElementVisible).collect(Collectors.toList())));
         return outputMap;
     }
 

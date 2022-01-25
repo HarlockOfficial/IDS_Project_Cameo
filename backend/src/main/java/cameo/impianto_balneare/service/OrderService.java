@@ -65,7 +65,7 @@ public class OrderService {
         var origDateTime = dateTime;
         var nextDay = dateTime.plusDays(1);
         return menuOrderRepository.findAll().stream()
-                .filter(e -> e.getOrderDateTime().isAfter(origDateTime) && e.getOrderDateTime().isBefore(nextDay)).collect(Collectors.toList());
+                .filter(e -> e.getDateTime().isAfter(origDateTime) && e.getDateTime().isBefore(nextDay)).collect(Collectors.toList());
     }
 
     public List<MenuOrder> getAllTodayOrders(String token) {

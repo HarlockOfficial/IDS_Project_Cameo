@@ -16,9 +16,6 @@ public class PrenotazioneSpiaggia {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @ManyToOne(targetEntity = Ombrellone.class)
-    private Ombrellone ombrellone;
-
     @Column
     private int lettini;
 
@@ -26,10 +23,13 @@ public class PrenotazioneSpiaggia {
     private int sdraio;
 
     @Column
-    private ZonedDateTime dataInizio;
+    private ZonedDateTime startDate;
 
     @Column
-    private ZonedDateTime dataFine;
+    private ZonedDateTime endDate;
+
+    @ManyToOne(targetEntity = Ombrellone.class)
+    private Ombrellone ombrellone;
 
     @ManyToOne(targetEntity = Prenotazione.class)
     private Prenotazione prenotazione;

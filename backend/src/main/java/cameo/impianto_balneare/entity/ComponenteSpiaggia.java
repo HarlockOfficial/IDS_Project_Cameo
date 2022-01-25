@@ -18,7 +18,7 @@ public class ComponenteSpiaggia {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
     @Column
-    private String nome;
+    private String name;
     @Column
     private int quantity;
     protected ComponenteSpiaggia() {

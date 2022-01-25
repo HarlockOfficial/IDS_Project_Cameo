@@ -30,7 +30,7 @@ public class PrenotazioneService {
             return prenotazione.orElse(null);
         }
         if (prenotazione.isPresent() &&
-                prenotazione.get().getUtente().getId().equals(tokenService.getUserFromUUID(token).getId())) {
+                prenotazione.get().getUser().getId().equals(tokenService.getUserFromUUID(token).getId())) {
             return prenotazione.get();
         }
         return null;
@@ -42,7 +42,7 @@ public class PrenotazioneService {
         if (prenotazione.isEmpty()) {
             return null;
         }
-        if (user.getRole() == Role.ADMIN || prenotazione.get().getUtente().getId().equals(user.getId())) {
+        if (user.getRole() == Role.ADMIN || prenotazione.get().getUser().getId().equals(user.getId())) {
             prenotazione.get().setStatoPrenotazione(StatoPrenotazione.CONFERMATO);
             return prenotazioneRepository.save(prenotazione.get());
         }
@@ -56,7 +56,7 @@ public class PrenotazioneService {
             return null;
         }
         var p = prenotazione.get();
-        if (user.getRole() == Role.ADMIN || p.getUtente().getId().equals(user.getId())) {
+        if (user.getRole() == Role.ADMIN || p.getUser().getId().equals(user.getId())) {
             prenotazioneRepository.delete(p);
             return p;
         }
@@ -77,10 +77,10 @@ public class PrenotazioneService {
     public Prenotazione createPrenotazione(Prenotazione prenotazione, String token) {
         var user = tokenService.getUserFromUUID(token);
         if (user.getRole() == Role.USER) {
-            prenotazione.setUtente(user);
+            prenotazione.setUser(user);
         }
-        if(prenotazione.getPrenotazioneSpiaggia().size() != 0){
-            prenotazione.getPrenotazioneSpiaggia().forEach(prenotazioneSpiaggia -> {
+        if(prenotazione.getSpiaggiaPrenotazioniList().size() != 0){
+            prenotazione.getSpiaggiaPrenotazioniList().forEach(prenotazioneSpiaggia -> {
                 if(prenotazioneSpiaggiaRepository.findById(prenotazioneSpiaggia.getId()).isEmpty()){
                     prenotazioneSpiaggia.setPrenotazione(prenotazione);
                     prenotazioneSpiaggiaRepository.save(prenotazioneSpiaggia);
@@ -100,10 +100,10 @@ public class PrenotazioneService {
         }
         var prenotazioneToEdit = prenotazioneToUpdate.get();
         prenotazioneToEdit.setStatoPrenotazione(prenotazione.getStatoPrenotazione());
-        prenotazioneToEdit.setPrenotazioniEventi(prenotazione.getPrenotazioniEventi());
-        prenotazioneToEdit.setData(prenotazione.getData());
-        prenotazioneToEdit.setPrenotazioneSpiaggia(prenotazione.getPrenotazioneSpiaggia());
-        prenotazioneToEdit.setUtente(prenotazione.getUtente());
+        prenotazioneToEdit.setEventiPrenotatiList(prenotazione.getEventiPrenotatiList());
+        prenotazioneToEdit.setDate(prenotazione.getDate());
+        prenotazioneToEdit.setSpiaggiaPrenotazioniList(prenotazione.getSpiaggiaPrenotazioniList());
+        prenotazioneToEdit.setUser(prenotazione.getUser());
         return prenotazioneRepository.save(prenotazioneToEdit);
     }
 

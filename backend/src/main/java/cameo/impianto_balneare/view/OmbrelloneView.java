@@ -72,7 +72,7 @@ public class OmbrelloneView implements GlobalExceptionHandler{
     public ResponseEntity<Ombrellone> createOmbrellone(@RequestBody Ombrellone ombrellone, @RequestHeader("token") String token) {
         var newOmbrellone = ombrelloneService.createOmbrellone(ombrellone, token);
         if (newOmbrellone == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.created(URI.create("/ombrellone")).body(newOmbrellone);
     }

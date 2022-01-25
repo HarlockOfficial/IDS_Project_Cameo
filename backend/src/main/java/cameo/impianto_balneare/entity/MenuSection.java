@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Table(name = "menu_section")
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"menuElementList"}, allowSetters = true)
 public class MenuSection {
     @Id
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
@@ -20,15 +22,15 @@ public class MenuSection {
     @Column
     private String sectionName;
 
-    @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL)
-    private List<MenuElement> menuElementsList;
-
     @Column
     private boolean isSectionVisible;
 
+    @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MenuElement> menuElementList;
+
     protected MenuSection() {
         this.id = UUID.randomUUID();
-        menuElementsList = new ArrayList<>();
+        menuElementList = new ArrayList<>();
         isSectionVisible = true;
     }
 }

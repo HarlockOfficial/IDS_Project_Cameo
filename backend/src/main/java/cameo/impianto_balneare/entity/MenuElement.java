@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Table(name = "menu_element")
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"orders"}, allowSetters = true)
 public class MenuElement {
     @Id
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
@@ -26,7 +28,7 @@ public class MenuElement {
     @Column
     private float price;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.EAGER)
     private MenuSection section;
 
     @ManyToMany(targetEntity = MenuOrder.class, mappedBy = "menuElements")

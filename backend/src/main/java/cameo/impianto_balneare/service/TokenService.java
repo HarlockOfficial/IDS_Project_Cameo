@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
@@ -31,12 +32,22 @@ public class TokenService {
     }
 
     public String createToken(User user) {
+        deleteToken(user);
         var token = new Token(user);
         tokenRepository.save(token);
         return token.getId().toString();
     }
 
     public void deleteToken(String token) {
-        tokenRepository.deleteById(UUID.fromString(token));
+        var user = getUserFromUUID(token);
+        deleteToken(user);
+    }
+    private void deleteToken(User user){
+        if (user == null) return;
+        var tokenList = tokenRepository.findAll()
+                .stream().filter(t -> t.getUser().getId().equals(user.getId()))
+                .collect(Collectors.toList());
+        if (tokenList.isEmpty()) return;
+        tokenRepository.deleteAll(tokenList);
     }
 }

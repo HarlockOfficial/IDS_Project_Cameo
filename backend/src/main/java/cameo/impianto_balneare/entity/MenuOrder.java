@@ -19,7 +19,7 @@ public class MenuOrder {
     private UUID id;
 
     @Column
-    private ZonedDateTime orderDateTime;
+    private ZonedDateTime dateTime;
 
     @Column
     @Enumerated(EnumType.ORDINAL)
@@ -36,7 +36,7 @@ public class MenuOrder {
 
     protected MenuOrder() {
         id = UUID.randomUUID();
-        orderDateTime = ZonedDateTime.now();
+        dateTime = ZonedDateTime.now();
         orderStatus = OrderStatus.ORDERED;
         menuElements = new ArrayList<>();
     }

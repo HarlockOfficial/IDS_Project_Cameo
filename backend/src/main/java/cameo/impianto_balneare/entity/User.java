@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Table(name = "user")
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"menuOrders", "prenotazioni", "password"}, allowSetters = true)
 public class User {
     @Id
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
@@ -41,16 +43,20 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    @OneToMany(targetEntity = MenuOrder.class, mappedBy = "user")
+    @OneToMany(targetEntity = MenuOrder.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<MenuOrder> menuOrders;
 
-    @OneToMany(targetEntity = Prenotazione.class, mappedBy = "utente")
+    @OneToMany(targetEntity = Prenotazione.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Prenotazione> prenotazioni;
+
+    @OneToMany(targetEntity = Token.class, mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Token> token;
 
     protected User() {
         id = UUID.randomUUID();
         role = Role.USER;
         menuOrders = new ArrayList<>();
         prenotazioni = new ArrayList<>();
+        token = new ArrayList<>();
     }
 }
