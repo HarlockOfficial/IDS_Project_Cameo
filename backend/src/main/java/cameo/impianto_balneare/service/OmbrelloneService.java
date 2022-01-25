@@ -87,9 +87,9 @@ public class OmbrelloneService {
         }
         if (ombrelloneRepository.findAll()
                 .stream().anyMatch(e ->
-                        ombrellone.getColumn() == e.getColumn()
+                        ombrellone.getNumberColumn() == e.getNumberColumn()
                                 &&
-                        ombrellone.getRow() == e.getRow()
+                        ombrellone.getNumberRow() == e.getNumberRow()
                 )
         ) {
             System.out.println("Ombrellone già esistente");
@@ -112,9 +112,9 @@ public class OmbrelloneService {
         var ombrelloneToUpdate = ombrelloneRepository.findById(ombrellone.getId());
         if (ombrelloneToUpdate.isPresent()) {
             var ombrelloneToEdit = ombrelloneToUpdate.get();
-            ombrelloneToEdit.setColumn(ombrellone.getColumn());
+            ombrelloneToEdit.setNumberColumn(ombrellone.getNumberColumn());
             ombrelloneToEdit.setPrice(ombrellone.getPrice());
-            ombrelloneToEdit.setRow(ombrellone.getRow());
+            ombrelloneToEdit.setNumberRow(ombrellone.getNumberRow());
             return ombrelloneRepository.save(ombrelloneToEdit);
         }
         return null;

@@ -22,10 +22,10 @@ public class Ombrellone {
     private UUID id;
 
     @Column
-    private int row;
+    private int numberRow;
 
     @Column
-    private int column;
+    private int numberColumn;
 
     @Column
     private float price;
