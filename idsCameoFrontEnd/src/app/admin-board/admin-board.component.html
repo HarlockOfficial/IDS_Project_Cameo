@@ -137,18 +137,10 @@
             <div class="form-group">
                 <label for="menuSection">Sezione del menu</label>
                 <select class="form-control" name="status" [(ngModel)]="formMenuElement.menuSection">
-                    <div *ngFor="let section of sectionList; index as i">
-                        <option [value]="1" [selected]="formMenuElement.menuSection == sectionList[i]">Active
-                        </option>
-                    </div>
+                    <option *ngFor="let section of sectionCall | async" [value]="section.id">
+                        {{section.sectionName}}</option>
                 </select>
             </div>
-            <!--
-            <div class="form-group">
-                <label for="menuSection">Sezione del menu</label>
-                <input type="text" class="form-control" name="menuSection" [(ngModel)]="formMenuElement.menuSection"
-                    required #name="ngModel" />
-            </div> -->
 
             <div class="form-group">
                 <button class="btn">

@@ -55,6 +55,7 @@ public class MenuView implements GlobalExceptionHandler{
 
     @RequestMapping(value = "/menu/element", method = RequestMethod.POST)
     public ResponseEntity<MenuElement> addElement(@RequestBody MenuElement name, @RequestHeader("token") String token) {
+        System.out.println(name.getName() + " " + name.getDescription() + " "+ name.getPrice() + name.getSection());
         var element = menuService.addElement(name, token);
         if (element == null) {
             return ResponseEntity.badRequest().build();

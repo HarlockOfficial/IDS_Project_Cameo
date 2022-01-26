@@ -23,6 +23,9 @@ export class MenuComponent implements OnInit {
       data => {
         this.listaMenu = data;
         console.log(this.listaMenu);
+        for (let x in this.listaMenu) {
+          console.log(x);
+        }
       }
     );
   }

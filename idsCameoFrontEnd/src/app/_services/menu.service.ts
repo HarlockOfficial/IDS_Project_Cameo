@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MenuSection } from '../interfaces/menuSection';
 import { MenuElement } from '../interfaces/menuElement';
-
+import { map } from 'rxjs/operators';
 const API = 'http://localhost:8080/';
 
 const headerDict = {
@@ -35,7 +35,8 @@ export class MenuService {
     return this.http.post(API + 'menu/element', menuElement, { headers: configs });
   }
 
-  allSection(): Observable<MenuSection[]> {
-    return this.http.get<MenuSection[]>(API + 'menu/section');
+  allSection(token: string): Observable<MenuSection[]> {
+    const configs = { 'token': token };
+    return this.http.get<MenuSection[]>(API + 'menu/section', { headers: configs });
   }
 }

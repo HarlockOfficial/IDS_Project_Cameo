@@ -20,6 +20,7 @@ export class PrenotaComponent implements OnInit {
 
   ngOnInit(): void {
     this.onGetOmbrelloni();
+    console.log(this.listaOmbrelloni);
   }
 
   onGetOmbrelloni(): void {

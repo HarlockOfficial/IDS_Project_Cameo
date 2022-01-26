@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Ombrellone } from '../interfaces/ombrellone';
 import { OmbrelloneService } from '../_services/ombrellone.service';
 import { TokenStorageService } from '../_services/token-storage.service';
@@ -8,7 +8,8 @@ import { MenuSection } from '../interfaces/menuSection';
 import { MenuService } from '../_services/menu.service';
 import { Router } from '@angular/router';
 import { MenuElement } from '../interfaces/menuElement';
-
+import { Observable, of } from 'rxjs';
+import { map, mapTo, tap } from 'rxjs/operators'
 
 @Component({
   selector: 'app-admin-board',
@@ -52,10 +53,14 @@ export class AdminBoardComponent implements OnInit {
   eventCreated!: boolean;
   sectionCreated!: boolean;
   elementCreated!: boolean;
-  sectionList: MenuSection[] = [];
-  constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
+  sectionCall!: Observable<MenuSection[]>;
+
+  constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router, private ngZone: NgZone) {
+
+  }
 
   ngOnInit(): void {
+
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       this.isAdmin = true;
     }
@@ -65,16 +70,12 @@ export class AdminBoardComponent implements OnInit {
     else {
       this.router.navigate(['/home']);
     }
-    this.onGetAllSection();
+
+    this.onGetAllSection(this.tokenStorage.getToken()!);
   }
 
-  onGetAllSection() {
-    this.menuService.allSection()?.subscribe(
-      data => {
-        this.sectionList = data;
-        console.log(this.sectionList);
-      }
-    );
+  onGetAllSection(token: string) {
+    this.sectionCall = this.menuService.allSection(token);
   }
 
   onAddOmbrellone() {
@@ -136,22 +137,42 @@ export class AdminBoardComponent implements OnInit {
 
   onCreateMenuElement() {
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
-      const newMenuElement: MenuElement = {
-        name: this.formMenuElement.name,
-        description: this.formMenuElement.description,
-        price: this.formMenuElement.price,
-        menuSection: this.formMenuElement.menuSection,
-        isElementVisible: true,
-      };
+      this.sectionCall.forEach(e => {
+        var x = e.filter(elem => (elem.id == this.formMenuElement.menuSection))
+        const sect = x[0] as MenuSection;
 
-      const token = this.tokenStorage.getToken()!;
+        const newMenuElement: MenuElement = {
+          name: this.formMenuElement.name,
+          description: this.formMenuElement.description,
+          price: this.formMenuElement.price,
+          menuSection: sect!,
+          isElementVisible: true,
+        };
+        console.log(newMenuElement);
+        const token = this.tokenStorage.getToken()!;
 
-      this.menuService.addMenuElement(newMenuElement, token).subscribe(
-        data => {
-          this.elementCreated = true;
-        }
-      );
+        this.menuService.addMenuElement(newMenuElement, token).subscribe(
+          data => {
+            this.elementCreated = true;
+          }
+        );
+        return;
+      });
     }
   }
+
+  /*
+  refreshList() {
+    const div = document.getElementById("listSection")!;
+    console.log(div);
+    let html = "";
+    this.sectionList.forEach((val) => {
+      html += `
+        <option value='${val.sectionName}'>${val.sectionName}</option>
+      `
+    });
+    console.log(html);
+    div.innerHTML = html;
+  } */
 
 }
