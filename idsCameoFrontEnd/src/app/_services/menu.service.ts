@@ -34,4 +34,8 @@ export class MenuService {
 
     return this.http.post(API + 'menu/element', menuElement, { headers: configs });
   }
+
+  allSection(): Observable<MenuSection[]> {
+    return this.http.get<MenuSection[]>(API + 'menu/section');
+  }
 }

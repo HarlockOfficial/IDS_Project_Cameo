@@ -52,7 +52,7 @@ export class AdminBoardComponent implements OnInit {
   eventCreated!: boolean;
   sectionCreated!: boolean;
   elementCreated!: boolean;
-
+  sectionList: MenuSection[] = [];
   constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
@@ -65,6 +65,16 @@ export class AdminBoardComponent implements OnInit {
     else {
       this.router.navigate(['/home']);
     }
+    this.onGetAllSection();
+  }
+
+  onGetAllSection() {
+    this.menuService.allSection()?.subscribe(
+      data => {
+        this.sectionList = data;
+        console.log(this.sectionList);
+      }
+    );
   }
 
   onAddOmbrellone() {
