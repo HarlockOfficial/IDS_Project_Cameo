@@ -82,7 +82,6 @@ public class OmbrelloneService {
      */
     public Ombrellone createOmbrellone(Ombrellone ombrellone, String tokenId) {
         if (!tokenService.checkToken(tokenId, Role.ADMIN)) {
-            System.out.println("Token non valido");
             return null;
         }
         if (ombrelloneRepository.findAll()
@@ -92,10 +91,8 @@ public class OmbrelloneService {
                         ombrellone.getNumberRow() == e.getNumberRow()
                 )
         ) {
-            System.out.println("Ombrellone già esistente");
             return null;
         }
-        System.out.println("Ombrellone creato");
         return ombrelloneRepository.save(ombrellone);
     }
 

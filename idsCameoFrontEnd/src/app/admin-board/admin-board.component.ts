@@ -1,15 +1,14 @@
-import { Component, NgZone, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Ombrellone } from '../interfaces/ombrellone';
-import { OmbrelloneService } from '../_services/ombrellone.service';
-import { TokenStorageService } from '../_services/token-storage.service';
-import { Evento } from '../interfaces/evento';
-import { EventiService } from '../_services/eventi.service';
-import { MenuSection } from '../interfaces/menuSection';
-import { MenuService } from '../_services/menu.service';
-import { Router } from '@angular/router';
-import { MenuElement } from '../interfaces/menuElement';
-import { Observable, of } from 'rxjs';
-import { map, mapTo, tap } from 'rxjs/operators'
+import {Component, NgZone, OnInit} from '@angular/core';
+import {Ombrellone} from '../interfaces/ombrellone';
+import {OmbrelloneService} from '../_services/ombrellone.service';
+import {TokenStorageService} from '../_services/token-storage.service';
+import {Evento} from '../interfaces/evento';
+import {EventiService} from '../_services/eventi.service';
+import {MenuSection} from '../interfaces/menuSection';
+import {MenuService} from '../_services/menu.service';
+import {Router} from '@angular/router';
+import {MenuElement} from '../interfaces/menuElement';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-admin-board',
@@ -55,7 +54,7 @@ export class AdminBoardComponent implements OnInit {
   elementCreated!: boolean;
   sectionCall!: Observable<MenuSection[]>;
 
-  constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router, private ngZone: NgZone) {
+  constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) {
 
   }
 
@@ -63,11 +62,9 @@ export class AdminBoardComponent implements OnInit {
 
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       this.isAdmin = true;
-    }
-    else if (this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
+    } else if (this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
       this.isEventManager = true;
-    }
-    else {
+    } else {
       this.router.navigate(['/home']);
     }
 
@@ -91,7 +88,7 @@ export class AdminBoardComponent implements OnInit {
       const token = this.tokenStorage.getToken()!;
 
       this.ombrelloneService.addOmbrellone(newOmbrellone, token).subscribe(
-        data => {
+        _ => {
           this.ombrelloneCreated = true;
         }
       );
@@ -111,7 +108,7 @@ export class AdminBoardComponent implements OnInit {
       const token = this.tokenStorage.getToken()!;
 
       this.eventService.addEvento(newEvent, token).subscribe(
-        data => {
+        _ => {
           this.eventCreated = true;
         }
       );
@@ -128,7 +125,7 @@ export class AdminBoardComponent implements OnInit {
       const token = this.tokenStorage.getToken()!;
 
       this.menuService.addMenuSection(newMenuSection, token).subscribe(
-        data => {
+        _ => {
           this.sectionCreated = true;
         }
       );
@@ -138,21 +135,21 @@ export class AdminBoardComponent implements OnInit {
   onCreateMenuElement() {
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       this.sectionCall.forEach(e => {
-        var x = e.filter(elem => (elem.id == this.formMenuElement.menuSection))
+        const x = e.filter(elem => (elem.id == this.formMenuElement.menuSection))
         const sect = x[0] as MenuSection;
 
         const newMenuElement: MenuElement = {
           name: this.formMenuElement.name,
           description: this.formMenuElement.description,
           price: this.formMenuElement.price,
-          menuSection: sect!,
+          section: sect!,
           isElementVisible: true,
         };
         console.log(newMenuElement);
         const token = this.tokenStorage.getToken()!;
 
         this.menuService.addMenuElement(newMenuElement, token).subscribe(
-          data => {
+          _ => {
             this.elementCreated = true;
           }
         );

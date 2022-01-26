@@ -4,6 +4,6 @@ export interface MenuElement {
     name: string;
     description: string;
     price: number;
-    menuSection: MenuSection;
+    section: MenuSection;
     isElementVisible: boolean;
 }
