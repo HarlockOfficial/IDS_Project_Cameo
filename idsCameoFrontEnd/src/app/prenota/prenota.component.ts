@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OmbrelloneService } from '../_services/ombrellone.service';
 import { Ombrellone } from '../interfaces/ombrellone';
+import { ShoppingCartService } from '../_services/shopping-cart.service';
+import { PrenotazioneSpiaggia } from '../interfaces/prenotazioneSpiaggia';
 
 @Component({
   selector: 'app-prenota',
@@ -14,7 +16,7 @@ export class PrenotaComponent implements OnInit {
   listaOrdine: Ombrellone[] = [];
   isOrder: boolean = false;
 
-  constructor(private ombrelloneService: OmbrelloneService) { }
+  constructor(private ombrelloneService: OmbrelloneService, private shoppingCartService: ShoppingCartService) { }
 
   ngOnInit(): void {
     this.onGetOmbrelloni();
@@ -72,9 +74,14 @@ export class PrenotaComponent implements OnInit {
 
   addToCart() {
 
+
+
+    console.log("fatto");
+    this.listaOrdine.forEach(element => {
+      this.shoppingCartService.addItem(element);
+      console.log("dentro");
+    });
+    this.listaOrdine = [];
+    this.isOrder = false;
   }
-
-
-
-
 }

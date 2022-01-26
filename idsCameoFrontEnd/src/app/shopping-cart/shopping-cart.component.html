@@ -1,1 +1,10 @@
 <p>shopping-cart works!</p>
+<div *ngFor="let item of cartList; index as i">
+    <div class="card">
+        <h4>Ombrellone</h4>
+        <div class="container">
+            <p>In riga: {{cartList[i].object}}</p>
+            <button class="removeFromOrder" (click)="removeFromOrder(cartList[i])">rimuovi</button>
+        </div>
+    </div>
+</div>

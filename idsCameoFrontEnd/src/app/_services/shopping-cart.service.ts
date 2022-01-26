@@ -8,18 +8,15 @@ export class ShoppingCartService {
 
   constructor() { }
 
-  cartList!: CartItem[];
+  cartList: CartItem[] = [];
 
-  addItem(type: string, object: any, price: number) {
+  addItem(object: any) {
     const newCartItem: CartItem = {
-      type: type,
       object: object,
-      price: price,
     };
     this.cartList.push(newCartItem);
   }
 
-  //TODO; REVIEW
   removeItem(cartItem: CartItem) {
     this.cartList.forEach((element, index) => {
       if (element.object == cartItem.object) {
@@ -28,6 +25,9 @@ export class ShoppingCartService {
     });
   }
 
+  getCartList() {
+    return this.cartList;
+  }
 
   saveCart() {
 
