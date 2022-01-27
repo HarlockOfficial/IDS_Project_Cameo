@@ -1,6 +1,9 @@
-<p>shopping-cart works!</p>
-<div>
-    <p>{{prenotazione.date}}</p>
+<h1>Carrello</h1>
+<div *ngIf="!isPrenotazione">
+    <h1>Il carrello è vuoto</h1>
+</div>
+
+<div *ngIf="isPrenotazione">
     <p>{{prenotazione.user}}</p>
     <p>{{prenotazione.statoPrenotazione}}</p>
     <p>Ombrelloni Prenotati:</p>
@@ -15,7 +18,7 @@
                 <p>In riga:{{item.ombrellone.numberRow}}</p>
                 <p>In colonna:{{item.ombrellone.numberColumn}}</p>
                 <p>Prezzo:{{item.ombrellone.price}}</p>
-                <button class="removeFromOrder">rimuovi</button>
+                <button class="removeFromOrder" (click)="removeFromPrenotazione(item, 'o')">rimuovi</button>
             </div>
         </div>
     </div>
@@ -27,7 +30,7 @@
                 <p>Prezzo: {{item.price}}</p>
                 <p>Descrizione:{{item.description}}</p>
                 <p>Posizione:{{item.location}}</p>
-                <button class="removeFromOrder">rimuovi</button>
+                <button class="removeFromOrder" (click)="removeFromPrenotazione(item, 'e')">rimuovi</button>
             </div>
         </div>
     </div>
