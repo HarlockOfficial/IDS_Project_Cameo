@@ -1,5 +1,13 @@
-<h1>Lista del menu</h1>
-<li *ngFor="let recipient of listaMenu | keyvalue">
-    {{recipient.key}} -->
-    <p *ngFor="let value of recipient.value">{{value}}</p>
-</li>
+<h1>Menu</h1>
+<ul>
+  <li *ngFor="let recipient of listaMenu | keyvalue">
+      <h2>{{recipient.key.sectionName}}</h2>
+      <ul>
+        <li *ngFor="let value of recipient.value">
+          {{value.name}}
+          {{value.description}}
+          {{value.price}}
+        </li>
+      </ul>
+  </li>
+</ul>

@@ -68,4 +68,8 @@ public class MenuService {
     public List<MenuElement> getAllElements(String token) {
         return menuElementService.getMenuElements(token);
     }
+
+    public List<MenuElement> getMenuElements() {
+        return menuElementService.getMenuElements();
+    }
 }

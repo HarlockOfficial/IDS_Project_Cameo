@@ -19,7 +19,7 @@ export class MenuService {
 
   constructor(private http: HttpClient) { }
 
-  allMenu(): Observable<Map<MenuSection, MenuElement[]>> | null {
+  allMenu(): Observable<MenuElement[]> | null {
     return this.http.get<any>(API + 'menu');
   }
 

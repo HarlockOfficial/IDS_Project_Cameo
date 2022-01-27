@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuElementService {
@@ -28,6 +29,7 @@ public class MenuElementService {
                 element.getName().equalsIgnoreCase(menuElement.getName()))) {
             return null;
         }
+        element.setElementVisible(true);
         return menuElementRepository.save(element);
     }
 
@@ -74,9 +76,14 @@ public class MenuElementService {
 
     public List<MenuElement> getMenuElements(String token) {
         if(tokenCheck(token)) {
-            return null;
+            return menuElementRepository.findAll().stream()
+                    .filter(MenuElement::isElementVisible).collect(Collectors.toList());
         }
         return menuElementRepository.findAll();
+    }
+
+    public List<MenuElement> getMenuElements() {
+        return getMenuElements(null);
     }
 
     private boolean tokenCheck(String token){

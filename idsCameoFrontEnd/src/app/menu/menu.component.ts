@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuElement } from '../interfaces/menuElement';
-import { MenuSection } from '../interfaces/menuSection';
-import { MenuService } from '../_services/menu.service';
+import {Component, OnInit} from '@angular/core';
+import {MenuElement} from '../interfaces/menuElement';
+import {MenuSection} from '../interfaces/menuSection';
+import {MenuService} from '../_services/menu.service';
 
 @Component({
   selector: 'app-menu',
@@ -10,9 +10,10 @@ import { MenuService } from '../_services/menu.service';
 })
 export class MenuComponent implements OnInit {
 
-  listaMenu!: Map<MenuSection, MenuElement[]>;
+  listaMenu: Map<MenuSection, MenuElement[]> = new Map<MenuSection, MenuElement[]>();
 
-  constructor(private menuService: MenuService) { }
+  constructor(private menuService: MenuService) {
+  }
 
   ngOnInit(): void {
     this.onGetMenu();
@@ -21,10 +22,20 @@ export class MenuComponent implements OnInit {
   onGetMenu(): void {
     this.menuService.allMenu()?.subscribe(
       data => {
-        this.listaMenu = data;
-        console.log(this.listaMenu);
-        for (let x in this.listaMenu) {
-          console.log(x);
+        for (let i = 0; i < data.length; i++) {
+          const menuSection: MenuSection = {
+            sectionName: data[i].section!.sectionName,
+            isSectionVisible: data[i].section!.sectionVisible,
+          };
+          if (!menuSection.isSectionVisible) {
+            continue;
+          }
+          let elemsList: MenuElement[] = [];
+          if (this.listaMenu.has(menuSection)) {
+            elemsList = this.listaMenu.get(menuSection)!;
+          }
+          elemsList.push(data[i]);
+          this.listaMenu.set(menuSection, elemsList);
         }
       }
     );

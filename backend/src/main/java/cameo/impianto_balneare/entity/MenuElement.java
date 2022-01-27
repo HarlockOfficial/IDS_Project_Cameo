@@ -40,5 +40,6 @@ public class MenuElement {
     protected MenuElement() {
         this.id = UUID.randomUUID();
         orders = new ArrayList<>();
+        isElementVisible = true;
     }
 }

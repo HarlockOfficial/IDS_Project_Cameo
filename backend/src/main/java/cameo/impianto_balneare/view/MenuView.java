@@ -21,8 +21,11 @@ public class MenuView implements GlobalExceptionHandler {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public ResponseEntity<Map<MenuSection, List<MenuElement>>> getVisibleMenu() {
-        var menu = menuService.getMenu();
+    public ResponseEntity<List<MenuElement>> getVisibleMenu() {
+        //var menu = menuService.getMenu();
+        //La versione originale è stata sostituita perchè jackson deserializzava la map erroneamente
+        //si perdevano tutti i dati relativi la classe MenuSection
+        var menu = menuService.getMenuElements();
         return ResponseEntity.ok(menu);
     }
 

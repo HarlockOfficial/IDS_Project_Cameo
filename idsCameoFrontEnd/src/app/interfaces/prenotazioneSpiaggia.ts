@@ -7,5 +7,5 @@ export interface PrenotazioneSpiaggia {
     startDate: Date;
     endDate: Date;
     ombrellone: Ombrellone;
-    prenotazione: Prenotazione;
+    prenotazione?: Prenotazione;
 }
