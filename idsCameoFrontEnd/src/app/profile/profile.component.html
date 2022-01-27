@@ -1,5 +1,5 @@
 <div class="container" *ngIf="currentUser; else loggedOut">
-    <header class="jumbotron">
+    <header class="header">
         <h3>
             Profilo di <strong>{{ currentUser.username }}</strong>
         </h3>
@@ -30,6 +30,39 @@
     </p>
 </div>
 <button *ngIf="isAdmin"><a routerLink="/dashboard">DashBoard</a></button>
+
+<div *ngFor="let prenotazione of myPrenotazioni">
+    <p>{{prenotazione.user}}</p>
+    <p>{{prenotazione.statoPrenotazione}}</p>
+    <p>Ombrelloni Prenotati:</p>
+    <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList; index as i">
+        <div class="card">
+            <h4>Ombrellone</h4>
+            <div class="container">
+                <p>Da: {{item.startDate}}</p>
+                <p>A: {{item.endDate}}</p>
+                <p>Lettini:{{item.lettini}}</p>
+                <p>Sdraio:{{item.sdraio}}</p>
+                <p>In riga:{{item.ombrellone.numberRow}}</p>
+                <p>In colonna:{{item.ombrellone.numberColumn}}</p>
+                <p>Prezzo:{{item.ombrellone.price}}</p>
+                <button class="removeFromOrder">rimuovi</button>
+            </div>
+        </div>
+    </div>
+    <div *ngFor="let item of prenotazione.eventiPrenotatiList; index as i">
+        <div class="card">
+            <h4>Evento</h4>
+            <div class="container">
+                <p>Nome: {{item.name}}</p>
+                <p>Prezzo: {{item.price}}</p>
+                <p>Descrizione:{{item.description}}</p>
+                <p>Posizione:{{item.location}}</p>
+                <button class="removeFromOrder">rimuovi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <ng-template #loggedOut>
     Please login.

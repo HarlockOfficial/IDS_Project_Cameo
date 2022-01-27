@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/user';
-
+import { Prenotazione } from '../interfaces/prenotazione';
 const API = 'http://localhost:8080/';
 
 const headerDict = {
@@ -30,4 +30,14 @@ export class UserService {
     const configs = { 'token': token };
     return this.http.get<User[]>(API + 'user', { headers: configs });;
   }
+
+  //Ritorna le prenotazioni dello speicifo utente
+  myPrenotazioni(token: string) {
+    if (token == null) {
+      return null;
+    }
+    const configs = { 'token': token };
+    return this.http.get<Prenotazione[]>(API + 'book', { headers: configs });;
+  }
+
 }

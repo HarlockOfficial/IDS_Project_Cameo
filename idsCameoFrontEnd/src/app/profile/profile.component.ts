@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { UserService } from '../_services/user.service';
 import { User } from '../interfaces/user';
+import { Prenotazione } from '../interfaces/prenotazione';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,7 @@ export class ProfileComponent implements OnInit {
 
   currentUser!: User;
   errorMessage = '';
+  myPrenotazioni: Prenotazione[] = [];
   isAdmin = false;
 
   constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
@@ -19,6 +21,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.tokenStorage.getUser()!;
     this.onGetUser();
+    this.onGetMyPrenotazioni();
   }
 
   onGetUser(): void {
@@ -36,6 +39,14 @@ export class ProfileComponent implements OnInit {
         this.errorMessage = err.error.message;
       }
     );
+  }
+
+  onGetMyPrenotazioni() {
+    this.userService.myPrenotazioni(this.tokenStorage.getToken()!)?.subscribe(
+      data => {
+        this.myPrenotazioni = data;
+      }
+    )
   }
 
   reloadPage(): void {

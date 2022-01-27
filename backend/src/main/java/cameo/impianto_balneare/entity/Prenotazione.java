@@ -1,5 +1,6 @@
 package cameo.impianto_balneare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Table(name = "prenotazione")
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"user"}, allowSetters = true)
 public class Prenotazione {
 
     @Id
@@ -28,10 +30,10 @@ public class Prenotazione {
     @Column(nullable = false)
     private ZonedDateTime date;
 
-    @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Event> eventiPrenotatiList;
 
-    @OneToMany(targetEntity = PrenotazioneSpiaggia.class, mappedBy = "prenotazione")
+    @OneToMany(targetEntity = PrenotazioneSpiaggia.class, mappedBy = "prenotazione", fetch = FetchType.EAGER)
     private List<PrenotazioneSpiaggia> spiaggiaPrenotazioniList;
 
     protected Prenotazione() {
