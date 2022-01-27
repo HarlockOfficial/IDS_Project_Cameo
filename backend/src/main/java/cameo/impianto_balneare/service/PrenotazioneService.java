@@ -1,13 +1,12 @@
 package cameo.impianto_balneare.service;
 
-import cameo.impianto_balneare.entity.Prenotazione;
-import cameo.impianto_balneare.entity.Role;
-import cameo.impianto_balneare.entity.StatoPrenotazione;
+import cameo.impianto_balneare.entity.*;
 import cameo.impianto_balneare.repository.PrenotazioneRepository;
 import cameo.impianto_balneare.repository.PrenotazioneSpiaggiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,7 +78,31 @@ public class PrenotazioneService {
         if (user.getRole() == Role.USER) {
             prenotazione.setUser(user);
         }
-        if(prenotazione.getSpiaggiaPrenotazioniList().size() != 0){
+        if(!prenotazione.getEventiPrenotatiList().isEmpty()) {
+            var prenotazioniToRemove = new ArrayList<Event>();
+            for (int i = 0; i < prenotazione.getEventiPrenotatiList().size(); i++) {
+                var event = prenotazione.getEventiPrenotatiList().get(i);
+                var isEventPresent = user.getPrenotazioni().stream()
+                        .flatMap(e -> e.getEventiPrenotatiList().stream())
+                        .anyMatch(e -> e.getId().equals(event.getId()));
+                if (isEventPresent) {
+                    prenotazioniToRemove.add(event);
+                }
+            }
+            prenotazione.getEventiPrenotatiList().removeAll(prenotazioniToRemove);
+        }
+        if(!prenotazione.getSpiaggiaPrenotazioniList().isEmpty()) {
+            var prenotazioniToRemove = new ArrayList<PrenotazioneSpiaggia>();
+            for (int i = 0; i < prenotazione.getSpiaggiaPrenotazioniList().size(); i++) {
+                var ombrellone = prenotazione.getSpiaggiaPrenotazioniList().get(i).getOmbrellone();
+                var isOmbrellonePresent = user.getPrenotazioni().stream()
+                        .flatMap(e -> e.getSpiaggiaPrenotazioniList().stream())
+                        .anyMatch(e -> e.getOmbrellone().getId().equals(ombrellone.getId()));
+                if (isOmbrellonePresent) {
+                    prenotazioniToRemove.add(prenotazione.getSpiaggiaPrenotazioniList().get(i));
+                }
+            }
+            prenotazione.getSpiaggiaPrenotazioniList().removeAll(prenotazioniToRemove);
             prenotazione.getSpiaggiaPrenotazioniList().forEach(prenotazioneSpiaggia -> {
                 if(prenotazioneSpiaggiaRepository.findById(prenotazioneSpiaggia.getId()).isEmpty()){
                     prenotazioneSpiaggia.setPrenotazione(prenotazione);
