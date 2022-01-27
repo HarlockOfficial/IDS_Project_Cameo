@@ -20,7 +20,7 @@ export class EventiComponent implements OnInit {
   }
 
   onGetAllEvents(): void {
-    this.eventiService.allEventi()?.subscribe(
+    this.eventiService.getAllEventi()?.subscribe(
       data => {
         this.listaEventi = data as Evento[];
         console.log(this.listaEventi);
