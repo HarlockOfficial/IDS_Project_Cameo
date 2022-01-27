@@ -22,7 +22,7 @@ export class OmbrelloneService {
 
   constructor(private http: HttpClient) { }
 
-  //Restituisce tutti gli ombrelloni
+  //Restituisce tutti gli ombrelloni in una certa da di inizio e fine
   allOmbrelloni(): Observable<Ombrellone[]> | null {
     return this.http.get<Ombrellone[]>(API + 'ombrellone/all', { headers: headerDict });;
   }
