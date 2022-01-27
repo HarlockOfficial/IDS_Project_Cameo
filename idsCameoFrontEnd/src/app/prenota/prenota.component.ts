@@ -15,6 +15,14 @@ export class PrenotaComponent implements OnInit {
   listaOmbrelloni!: Ombrellone[];
   listaOrdine: PrenotazioneSpiaggia[] = []
   isOrder: boolean = false;
+  startDate!: Date;
+  endDate!: Date;
+  isDate: boolean = false;
+
+  formDate: any = {
+    startDate: null,
+    endDate: null,
+  };
 
   constructor(private ombrelloneService: OmbrelloneService, private shoppingCartService: ShoppingCartService) { }
 
@@ -108,5 +116,13 @@ export class PrenotaComponent implements OnInit {
     else if (elemento == 's' && prenotazioneSpiaggia.sdraio > 1) {
       prenotazioneSpiaggia.sdraio = prenotazioneSpiaggia.sdraio - 1;
     }
+  }
+
+  registerDate() {
+    this.startDate = this.formDate.startDate;
+    this.endDate = this.formDate.endDate;
+    console.log(this.startDate);
+    console.log(this.endDate);
+    this.isDate = true;
   }
 }
