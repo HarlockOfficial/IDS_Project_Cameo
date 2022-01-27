@@ -21,6 +21,7 @@ public class Prenotazione {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToOne(targetEntity = User.class)
     private User user;
 

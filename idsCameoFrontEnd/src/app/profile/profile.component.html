@@ -30,12 +30,14 @@
     </p>
 </div>
 <button *ngIf="isAdmin"><a routerLink="/dashboard">DashBoard</a></button>
-
-<div *ngFor="let prenotazione of myPrenotazioni">
-    <p>{{prenotazione.user}}</p>
+<p>Ombrelloni Prenotati:</p>
+<div *ngFor="let prenotazione of myPrenotazioni | async">
+    <p>{{prenotazione.date}}</p>
     <p>{{prenotazione.statoPrenotazione}}</p>
-    <p>Ombrelloni Prenotati:</p>
-    <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList; index as i">
+    <p>{{prenotazione.spiaggiaPrenotazioniList?.length}}</p>
+    <p>{{prenotazione.eventiPrenotatiList?.length}}</p>
+
+    <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList">
         <div class="card">
             <h4>Ombrellone</h4>
             <div class="container">

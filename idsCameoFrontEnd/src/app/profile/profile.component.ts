@@ -3,7 +3,7 @@ import { TokenStorageService } from '../_services/token-storage.service';
 import { UserService } from '../_services/user.service';
 import { User } from '../interfaces/user';
 import { Prenotazione } from '../interfaces/prenotazione';
-
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
 
   currentUser!: User;
   errorMessage = '';
-  myPrenotazioni: Prenotazione[] = [];
+  myPrenotazioni!: Observable<Prenotazione[]>;
   isAdmin = false;
 
   constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
     this.currentUser = this.tokenStorage.getUser()!;
     this.onGetUser();
     this.onGetMyPrenotazioni();
+    console.log(this.myPrenotazioni);
   }
 
   onGetUser(): void {
@@ -42,11 +43,13 @@ export class ProfileComponent implements OnInit {
   }
 
   onGetMyPrenotazioni() {
+    /*
     this.userService.myPrenotazioni(this.tokenStorage.getToken()!)?.subscribe(
       data => {
         this.myPrenotazioni = data;
       }
-    )
+    ) */
+    this.myPrenotazioni = this.userService.myPrenotazioni(this.tokenStorage.getToken()!)!;
   }
 
   reloadPage(): void {
