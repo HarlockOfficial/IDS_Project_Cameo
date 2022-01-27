@@ -4,12 +4,27 @@ import { Prenotazione } from '../interfaces/prenotazione';
 import { PrenotazioneSpiaggia } from '../interfaces/prenotazioneSpiaggia';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { StatoPrenotazione } from '../interfaces/StatoPrenotazione';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+const API = 'http://localhost:8080/';
+
+const headerDict = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+const requestOptions = {
+  headers: new Headers(headerDict),
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingCartService {
 
-  constructor(private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService, private http: HttpClient) { }
 
   prenotazione: Prenotazione = {
     user: this.tokenStorageService.getUser()!,
@@ -28,14 +43,12 @@ export class ShoppingCartService {
     }
   }
 
-  /*
-  removeItem(element: Prenotazione) {
-    this.prenotazione.forEach((element, index) => {
-      if (element.element == cartItem.element) {
-        this.prenotazione.splice(index, 1);
-      }
-    });
-  }*/
+  checkoutCarrello(prenotazione: Prenotazione, token: string) {
+    console.log("PROVORICHEISTAPORCODI")
+    const configs = { 'token': token };
+
+    return this.http.post(API + 'book', prenotazione, { headers: configs });
+  }
 
   getPrenotazione() {
     return this.prenotazione;

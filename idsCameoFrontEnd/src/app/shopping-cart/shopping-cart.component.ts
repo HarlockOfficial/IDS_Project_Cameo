@@ -3,6 +3,8 @@ import { ShoppingCartService } from '../_services/shopping-cart.service';
 import { Prenotazione } from '../interfaces/prenotazione';
 import { PrenotazioneSpiaggia } from '../interfaces/prenotazioneSpiaggia';
 import { Evento } from '../interfaces/evento';
+import { StatoPrenotazione } from '../interfaces/StatoPrenotazione';
+import { TokenStorageService } from '../_services/token-storage.service';
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
@@ -12,11 +14,10 @@ export class ShoppingCartComponent implements OnInit {
 
   prenotazione!: Prenotazione;
   isPrenotazione: boolean = false;
-  constructor(private shoppingCartService: ShoppingCartService) { }
+  constructor(private shoppingCartService: ShoppingCartService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.prenotazione = this.shoppingCartService.getPrenotazione();
-    console.log(this.prenotazione)
     if (this.prenotazione.eventiPrenotatiList?.length! > 0 || this.prenotazione.spiaggiaPrenotazioniList?.length! > 0) {
       this.isPrenotazione = true;
     }
@@ -37,9 +38,24 @@ export class ShoppingCartComponent implements OnInit {
         }
       });
     }
-
     if (this.prenotazione.eventiPrenotatiList?.length! == 0 && this.prenotazione.spiaggiaPrenotazioniList?.length! == 0) {
       this.isPrenotazione = false;
+    }
+  }
+
+  checkOutCarrello() {
+    console.log("fired")
+    this.shoppingCartService.checkoutCarrello(this.prenotazione, this.tokenStorageService.getToken()!).subscribe(
+      data => {
+        console.log(data);
+      }
+    );
+    this.prenotazione = {
+      user: this.tokenStorageService.getUser()!,
+      statoPrenotazione: StatoPrenotazione.CARRELLO,
+      date: new Date(),
+      eventiPrenotatiList: [],
+      spiaggiaPrenotazioniList: [],
     }
   }
 }
