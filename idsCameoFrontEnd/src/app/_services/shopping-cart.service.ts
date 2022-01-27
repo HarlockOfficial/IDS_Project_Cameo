@@ -1,42 +1,48 @@
 import { Injectable } from '@angular/core';
-import { CartItem } from '../interfaces/cartItem';
-
+import { Evento } from '../interfaces/evento';
+import { Prenotazione } from '../interfaces/prenotazione';
+import { PrenotazioneSpiaggia } from '../interfaces/prenotazioneSpiaggia';
+import { TokenStorageService } from '../_services/token-storage.service';
+import { StatoPrenotazione } from '../interfaces/StatoPrenotazione';
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingCartService {
 
-  constructor() { }
+  constructor(private tokenStorageService: TokenStorageService) { }
 
-  cartList: CartItem[] = [];
-
-  addItem(object: any) {
-    const newCartItem: CartItem = {
-      object: object,
-    };
-    this.cartList.push(newCartItem);
+  prenotazione: Prenotazione = {
+    user: this.tokenStorageService.getUser()!,
+    statoPrenotazione: StatoPrenotazione.CARRELLO,
+    date: new Date(1 / 11 / 1111),
+    eventiPrenotatiList: [],
+    spiaggiaPrenotazioniList: [],
   }
 
-  removeItem(cartItem: CartItem) {
-    this.cartList.forEach((element, index) => {
-      if (element.object == cartItem.object) {
-        this.cartList.splice(index, 1);
+  addItem(element: PrenotazioneSpiaggia | Evento) {
+    if ((<PrenotazioneSpiaggia>element).ombrellone !== undefined) {
+      this.prenotazione.spiaggiaPrenotazioniList?.push((<PrenotazioneSpiaggia>element));
+    }
+    else {
+      this.prenotazione.eventiPrenotatiList?.push((<Evento>element));
+    }
+  }
+
+  /*
+  removeItem(element: Prenotazione) {
+    this.prenotazione.forEach((element, index) => {
+      if (element.element == cartItem.element) {
+        this.prenotazione.splice(index, 1);
       }
     });
-  }
+  }*/
 
-  getCartList() {
-    return this.cartList;
+  getPrenotazione() {
+    return this.prenotazione;
   }
 
   saveCart() {
 
-  }
-
-  checkOutCart() {
-    this.cartList.forEach((element, index) => {
-      this.cartList.splice(index, 1);
-    });
   }
 
 }

@@ -4,15 +4,23 @@
         <div class="card">
             <h4>Ombrellone</h4>
             <div class="container">
-                <p>In riga: {{listaOrdine[i].numberRow}}</p>
-                <p>In colonna: {{listaOrdine[i].numberColumn}}</p>
-                <h4><b>Prezzo: {{listaOrdine[i].price}}€</b></h4>
+                <p>In riga: {{listaOrdine[i].ombrellone.numberRow}}</p>
+                <p>In colonna: {{listaOrdine[i].ombrellone.numberColumn}}</p>
+                <p>Lettini: {{listaOrdine[i].lettini}}</p><button
+                    (click)="addOmbrelloneGadget(listaOrdine[i], 'l')">+</button><button
+                    (click)="removeOmbrelloneGadget(listaOrdine[i], 'l')">-</button>
+                <p>Sdraio: {{listaOrdine[i].sdraio}}<button
+                        (click)="addOmbrelloneGadget(listaOrdine[i], 's')">+</button><button
+                        (click)="removeOmbrelloneGadget(listaOrdine[i], 's')">-</button>
+                </p>
+                <h4><b>Prezzo: {{listaOrdine[i].ombrellone.price}}€</b></h4>
                 <button class="removeFromOrder" (click)="removeFromOrder(listaOrdine[i])">rimuovi</button>
             </div>
         </div>
     </div>
     <button class="addToCart" (click)="addToCart()">Aggiungi l'ordine al carrello</button>
 </div>
+
 <h1>Ombrelloni disponibli per essere prenotati</h1>
 <div *ngFor="let evento of listaOmbrelloni; index as i">
     <div class="card">

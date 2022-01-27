@@ -13,7 +13,7 @@ export class PrenotaComponent implements OnInit {
 
   errorMessage = '';
   listaOmbrelloni!: Ombrellone[];
-  listaOrdine: Ombrellone[] = [];
+  listaOrdine: PrenotazioneSpiaggia[] = []
   isOrder: boolean = false;
 
   constructor(private ombrelloneService: OmbrelloneService, private shoppingCartService: ShoppingCartService) { }
@@ -43,17 +43,27 @@ export class PrenotaComponent implements OnInit {
   }
 
   addToOrder(ombrellone: Ombrellone) {
+
+    const newPrenotazioneSpiaggia: PrenotazioneSpiaggia = {
+      lettini: 1,
+      sdraio: 1,
+      startDate: new Date(1 / 11 / 1111),
+      endDate: new Date(1 / 11 / 1111),
+      ombrellone: ombrellone,
+    };
+
+
     if (this.listaOrdine.length == 0) {
-      this.listaOrdine.push(ombrellone);
+      this.listaOrdine.push(newPrenotazioneSpiaggia);
       this.removeFromListaOmbrelloni(ombrellone);
     }
     else {
       this.listaOrdine.forEach((element, index) => {
-        if (element == ombrellone) {
+        if (element.ombrellone == ombrellone) {
           console.log("gia aggiunto");
         }
         else {
-          this.listaOrdine.push(ombrellone);
+          this.listaOrdine.push(newPrenotazioneSpiaggia);
           this.removeFromListaOmbrelloni(ombrellone);
         }
       });
@@ -61,11 +71,12 @@ export class PrenotaComponent implements OnInit {
     this.isOrder = true;
   }
 
-  removeFromOrder(ombrellone: Ombrellone) {
+  removeFromOrder(prenotazioneSpiaggia: PrenotazioneSpiaggia) {
+
     this.listaOrdine.forEach((element, index) => {
-      if (element == ombrellone) {
+      if (element.ombrellone == prenotazioneSpiaggia.ombrellone) {
         this.listaOrdine.splice(index, 1);
-        this.listaOmbrelloni.push(ombrellone);
+        this.listaOmbrelloni.push(prenotazioneSpiaggia.ombrellone);
       }
     });
     if (this.listaOrdine.length == 0) {
@@ -74,15 +85,28 @@ export class PrenotaComponent implements OnInit {
   }
 
   addToCart() {
-
-
-
-    console.log("fatto");
     this.listaOrdine.forEach(element => {
       this.shoppingCartService.addItem(element);
-      console.log("dentro");
     });
     this.listaOrdine = [];
     this.isOrder = false;
+  }
+
+  addOmbrelloneGadget(prenotazioneSpiaggia: PrenotazioneSpiaggia, elemento: string) {
+    if (elemento == 'l') {
+      prenotazioneSpiaggia.lettini = prenotazioneSpiaggia.lettini + 1;
+    }
+    else if (elemento == 's') {
+      prenotazioneSpiaggia.sdraio = prenotazioneSpiaggia.sdraio + 1;
+    }
+  }
+
+  removeOmbrelloneGadget(prenotazioneSpiaggia: PrenotazioneSpiaggia, elemento: string) {
+    if (elemento == 'l' && prenotazioneSpiaggia.lettini > 1) {
+      prenotazioneSpiaggia.lettini = prenotazioneSpiaggia.lettini - 1;
+    }
+    else if (elemento == 's' && prenotazioneSpiaggia.sdraio > 1) {
+      prenotazioneSpiaggia.sdraio = prenotazioneSpiaggia.sdraio - 1;
+    }
   }
 }

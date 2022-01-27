@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from '../_services/shopping-cart.service';
-import { CartItem } from '../interfaces/cartItem';
+import { Prenotazione } from '../interfaces/prenotazione';
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
@@ -8,18 +8,12 @@ import { CartItem } from '../interfaces/cartItem';
 })
 export class ShoppingCartComponent implements OnInit {
 
-  cartList: CartItem[] = [];
+  prenotazione!: Prenotazione;
 
   constructor(private shoppingCartService: ShoppingCartService) { }
 
   ngOnInit(): void {
-    this.cartList = this.shoppingCartService.getCartList();
+    this.prenotazione = this.shoppingCartService.getPrenotazione();
   }
-
-  removeFromOrder(item: CartItem) {
-    this.shoppingCartService.removeItem(item);
-    this.cartList = this.shoppingCartService.getCartList();
-  }
-
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EventiService } from '../_services/eventi.service';
 import { Evento } from '../interfaces/evento';
+import { ShoppingCartService } from '../_services/shopping-cart.service';
 @Component({
   selector: 'app-eventi',
   templateUrl: './eventi.component.html',
@@ -12,7 +13,7 @@ export class EventiComponent implements OnInit {
   listaOrdine: Evento[] = [];
   isEvento: boolean = false;
 
-  constructor(private eventiService: EventiService) { }
+  constructor(private eventiService: EventiService, private shoppingCartService: ShoppingCartService) { }
 
   ngOnInit(): void {
     this.onGetAllEvents();
@@ -66,8 +67,10 @@ export class EventiComponent implements OnInit {
   }
 
   addToCart() {
-
+    this.listaOrdine.forEach(element => {
+      this.shoppingCartService.addItem(element);
+    });
+    this.listaOrdine = [];
+    this.isEvento = false;
   }
-
-
 }
