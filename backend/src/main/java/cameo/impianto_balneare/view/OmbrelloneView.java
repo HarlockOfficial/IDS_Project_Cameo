@@ -39,9 +39,11 @@ public class OmbrelloneView implements GlobalExceptionHandler{
      *
      * @return lista con ombrelloni
      */
-    @RequestMapping(value = "/ombrellone/free", method = RequestMethod.POST)
-    public ResponseEntity<List<Ombrellone>> getAllFreeOmbrelloni(@RequestParam ZonedDateTime fromDate, @RequestParam ZonedDateTime toDate) {
-        var ombrellone = ombrelloneService.getAllFreeOmbrelloni(fromDate, toDate);
+    @RequestMapping(value = "/ombrellone/free", method = RequestMethod.GET)
+    public ResponseEntity<List<Ombrellone>> getAllFreeOmbrelloni(@RequestParam String fromDate, @RequestParam String toDate) {
+        var from = ZonedDateTime.parse(fromDate);
+        var to = ZonedDateTime.parse(toDate);
+        var ombrellone = ombrelloneService.getAllFreeOmbrelloni(from, to);
         if (ombrellone == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(ombrellone);

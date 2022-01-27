@@ -27,17 +27,17 @@ export class PrenotaComponent implements OnInit {
   constructor(private ombrelloneService: OmbrelloneService, private shoppingCartService: ShoppingCartService) { }
 
   ngOnInit(): void {
-    this.onGetOmbrelloni();
-    console.log(this.listaOmbrelloni);
   }
 
   onGetOmbrelloni(): void {
-    this.ombrelloneService.allOmbrelloni()?.subscribe(
+    this.ombrelloneService.allFreeOmbrelloni(this.startDate, this.endDate)?.subscribe(
       data => {
+        console.log(data);
         this.listaOmbrelloni = data;
         console.log(this.listaOmbrelloni);
       },
       err => {
+        console.log(err);
         this.errorMessage = err.error.message;
       }
     );
@@ -124,5 +124,6 @@ export class PrenotaComponent implements OnInit {
     console.log(this.startDate);
     console.log(this.endDate);
     this.isDate = true;
+    this.onGetOmbrelloni();
   }
 }
