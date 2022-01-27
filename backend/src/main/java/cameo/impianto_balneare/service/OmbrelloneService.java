@@ -69,7 +69,7 @@ public class OmbrelloneService {
      * @return l'ombrellone identificato dall'id
      */
     public Ombrellone getOmbrellone(UUID id) {
-        var ombrellone = ombrelloneRepository.findById(id);
+        var ombrellone = ombrelloneRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         return ombrellone.orElse(null);
     }
 
@@ -106,7 +106,7 @@ public class OmbrelloneService {
         if (!tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var ombrelloneToUpdate = ombrelloneRepository.findById(ombrellone.getId());
+        var ombrelloneToUpdate = ombrelloneRepository.findAll().stream().filter(e -> e.getId().equals(ombrellone.getId())).findFirst();
         if (ombrelloneToUpdate.isPresent()) {
             var ombrelloneToEdit = ombrelloneToUpdate.get();
             ombrelloneToEdit.setNumberColumn(ombrellone.getNumberColumn());
@@ -127,7 +127,7 @@ public class OmbrelloneService {
         if (!tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var ombrelloneToDelete = ombrelloneRepository.findById(id);
+        var ombrelloneToDelete = ombrelloneRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         if (ombrelloneToDelete.isPresent()) {
             var now = ZonedDateTime.now();
             var hasPrenotazioniPendenti = prenotazioneService.getAllPrenotazioni().stream()
@@ -150,7 +150,7 @@ public class OmbrelloneService {
     }
 
     public List<Prenotazione> getPrenotazioneByOmbrellone(UUID ombrelloneId, ZonedDateTime dataInizio, ZonedDateTime dataFine, String tokenId) {
-        var ombrellone = ombrelloneRepository.findById(ombrelloneId);
+        var ombrellone = ombrelloneRepository.findAll().stream().filter(e -> e.getId().equals(ombrelloneId)).findFirst();
         if (!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.checkToken(tokenId, Role.RECEPTION)) {
             return null;
         }

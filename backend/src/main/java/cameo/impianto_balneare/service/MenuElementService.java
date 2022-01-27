@@ -38,7 +38,7 @@ public class MenuElementService {
         if (tokenCheck(tokenId)) {
             return null;
         }
-        var elementToUpdate = menuElementRepository.findById(element.getId());
+        var elementToUpdate = menuElementRepository.findAll().stream().filter(e->e.getId().equals(element.getId())).findFirst();
         if (elementToUpdate.isPresent()) {
             var elementToEdit = elementToUpdate.get();
             elementToEdit.setName(element.getName());
@@ -53,7 +53,7 @@ public class MenuElementService {
         if (tokenCheck(tokenId)) {
             return null;
         }
-        var elementToDelete = menuElementRepository.findById(id);
+        var elementToDelete = menuElementRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if (elementToDelete.isPresent()) {
             menuElementRepository.delete(elementToDelete.get());
             return elementToDelete.get();
@@ -65,7 +65,7 @@ public class MenuElementService {
         if (tokenCheck(token)) {
             return null;
         }
-        var elementToToggle = menuElementRepository.findById(id);
+        var elementToToggle = menuElementRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if (elementToToggle.isPresent()) {
             var elementToEdit = elementToToggle.get();
             elementToEdit.setElementVisible(!elementToEdit.isElementVisible());

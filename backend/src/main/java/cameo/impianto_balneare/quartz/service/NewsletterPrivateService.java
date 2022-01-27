@@ -17,6 +17,6 @@ public class NewsletterPrivateService {
     }
 
     public Newsletter getNewsletterById(UUID id) {
-        return newsletterRepository.findById(id).orElse(null);
+        return newsletterRepository.findAll().stream().filter(newsletter -> newsletter.getId().equals(id)).findFirst().orElse(null);
     }
 }

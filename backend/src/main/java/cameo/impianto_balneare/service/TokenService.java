@@ -27,7 +27,7 @@ public class TokenService {
 
     public User getUserFromUUID(String tokenId) {
         if (tokenId == null) return null;
-        var token = tokenRepository.findById(UUID.fromString(tokenId));
+        var token = tokenRepository.findAll().stream().filter(t -> t.getId().equals(UUID.fromString(tokenId))).findFirst();
         return token.map(Token::getUser).orElse(null);
     }
 

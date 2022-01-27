@@ -45,7 +45,7 @@ public class MenuSectionService {
         if (!tokenService.checkToken(tokenId, Role.BAR) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var sectionToUpdate = menuSectionRepository.findById(section.getId());
+        var sectionToUpdate = menuSectionRepository.findAll().stream().filter(e->e.getId().equals(section.getId())).findFirst();
         if (sectionToUpdate.isPresent()) {
             var sectionToEdit = sectionToUpdate.get();
             sectionToEdit.setSectionName(section.getSectionName());
@@ -58,7 +58,7 @@ public class MenuSectionService {
         if (!tokenService.checkToken(token, Role.BAR) && !tokenService.checkToken(token, Role.ADMIN)) {
             return null;
         }
-        var sectionToDelete = menuSectionRepository.findById(id);
+        var sectionToDelete = menuSectionRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if (sectionToDelete.isPresent()) {
             menuSectionRepository.delete(sectionToDelete.get());
             return sectionToDelete.get();
@@ -70,7 +70,7 @@ public class MenuSectionService {
         if (!tokenService.checkToken(token, Role.BAR) && !tokenService.checkToken(token, Role.ADMIN)) {
             return null;
         }
-        var sectionToToggle = menuSectionRepository.findById(id);
+        var sectionToToggle = menuSectionRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if (sectionToToggle.isPresent()) {
             var sectionToEdit = sectionToToggle.get();
             sectionToEdit.setSectionVisible(!sectionToEdit.isSectionVisible());

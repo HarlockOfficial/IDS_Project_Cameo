@@ -26,7 +26,7 @@ public class PrenotazioneService {
     }
 
     public Prenotazione getPrenotazioneById(UUID id, String token) {
-        var prenotazione = prenotazioneRepository.findById(id);
+        var prenotazione = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(id)).findFirst();
         if (tokenService.checkToken(token, Role.ADMIN)) {
             return prenotazione.orElse(null);
         }
@@ -38,7 +38,7 @@ public class PrenotazioneService {
     }
 
     public Prenotazione checkoutPrenotazione(UUID id, String token) {
-        var prenotazione = prenotazioneRepository.findById(id);
+        var prenotazione = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(id)).findFirst();
         var user = tokenService.getUserFromUUID(token);
         if (prenotazione.isEmpty()) {
             return null;
@@ -51,7 +51,7 @@ public class PrenotazioneService {
     }
 
     public Prenotazione deletePrenotazione(UUID id, String token) {
-        var prenotazione = prenotazioneRepository.findById(id);
+        var prenotazione = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(id)).findFirst();
         var user = tokenService.getUserFromUUID(token);
         if (prenotazione.isEmpty()) {
             return null;
@@ -106,7 +106,7 @@ public class PrenotazioneService {
             }
             prenotazioniToRemove.forEach(prenotazione.getSpiaggiaPrenotazioniList()::remove);
             prenotazione.getSpiaggiaPrenotazioniList().forEach(prenotazioneSpiaggia -> {
-                if(prenotazioneSpiaggiaRepository.findById(prenotazioneSpiaggia.getId()).isEmpty()){
+                if(prenotazioneSpiaggiaRepository.findAll().stream().filter(e->e.getId().equals(prenotazioneSpiaggia.getId())).findFirst().isEmpty()){
                     prenotazioneSpiaggia.setPrenotazione(prenotazione);
                     prenotazioneSpiaggiaRepository.save(prenotazioneSpiaggia);
                 }
@@ -119,7 +119,7 @@ public class PrenotazioneService {
         if (!tokenService.checkToken(token, Role.ADMIN) && !tokenService.checkToken(token, Role.RECEPTION)) {
             return null;
         }
-        var prenotazioneToUpdate = prenotazioneRepository.findById(prenotazione.getId());
+        var prenotazioneToUpdate = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(prenotazione.getId())).findFirst();
         if (prenotazioneToUpdate.isEmpty()) {
             return null;
         }
