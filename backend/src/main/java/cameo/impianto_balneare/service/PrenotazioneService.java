@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PrenotazioneService {
@@ -64,13 +65,23 @@ public class PrenotazioneService {
 
     public List<Prenotazione> getPrenotazioni(String tokenId) {
         var user = tokenService.getUserFromUUID(tokenId);
+        List<Prenotazione> prenotazioni = user.getPrenotazioni();
         if (user.getRole() == Role.ADMIN || user.getRole() == Role.RECEPTION) {
-            return prenotazioneRepository.findAll();
+            prenotazioni = prenotazioneRepository.findAll();
         }
         if (user.getRole() != Role.USER) {
             return null;
         }
-        return user.getPrenotazioni();
+        for (Prenotazione prenotazione : prenotazioni) {
+            var prenotazioneUser = prenotazione.getUser();
+            var prenotazioniSpiaggia = prenotazioneSpiaggiaRepository.findAll().stream()
+                    .filter(p -> p.getPrenotazione().getUser().getId().equals(prenotazioneUser.getId()))
+                    .collect(Collectors.toList());
+            var prenotazioneEvento = prenotazione.getEventiPrenotatiList();
+            prenotazione.setSpiaggiaPrenotazioniList(prenotazioniSpiaggia);
+            prenotazione.setEventiPrenotatiList(prenotazioneEvento);
+        }
+        return prenotazioni;
     }
 
     public Prenotazione createPrenotazione(Prenotazione prenotazione, String token) {

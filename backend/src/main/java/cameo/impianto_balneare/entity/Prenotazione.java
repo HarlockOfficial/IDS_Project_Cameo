@@ -30,10 +30,10 @@ public class Prenotazione {
     @Column(nullable = false)
     private ZonedDateTime date;
 
-    @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL)
     private List<Event> eventiPrenotatiList;
 
-    @OneToMany(targetEntity = PrenotazioneSpiaggia.class, mappedBy = "prenotazione", fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = PrenotazioneSpiaggia.class, mappedBy = "prenotazione")
     private List<PrenotazioneSpiaggia> spiaggiaPrenotazioniList;
 
     protected Prenotazione() {
