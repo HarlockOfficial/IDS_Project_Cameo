@@ -36,10 +36,16 @@ export class ShoppingCartService {
 
   addItem(element: PrenotazioneSpiaggia | Evento) {
     if ((<PrenotazioneSpiaggia>element).ombrellone !== undefined) {
-      this.prenotazione.spiaggiaPrenotazioniList?.push((<PrenotazioneSpiaggia>element));
+      const prenotazione = element as PrenotazioneSpiaggia;
+      const res = this.prenotazione.spiaggiaPrenotazioniList!.some(e => e.ombrellone.id === prenotazione.ombrellone.id);
+      if(res) return;
+      this.prenotazione.spiaggiaPrenotazioniList!.push((<PrenotazioneSpiaggia>element));
     }
     else {
-      this.prenotazione.eventiPrenotatiList?.push((<Evento>element));
+      const ev = element as Evento;
+      const res = this.prenotazione.eventiPrenotatiList!.some(e => e.id == ev.id);
+      if (res) return;
+      this.prenotazione.eventiPrenotatiList!.push(ev);
     }
   }
 
