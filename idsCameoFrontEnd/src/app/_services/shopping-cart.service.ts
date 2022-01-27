@@ -51,7 +51,6 @@ export class ShoppingCartService {
 
   checkoutCarrello(prenotazione: Prenotazione, token: string) {
     const configs = { 'token': token };
-
     return this.http.post(API + 'book', prenotazione, { headers: configs });
   }
 

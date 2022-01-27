@@ -60,6 +60,7 @@ export class ShoppingCartComponent implements OnInit {
       eventiPrenotatiList: [],
       spiaggiaPrenotazioniList: [],
     }
+    console.log("ASDSAASDDSA" + this.tokenStorageService.getUser());
     this.isPrenotazione = false;
   }
 }

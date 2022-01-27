@@ -51,7 +51,6 @@ export class PrenotaComponent implements OnInit {
   }
 
   addToOrder(ombrellone: Ombrellone) {
-
     const newPrenotazioneSpiaggia: PrenotazioneSpiaggia = {
       lettini: 1,
       sdraio: 1,
@@ -59,28 +58,26 @@ export class PrenotaComponent implements OnInit {
       endDate: new Date(1 / 11 / 1111),
       ombrellone: ombrellone,
     };
-
-
     if (this.listaOrdine.length == 0) {
-      this.listaOrdine.push(newPrenotazioneSpiaggia);
       this.removeFromListaOmbrelloni(ombrellone);
+      this.isOrder = true;
     }
     else {
-      this.listaOrdine.forEach((element, index) => {
+      this.listaOrdine.forEach((element) => {
+        console.log(element.ombrellone, ombrellone)
         if (element.ombrellone == ombrellone) {
-          console.log("gia aggiunto");
+          return;
         }
         else {
-          this.listaOrdine.push(newPrenotazioneSpiaggia);
           this.removeFromListaOmbrelloni(ombrellone);
+          this.isOrder = true;
         }
       });
     }
-    this.isOrder = true;
+    this.listaOrdine.push(newPrenotazioneSpiaggia);
   }
 
   removeFromOrder(prenotazioneSpiaggia: PrenotazioneSpiaggia) {
-
     this.listaOrdine.forEach((element, index) => {
       if (element.ombrellone == prenotazioneSpiaggia.ombrellone) {
         this.listaOrdine.splice(index, 1);

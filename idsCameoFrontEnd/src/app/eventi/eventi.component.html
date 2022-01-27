@@ -1,4 +1,20 @@
-<div *ngIf="isEvento">
+<h1>Lista degli eventi disponibili</h1>
+<div class="ombrellone-wrapper">
+    <div *ngFor="let evento of listaEventi; index as i">
+        <div class="card">
+            <h4>{{listaEventi[i].name}}</h4>
+            <div class="container">
+                <p>In data: {{listaEventi[i].date}}</p>
+                <p>Descrizione: {{listaEventi[i].description}}</p>
+                <p>Lugo:{{listaEventi[i].location}}</p>
+                <h4><b>Prezzo: {{listaEventi[i].price}}€</b></h4>
+                <button class="addToCart" (click)="addToOrder(listaEventi[i])">Prenota</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ombrellone-wrapper" *ngIf="isEvento">
     <h1>Le tue prenotazioni</h1>
     <div *ngFor="let evento of listaOrdine; index as i">
         <div class="card">
@@ -12,19 +28,6 @@
             </div>
         </div>
     </div>
-    <button class="addToCart" (click)="addToCart()">Aggiungi l'ordine al carrello</button>
 </div>
 
-<h1>Lista degli eventi disponibili</h1>
-<div *ngFor="let evento of listaEventi; index as i">
-    <div class="card">
-        <h4>{{listaEventi[i].name}}</h4>
-        <div class="container">
-            <p>In data: {{listaEventi[i].date}}</p>
-            <p>Descrizione: {{listaEventi[i].description}}</p>
-            <p>Lugo:{{listaEventi[i].location}}</p>
-            <h4><b>Prezzo: {{listaEventi[i].price}}€</b></h4>
-            <button class="addToCart" (click)="addToOrder(listaEventi[i])">Prenota</button>
-        </div>
-    </div>
-</div>
+<button *ngIf="isEvento" class="addToCart" (click)="addToCart()">Aggiungi l'ordine al carrello</button>

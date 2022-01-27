@@ -37,20 +37,20 @@ export class EventiComponent implements OnInit {
 
   addToOrder(evento: Evento) {
     if (this.listaOrdine.length == 0) {
-      this.listaOrdine.push(evento);
       this.removeFromListaOmbrelloni(evento);
     }
     else {
       this.listaOrdine.forEach((element, index) => {
         if (element == evento) {
           console.log("gia aggiunto");
+          return;
         }
         else {
-          this.listaOrdine.push(evento);
           this.removeFromListaOmbrelloni(evento);
         }
       });
     }
+    this.listaOrdine.push(evento);
     this.isEvento = true;
   }
 
