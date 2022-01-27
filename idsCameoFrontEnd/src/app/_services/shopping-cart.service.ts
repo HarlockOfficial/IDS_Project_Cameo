@@ -38,7 +38,7 @@ export class ShoppingCartService {
     if ((<PrenotazioneSpiaggia>element).ombrellone !== undefined) {
       const prenotazione = element as PrenotazioneSpiaggia;
       const res = this.prenotazione.spiaggiaPrenotazioniList!.some(e => e.ombrellone.id === prenotazione.ombrellone.id);
-      if(res) return;
+      if (res) return;
       this.prenotazione.spiaggiaPrenotazioniList!.push((<PrenotazioneSpiaggia>element));
     }
     else {
@@ -50,7 +50,6 @@ export class ShoppingCartService {
   }
 
   checkoutCarrello(prenotazione: Prenotazione, token: string) {
-    console.log("PROVORICHEISTAPORCODI")
     const configs = { 'token': token };
 
     return this.http.post(API + 'book', prenotazione, { headers: configs });

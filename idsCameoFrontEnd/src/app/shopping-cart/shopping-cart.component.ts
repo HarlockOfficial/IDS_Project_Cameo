@@ -14,12 +14,16 @@ export class ShoppingCartComponent implements OnInit {
 
   prenotazione!: Prenotazione;
   isPrenotazione: boolean = false;
+  isAuth: boolean = false;
   constructor(private shoppingCartService: ShoppingCartService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.prenotazione = this.shoppingCartService.getPrenotazione();
     if (this.prenotazione.eventiPrenotatiList?.length! > 0 || this.prenotazione.spiaggiaPrenotazioniList?.length! > 0) {
       this.isPrenotazione = true;
+    }
+    if (this.tokenStorageService.getToken() != undefined && this.tokenStorageService.getToken() != null) {
+      this.isAuth = true;
     }
   }
 
@@ -44,7 +48,6 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkOutCarrello() {
-    console.log("fired")
     this.shoppingCartService.checkoutCarrello(this.prenotazione, this.tokenStorageService.getToken()!).subscribe(
       data => {
         console.log(data);
@@ -57,5 +60,6 @@ export class ShoppingCartComponent implements OnInit {
       eventiPrenotatiList: [],
       spiaggiaPrenotazioniList: [],
     }
+    this.isPrenotazione = false;
   }
 }

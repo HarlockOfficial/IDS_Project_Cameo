@@ -34,7 +34,10 @@
             </div>
         </div>
     </div>
-    <div>
+    <div *ngIf="!isAuth">
+        <a routerLink="/login">NON SEI LOGGATO, LOGGATI PER EFFETTUARE IL CHECKOUT</a>
+    </div>
+    <div *ngIf="isAuth">
         <button class="checkout" (click)="checkOutCarrello()">Checkout</button>
     </div>
 </div>
