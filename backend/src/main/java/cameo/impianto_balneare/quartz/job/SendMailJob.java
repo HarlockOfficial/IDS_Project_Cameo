@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ public class SendMailJob implements Job {
         if (dateList == null || dateList.isEmpty()) {
             return;
         }
-        var date = dateList.get(0);
+        var date = new ArrayList<>(dateList).get(0);
 
         if (date.getDateTime().isBefore(ZonedDateTime.now()) || date.getDateTime().isEqual(ZonedDateTime.now())) {
             var result = false;

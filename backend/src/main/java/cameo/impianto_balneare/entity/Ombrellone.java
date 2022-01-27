@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "ombrellone")
@@ -37,14 +35,14 @@ public class Ombrellone {
     private ZonedDateTime endDate;
 
     @OneToMany(mappedBy = "ombrellone", cascade = CascadeType.ALL)
-    private List<PrenotazioneSpiaggia> listaPrenotazioni;
+    private Set<PrenotazioneSpiaggia> listaPrenotazioni;
 
     @OneToMany(targetEntity = MenuOrder.class, mappedBy = "ombrellone")
-    private List<MenuOrder> listaOrdini;
+    private Set<MenuOrder> listaOrdini;
 
     protected Ombrellone() {
         id = UUID.randomUUID();
-        listaPrenotazioni = new ArrayList<>();
-        listaOrdini = new ArrayList<>();
+        listaPrenotazioni = new HashSet<>();
+        listaOrdini = new HashSet<>();
     }
 }

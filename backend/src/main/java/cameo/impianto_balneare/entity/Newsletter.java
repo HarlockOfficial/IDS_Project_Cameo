@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name="newsletter")
@@ -25,10 +23,10 @@ public class Newsletter {
     private Event event;
 
     @OneToMany(targetEntity = DateTimeWrapper.class, mappedBy = "newsletter", cascade = CascadeType.ALL)
-    private List<DateTimeWrapper> times;
+    private Set<DateTimeWrapper> times;
 
     protected Newsletter() {
         this.id = UUID.randomUUID();
-        times = new ArrayList<>();
+        times = new HashSet<>();
     }
 }

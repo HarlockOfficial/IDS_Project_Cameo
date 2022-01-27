@@ -5,9 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name="menu_order")
@@ -26,7 +24,7 @@ public class MenuOrder {
     private OrderStatus orderStatus;
 
     @ManyToMany(targetEntity = MenuElement.class)
-    private List<MenuElement> menuElements;
+    private Set<MenuElement> menuElements;
 
     @ManyToOne(targetEntity = User.class)
     private User user;
@@ -38,6 +36,6 @@ public class MenuOrder {
         id = UUID.randomUUID();
         dateTime = ZonedDateTime.now();
         orderStatus = OrderStatus.ORDERED;
-        menuElements = new ArrayList<>();
+        menuElements = new HashSet<>();
     }
 }

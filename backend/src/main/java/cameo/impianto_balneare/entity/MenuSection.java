@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "menu_section")
@@ -26,11 +24,11 @@ public class MenuSection {
     private boolean isSectionVisible;
 
     @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<MenuElement> menuElementList;
+    private Set<MenuElement> menuElementList;
 
     protected MenuSection() {
         this.id = UUID.randomUUID();
-        menuElementList = new ArrayList<>();
+        menuElementList = new HashSet<>();
         isSectionVisible = true;
     }
 }

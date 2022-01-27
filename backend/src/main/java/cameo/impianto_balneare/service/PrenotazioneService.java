@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -65,21 +66,11 @@ public class PrenotazioneService {
 
     public List<Prenotazione> getPrenotazioni(String tokenId) {
         var user = tokenService.getUserFromUUID(tokenId);
-        List<Prenotazione> prenotazioni = user.getPrenotazioni();
+        List<Prenotazione> prenotazioni = new ArrayList<>(user.getPrenotazioni());
         if (user.getRole() == Role.ADMIN || user.getRole() == Role.RECEPTION) {
             prenotazioni = prenotazioneRepository.findAll();
-        }
-        if (user.getRole() != Role.USER) {
+        }if (user.getRole() != Role.USER && user.getRole() != Role.ADMIN && user.getRole() != Role.RECEPTION) {
             return null;
-        }
-        for (Prenotazione prenotazione : prenotazioni) {
-            var prenotazioneUser = prenotazione.getUser();
-            var prenotazioniSpiaggia = prenotazioneSpiaggiaRepository.findAll().stream()
-                    .filter(p -> p.getPrenotazione().getUser().getId().equals(prenotazioneUser.getId()))
-                    .collect(Collectors.toList());
-            var prenotazioneEvento = prenotazione.getEventiPrenotatiList();
-            prenotazione.setSpiaggiaPrenotazioniList(prenotazioniSpiaggia);
-            prenotazione.setEventiPrenotatiList(prenotazioneEvento);
         }
         return prenotazioni;
     }
@@ -92,7 +83,7 @@ public class PrenotazioneService {
         if(!prenotazione.getEventiPrenotatiList().isEmpty()) {
             var prenotazioniToRemove = new ArrayList<Event>();
             for (int i = 0; i < prenotazione.getEventiPrenotatiList().size(); i++) {
-                var event = prenotazione.getEventiPrenotatiList().get(i);
+                var event = new ArrayList<>(prenotazione.getEventiPrenotatiList()).get(i);
                 var isEventPresent = user.getPrenotazioni().stream()
                         .flatMap(e -> e.getEventiPrenotatiList().stream())
                         .anyMatch(e -> e.getId().equals(event.getId()));
@@ -100,20 +91,20 @@ public class PrenotazioneService {
                     prenotazioniToRemove.add(event);
                 }
             }
-            prenotazione.getEventiPrenotatiList().removeAll(prenotazioniToRemove);
+            prenotazioniToRemove.forEach(prenotazione.getEventiPrenotatiList()::remove);
         }
         if(!prenotazione.getSpiaggiaPrenotazioniList().isEmpty()) {
             var prenotazioniToRemove = new ArrayList<PrenotazioneSpiaggia>();
             for (int i = 0; i < prenotazione.getSpiaggiaPrenotazioniList().size(); i++) {
-                var ombrellone = prenotazione.getSpiaggiaPrenotazioniList().get(i).getOmbrellone();
+                var ombrellone = new ArrayList<>(prenotazione.getSpiaggiaPrenotazioniList()).get(i).getOmbrellone();
                 var isOmbrellonePresent = user.getPrenotazioni().stream()
                         .flatMap(e -> e.getSpiaggiaPrenotazioniList().stream())
                         .anyMatch(e -> e.getOmbrellone().getId().equals(ombrellone.getId()));
                 if (isOmbrellonePresent) {
-                    prenotazioniToRemove.add(prenotazione.getSpiaggiaPrenotazioniList().get(i));
+                    prenotazioniToRemove.add(new ArrayList<>(prenotazione.getSpiaggiaPrenotazioniList()).get(i));
                 }
             }
-            prenotazione.getSpiaggiaPrenotazioniList().removeAll(prenotazioniToRemove);
+            prenotazioniToRemove.forEach(prenotazione.getSpiaggiaPrenotazioniList()::remove);
             prenotazione.getSpiaggiaPrenotazioniList().forEach(prenotazioneSpiaggia -> {
                 if(prenotazioneSpiaggiaRepository.findById(prenotazioneSpiaggia.getId()).isEmpty()){
                     prenotazioneSpiaggia.setPrenotazione(prenotazione);
