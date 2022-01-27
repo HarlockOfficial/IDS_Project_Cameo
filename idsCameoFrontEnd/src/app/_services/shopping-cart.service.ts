@@ -14,7 +14,7 @@ export class ShoppingCartService {
   prenotazione: Prenotazione = {
     user: this.tokenStorageService.getUser()!,
     statoPrenotazione: StatoPrenotazione.CARRELLO,
-    date: new Date(1 / 11 / 1111),
+    date: new Date(),
     eventiPrenotatiList: [],
     spiaggiaPrenotazioniList: [],
   }
