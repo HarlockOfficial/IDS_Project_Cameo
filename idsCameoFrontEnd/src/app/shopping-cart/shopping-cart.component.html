@@ -1,10 +1,34 @@
 <p>shopping-cart works!</p>
-<div *ngFor="let item of cartList; index as i">
-    <div class="card">
-        <h4>Ombrellone</h4>
-        <div class="container">
-            <p>In riga: {{cartList[i].object}}</p>
-            <button class="removeFromOrder" (click)="removeFromOrder(cartList[i])">rimuovi</button>
+<div>
+    <p>{{prenotazione.date}}</p>
+    <p>{{prenotazione.user}}</p>
+    <p>{{prenotazione.statoPrenotazione}}</p>
+    <p>Ombrelloni Prenotati:</p>
+    <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList; index as i">
+        <div class="card">
+            <h4>Ombrellone</h4>
+            <div class="container">
+                <p>Da: {{item.startDate}}</p>
+                <p>A: {{item.endDate}}</p>
+                <p>Lettini:{{item.lettini}}</p>
+                <p>Sdraio:{{item.sdraio}}</p>
+                <p>In riga:{{item.ombrellone.numberRow}}</p>
+                <p>In colonna:{{item.ombrellone.numberColumn}}</p>
+                <p>Prezzo:{{item.ombrellone.price}}</p>
+                <button class="removeFromOrder">rimuovi</button>
+            </div>
+        </div>
+    </div>
+    <div *ngFor="let item of prenotazione.eventiPrenotatiList; index as i">
+        <div class="card">
+            <h4>Evento</h4>
+            <div class="container">
+                <p>Nome: {{item.name}}</p>
+                <p>Prezzo: {{item.price}}</p>
+                <p>Descrizione:{{item.description}}</p>
+                <p>Posizione:{{item.location}}</p>
+                <button class="removeFromOrder">rimuovi</button>
+            </div>
         </div>
     </div>
 </div>
