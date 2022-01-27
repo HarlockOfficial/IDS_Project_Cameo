@@ -52,8 +52,9 @@ export class AdminBoardComponent implements OnInit {
   eventCreated!: boolean;
   sectionCreated!: boolean;
   elementCreated!: boolean;
+  eventDeleted!: boolean;
   sectionCall!: Observable<MenuSection[]>;
-
+  eventList!: Evento[];
   constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) {
 
   }
@@ -69,10 +70,20 @@ export class AdminBoardComponent implements OnInit {
     }
 
     this.onGetAllSection(this.tokenStorage.getToken()!);
+    this.onGetAllEvents();
   }
 
   onGetAllSection(token: string) {
     this.sectionCall = this.menuService.allSection(token);
+  }
+
+  onGetAllEvents() {
+    this.eventService.getAllEventi()!.subscribe(
+      data => {
+        console.log(data);
+        this.eventList = data;
+      }
+    );
   }
 
   onAddOmbrellone() {
@@ -158,6 +169,18 @@ export class AdminBoardComponent implements OnInit {
     }
   }
 
+  onDeleteEvent(){
+    if (this.tokenStorage.getUser()?.role == "ADMIN" || this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
+      const token = this.tokenStorage.getToken()!;
+      console.log(this.formEvento.evento);
+      this.eventService.deleteEvent(this.formEvento.evento, token).subscribe(
+        _ => {
+          this.eventDeleted = true;
+          this.onGetAllEvents();
+        }
+      );
+    }
+  }
   /*
   refreshList() {
     const div = document.getElementById("listSection")!;

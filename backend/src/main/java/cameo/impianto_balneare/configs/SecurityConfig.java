@@ -8,21 +8,21 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Collections;
+
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
-    protected void configure(HttpSecurity security) throws Exception
-    {
-        getHttp().cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+    protected void configure(HttpSecurity security) throws Exception {
         security.logout().logoutUrl("/logout").logoutSuccessUrl("/login?successful=1").invalidateHttpSession(true);
-        getHttp().cors().and().csrf().disable();
+        security.cors().and().csrf().disable();
         security.httpBasic().disable();
     }
 
     @Bean
-    public WebMvcConfigurer configurer(){
-        return new WebMvcConfigurer(){
+    public WebMvcConfigurer configurer() {
+        return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
