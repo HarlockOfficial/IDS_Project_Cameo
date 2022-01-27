@@ -121,6 +121,7 @@ export class AdminBoardComponent implements OnInit {
       this.eventService.addEvento(newEvent, token).subscribe(
         _ => {
           this.eventCreated = true;
+          this.onGetAllEvents();
         }
       );
     }
@@ -138,6 +139,7 @@ export class AdminBoardComponent implements OnInit {
       this.menuService.addMenuSection(newMenuSection, token).subscribe(
         _ => {
           this.sectionCreated = true;
+          this.onGetAllSection(token);
         }
       );
     }
@@ -162,6 +164,7 @@ export class AdminBoardComponent implements OnInit {
         this.menuService.addMenuElement(newMenuElement, token).subscribe(
           _ => {
             this.elementCreated = true;
+            this.onGetAllSection(token);
           }
         );
         return;
@@ -181,18 +184,4 @@ export class AdminBoardComponent implements OnInit {
       );
     }
   }
-  /*
-  refreshList() {
-    const div = document.getElementById("listSection")!;
-    console.log(div);
-    let html = "";
-    this.sectionList.forEach((val) => {
-      html += `
-        <option value='${val.sectionName}'>${val.sectionName}</option>
-      `
-    });
-    console.log(html);
-    div.innerHTML = html;
-  } */
-
 }
