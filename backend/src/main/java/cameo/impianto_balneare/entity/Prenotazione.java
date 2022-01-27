@@ -32,7 +32,7 @@ public class Prenotazione {
     private ZonedDateTime date;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(targetEntity = Event.class, mappedBy = "prenotazione", cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Event.class, cascade = CascadeType.ALL)
     private Set<Event> eventiPrenotatiList;
 
     @LazyCollection(LazyCollectionOption.FALSE)

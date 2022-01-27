@@ -48,11 +48,6 @@ public class PrenotazioneView implements GlobalExceptionHandler{
         List<Prenotazione> lst = prenotazioneService.getPrenotazioni(token);
         if(lst == null || lst.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        for (Prenotazione prenotazione : lst) {
-            System.out.println(prenotazione.getDate());
-            System.out.println(prenotazione.getSpiaggiaPrenotazioniList().size());
-            System.out.println(prenotazione.getEventiPrenotatiList().size());
-        }
         return ResponseEntity.ok(lst);
     }
 

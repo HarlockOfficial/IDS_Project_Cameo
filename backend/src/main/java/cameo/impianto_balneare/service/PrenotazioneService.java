@@ -7,20 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PrenotazioneService {
     private final TokenService tokenService;
+    private final EventService eventService;
     private final PrenotazioneRepository prenotazioneRepository;
     private final PrenotazioneSpiaggiaRepository prenotazioneSpiaggiaRepository;
 
     @Autowired
-    public PrenotazioneService(TokenService tokenService, PrenotazioneRepository prenotazioneRepository, PrenotazioneSpiaggiaRepository prenotazioneSpiaggiaRepository) {
+    public PrenotazioneService(TokenService tokenService, EventService eventService, PrenotazioneRepository prenotazioneRepository, PrenotazioneSpiaggiaRepository prenotazioneSpiaggiaRepository) {
         this.tokenService = tokenService;
+        this.eventService = eventService;
         this.prenotazioneRepository = prenotazioneRepository;
         this.prenotazioneSpiaggiaRepository = prenotazioneSpiaggiaRepository;
     }
@@ -80,39 +80,21 @@ public class PrenotazioneService {
         if (user.getRole() == Role.USER) {
             prenotazione.setUser(user);
         }
-        if(!prenotazione.getEventiPrenotatiList().isEmpty()) {
-            var prenotazioniToRemove = new ArrayList<Event>();
-            for (int i = 0; i < prenotazione.getEventiPrenotatiList().size(); i++) {
-                var event = new ArrayList<>(prenotazione.getEventiPrenotatiList()).get(i);
-                var isEventPresent = user.getPrenotazioni().stream()
-                        .flatMap(e -> e.getEventiPrenotatiList().stream())
-                        .anyMatch(e -> e.getId().equals(event.getId()));
-                if (isEventPresent) {
-                    prenotazioniToRemove.add(event);
-                }
-            }
-            prenotazioniToRemove.forEach(prenotazione.getEventiPrenotatiList()::remove);
-        }
-        if(!prenotazione.getSpiaggiaPrenotazioniList().isEmpty()) {
-            var prenotazioniToRemove = new ArrayList<PrenotazioneSpiaggia>();
-            for (int i = 0; i < prenotazione.getSpiaggiaPrenotazioniList().size(); i++) {
-                var ombrellone = new ArrayList<>(prenotazione.getSpiaggiaPrenotazioniList()).get(i).getOmbrellone();
-                var isOmbrellonePresent = user.getPrenotazioni().stream()
-                        .flatMap(e -> e.getSpiaggiaPrenotazioniList().stream())
-                        .anyMatch(e -> e.getOmbrellone().getId().equals(ombrellone.getId()));
-                if (isOmbrellonePresent) {
-                    prenotazioniToRemove.add(new ArrayList<>(prenotazione.getSpiaggiaPrenotazioniList()).get(i));
-                }
-            }
-            prenotazioniToRemove.forEach(prenotazione.getSpiaggiaPrenotazioniList()::remove);
-            prenotazione.getSpiaggiaPrenotazioniList().forEach(prenotazioneSpiaggia -> {
-                if(prenotazioneSpiaggiaRepository.findAll().stream().filter(e->e.getId().equals(prenotazioneSpiaggia.getId())).findFirst().isEmpty()){
-                    prenotazioneSpiaggia.setPrenotazione(prenotazione);
-                    prenotazioneSpiaggiaRepository.save(prenotazioneSpiaggia);
-                }
-            });
-        }
-        return prenotazioneRepository.save(prenotazione);
+        var ombrelloniList = prenotazione.getSpiaggiaPrenotazioniList();
+        prenotazioneSpiaggiaRepository.saveAll(ombrelloniList);
+        var out = prenotazioneRepository.save(prenotazione);
+        ombrelloniList.forEach(ombrelloni -> ombrelloni.setPrenotazione(out));
+        prenotazioneSpiaggiaRepository.saveAll(ombrelloniList);
+        var eventList = prenotazione.getEventiPrenotatiList();
+        eventList.forEach(event -> {
+            var prenotazioniPendenti = event.getPrenotazione();
+            prenotazioniPendenti.add(out);
+            event.setPrenotazione(prenotazioniPendenti);
+        });
+        //TODO The following line inserts a vulnerability,
+        // think about a better way to update the reference on the other side
+        eventService.saveAll(eventList);
+        return prenotazioneRepository.save(out);
     }
 
     public Prenotazione updatePrenotazione(Prenotazione prenotazione, String token) {

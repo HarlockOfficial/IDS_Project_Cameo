@@ -7,7 +7,10 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "event")
@@ -35,7 +38,7 @@ public class Event {
     @Column
     private float price;
 
-    @ManyToMany(targetEntity = Prenotazione.class)
+    @ManyToMany(targetEntity = Prenotazione.class, mappedBy = "eventiPrenotatiList")
     private Set<Prenotazione> prenotazione;
 
     @OneToOne
