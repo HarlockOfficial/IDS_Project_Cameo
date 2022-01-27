@@ -46,6 +46,10 @@ export class AdminBoardComponent implements OnInit {
     isElementVisible: null,
   }
 
+  formRemoveMenuSection: any = {
+    id: null,
+  }
+
   isAdmin!: boolean;
   isEventManager!: boolean;
   ombrelloneCreated!: boolean;
