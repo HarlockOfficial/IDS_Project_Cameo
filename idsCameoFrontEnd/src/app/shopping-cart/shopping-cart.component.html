@@ -15,9 +15,7 @@
     </div>
 
     <div *ngIf="isPrenotazione">
-        <p>{{prenotazione.user}}</p>
-        <p>{{prenotazione.statoPrenotazione}}</p>
-        <p>Ombrelloni Prenotati:</p>
+        <p>Prenotazioni: </p>
         <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList">
             <div class="card">
                 <h4>Ombrellone</h4>
