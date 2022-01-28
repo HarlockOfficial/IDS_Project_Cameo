@@ -63,6 +63,7 @@ export class AdminBoardComponent implements OnInit {
   sectionCreated!: boolean;
   elementCreated!: boolean;
   eventDeleted!: boolean;
+  sectionDeleted!: boolean;
   sectionCall!: Observable<MenuSection[]>;
   eventList!: Evento[];
   allUserList!: Observable<User[]>;
@@ -207,6 +208,14 @@ export class AdminBoardComponent implements OnInit {
         console.log(data);
       }
     );
+  }
+
+  onDeleteSection() {
+    this.menuService.deleteSection(this.formRemoveMenuSection.id, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
   }
 
 }

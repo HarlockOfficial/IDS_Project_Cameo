@@ -141,7 +141,7 @@
   </div>
   <!-- TODO fix, not correct!-->
   <div class=form-wrapper>
-    <form *ngIf="isAdmin" name="form" (ngSubmit)="onDeleteEvent()" #f="ngForm" novalidate>
+    <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
       <div class="title">
         <h1>Elimina una sezione del menu</h1>
       </div>
@@ -154,12 +154,12 @@
           </select>
         </div>
         <div class="form-group">
-          <button class="btn">
+          <button class="btn" (click)="onDeleteSection()">
             Elimina Sezione
           </button>
         </div>
 
-        <div class="alert-success" *ngIf="eventDeleted">
+        <div class="alert-success" *ngIf="sectionDeleted">
           Sezione eliminato con successo
         </div>
       </div>

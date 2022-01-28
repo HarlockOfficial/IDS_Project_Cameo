@@ -39,4 +39,9 @@ export class MenuService {
     const configs = { 'token': token };
     return this.http.get<MenuSection[]>(API + 'menu/section', { headers: configs });
   }
+
+  deleteSection(sectionId: string, token: string) {
+    const configs = { 'token': token };
+    return this.http.delete(API + `menu/section/${sectionId}`, { headers: configs });
+  }
 }
