@@ -48,6 +48,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkOutCarrello() {
+    this.prenotazione.statoPrenotazione = StatoPrenotazione.PAGATO;
     this.shoppingCartService.checkoutCarrello(this.prenotazione, this.tokenStorageService.getToken()!).subscribe(
       data => {
         console.log(data);
@@ -60,7 +61,6 @@ export class ShoppingCartComponent implements OnInit {
       eventiPrenotatiList: [],
       spiaggiaPrenotazioniList: [],
     }
-    console.log("ASDSAASDDSA" + this.tokenStorageService.getUser());
     this.isPrenotazione = false;
   }
 }

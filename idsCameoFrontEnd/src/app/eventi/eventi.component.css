@@ -20,7 +20,7 @@ h1 {
     text-align: left;
 }
 
-.ombrellone-wrapper {
+.evento-wrapper {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

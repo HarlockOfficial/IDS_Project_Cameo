@@ -1,5 +1,5 @@
 <h1>Lista degli eventi disponibili</h1>
-<div class="ombrellone-wrapper">
+<div class="evento-wrapper">
     <div *ngFor="let evento of listaEventi; index as i">
         <div class="card">
             <h4>{{listaEventi[i].name}}</h4>
@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<div class="ombrellone-wrapper" *ngIf="isEvento">
+<div class="evento-wrapper" *ngIf="isEvento">
     <h1>Le tue prenotazioni</h1>
     <div *ngFor="let evento of listaOrdine; index as i">
         <div class="card">

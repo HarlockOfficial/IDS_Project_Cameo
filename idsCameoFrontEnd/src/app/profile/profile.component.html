@@ -29,41 +29,42 @@
         {{ currentUser.role }}
     </p>
 </div>
-<button *ngIf="isAdmin"><a routerLink="/dashboard">DashBoard</a></button>
-<p>Ombrelloni Prenotati:</p>
-<div *ngFor="let prenotazione of myPrenotazioni | async">
-    <p>{{prenotazione.date}}</p>
-    <p>{{prenotazione.statoPrenotazione}}</p>
-    <p>{{prenotazione.spiaggiaPrenotazioniList?.length}}</p>
-    <p>{{prenotazione.eventiPrenotatiList?.length}}</p>
 
-    <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList">
-        <div class="card">
-            <h4>Ombrellone</h4>
-            <div class="container">
-                <p>Da: {{item.startDate}}</p>
-                <p>A: {{item.endDate}}</p>
-                <p>Lettini:{{item.lettini}}</p>
-                <p>Sdraio:{{item.sdraio}}</p>
-                <p>In riga:{{item.ombrellone.numberRow}}</p>
-                <p>In colonna:{{item.ombrellone.numberColumn}}</p>
-                <p>Prezzo:{{item.ombrellone.price}}</p>
-                <button class="removeFromOrder">rimuovi</button>
+<button *ngIf="isAdmin"><a routerLink="/dashboard">DashBoard</a></button>
+
+<div class="prenotazione-wrapper" *ngFor="let prenotazione of myPrenotazioni | async">
+    <p class="prenotazione-info">Data della prenotazione: {{prenotazione.date}}</p>
+    <p class="prenotazione-info">Stato della prenotazione: {{prenotazione.statoPrenotazione}}</p>
+    <div class="ombrellone-wrapper">
+        <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList">
+            <div class="card">
+                <h4>Ombrellone</h4>
+                <div class="container">
+                    <p>Da: {{item.startDate}}</p>
+                    <p>A: {{item.endDate}}</p>
+                    <p>Lettini:{{item.lettini}}</p>
+                    <p>Sdraio:{{item.sdraio}}</p>
+                    <p>In riga:{{item.ombrellone.numberRow}}</p>
+                    <p>In colonna:{{item.ombrellone.numberColumn}}</p>
+                    <p>Prezzo:{{item.ombrellone.price}}</p>
+                </div>
             </div>
         </div>
     </div>
-    <div *ngFor="let item of prenotazione.eventiPrenotatiList; index as i">
-        <div class="card">
-            <h4>Evento</h4>
-            <div class="container">
-                <p>Nome: {{item.name}}</p>
-                <p>Prezzo: {{item.price}}</p>
-                <p>Descrizione:{{item.description}}</p>
-                <p>Posizione:{{item.location}}</p>
-                <button class="removeFromOrder">rimuovi</button>
+    <div class="event-wrapper">
+        <div *ngFor="let item of prenotazione.eventiPrenotatiList">
+            <div class="card">
+                <h4>Evento</h4>
+                <div class="container">
+                    <p>Nome: {{item.name}}</p>
+                    <p>Prezzo: {{item.price}}</p>
+                    <p>Descrizione:{{item.description}}</p>
+                    <p>Posizione:{{item.location}}</p>
+                </div>
             </div>
         </div>
     </div>
+    <button class="removeFromOrder" (click)="removePrenotazione(prenotazione.id!)">Cancella prenotazione</button>
 </div>
 
 <ng-template #loggedOut>
