@@ -9,16 +9,6 @@ import { Order } from '../interfaces/order';
 import { MenuElement } from '../interfaces/menuElement';
 const API = 'http://localhost:8080/';
 
-const headerDict = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
-const requestOptions = {
-  headers: new Headers(headerDict),
-};
-
 @Injectable({
   providedIn: 'root'
 })
@@ -64,9 +54,12 @@ export class ShoppingCartService {
   checkoutCarrello(elemento: Prenotazione | Order, token: string) {
     const configs = { 'token': token };
     if ((<Prenotazione>elemento).spiaggiaPrenotazioniList !== undefined || (<Prenotazione>elemento).eventiPrenotatiList !== undefined) {
+      console.log("aggiungo prenotazione")
+
       return this.http.post(API + 'book', elemento, { headers: configs });
     }
     else {
+      console.log("aggiungo menu")
       return this.http.post(API + 'order', elemento, { headers: configs });
     }
   }

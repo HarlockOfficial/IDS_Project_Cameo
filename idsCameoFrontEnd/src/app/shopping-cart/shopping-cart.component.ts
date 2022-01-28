@@ -57,6 +57,23 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkOutCarrello() {
+    //Ho sia prenotazione che ordine
+    if (this.isPrenotazione && this.isOrdine) {
+      this.checkoutPrenotazione();
+      this.checkoutOrdine();
+    }
+    else if (this.isPrenotazione) {
+      console.log("hey");
+      this.checkoutPrenotazione();
+    }
+    else if (this.isOrdine) {
+      this.checkoutOrdine()
+    }
+  }
+
+  checkoutPrenotazione() {
+    console.log("CHEKOUTTO prenotazione");
+    console.log(this.prenotazione, this.prenotazione.eventiPrenotatiList, this.prenotazione.spiaggiaPrenotazioniList);
     this.prenotazione.statoPrenotazione = StatoPrenotazione.PAGATO;
     this.shoppingCartService.checkoutCarrello(this.prenotazione, this.tokenStorageService.getToken()!).subscribe(
       data => {
@@ -71,5 +88,29 @@ export class ShoppingCartComponent implements OnInit {
       spiaggiaPrenotazioniList: [],
     }
     this.isPrenotazione = false;
+    this.reloadPage();
+  }
+
+  checkoutOrdine() {
+    console.log("CHEKOUTTO MENU");
+    this.ordine.orderStatus = "PAID";
+    this.shoppingCartService.checkoutCarrello(this.ordine, this.tokenStorageService.getToken()!).subscribe(
+      data => {
+        console.log(data);
+      }
+    );
+    this.ordine = {
+      dateTime: new Date(),
+      orderStatus: "ORDERED",
+      menuElements: [],
+      user: this.tokenStorageService.getUser()!,
+      ombrellone: undefined,
+    }
+    this.isOrdine = false;
+    this.reloadPage();
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }
