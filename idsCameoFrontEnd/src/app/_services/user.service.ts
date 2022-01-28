@@ -5,16 +5,6 @@ import { User } from '../interfaces/user';
 import { Prenotazione } from '../interfaces/prenotazione';
 const API = 'http://localhost:8080/';
 
-const headerDict = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
-const requestOptions = {
-  headers: new Headers(headerDict),
-};
-
 @Injectable({
   providedIn: 'root'
 })

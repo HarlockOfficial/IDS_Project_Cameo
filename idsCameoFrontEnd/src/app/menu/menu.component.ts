@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuElement } from '../interfaces/menuElement';
 import { MenuSection } from '../interfaces/menuSection';
-import { Order } from '../interfaces/order';
 import { MenuService } from '../_services/menu.service';
 import { ShoppingCartService } from '../_services/shopping-cart.service';
 @Component({

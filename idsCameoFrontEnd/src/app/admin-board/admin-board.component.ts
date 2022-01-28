@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Ombrellone } from '../interfaces/ombrellone';
 import { OmbrelloneService } from '../_services/ombrellone.service';
 import { TokenStorageService } from '../_services/token-storage.service';
@@ -11,7 +11,6 @@ import { MenuElement } from '../interfaces/menuElement';
 import { Observable } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { User } from '../interfaces/user';
-import { Prenotazione } from '../interfaces/prenotazione';
 @Component({
   selector: 'app-admin-board',
   templateUrl: './admin-board.component.html',

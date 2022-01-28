@@ -10,10 +10,6 @@ const headerDict = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const requestOptions = {
-  headers: new Headers(headerDict),
-};
-
 @Injectable({
   providedIn: 'root'
 })

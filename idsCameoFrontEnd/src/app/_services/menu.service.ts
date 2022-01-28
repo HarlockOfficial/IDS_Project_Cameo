@@ -3,14 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MenuSection } from '../interfaces/menuSection';
 import { MenuElement } from '../interfaces/menuElement';
-import { map } from 'rxjs/operators';
-const API = 'http://localhost:8080/';
 
-const headerDict = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+const API = 'http://localhost:8080/';
 
 @Injectable({
   providedIn: 'root'
