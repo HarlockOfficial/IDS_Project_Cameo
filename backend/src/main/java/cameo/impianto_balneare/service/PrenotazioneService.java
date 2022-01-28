@@ -101,9 +101,6 @@ public class PrenotazioneService {
             prenotazioniPendenti.add(out);
             event.setPrenotazione(prenotazioniPendenti);
         });
-        //TODO The following line inserts a vulnerability,
-        // think about a better way to update the reference on the other side
-        //eventService.saveAll(eventList);
         return prenotazioneRepository.save(out);
     }
 
