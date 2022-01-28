@@ -28,4 +28,9 @@ export class PrenotazioneService {
     return this.http.post(API + 'book', prenotazione, { headers: configs });
   }
 
+  deletePrenotazione(id: string, token: string): Observable<any> {
+    const configs = { 'token': token };
+    return this.http.delete(API + `book/${id}`, { headers: configs });
+  }
+
 }
