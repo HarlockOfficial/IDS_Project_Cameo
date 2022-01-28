@@ -45,6 +45,32 @@
   </div>
 
   <div class=form-wrapper>
+    <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
+      <div class="title">
+        <h1>Elimina un ombrellone</h1>
+      </div>
+      <div class="form-inside">
+        <div class="form-group">
+          <label for="sect">Ombrelloni Attualmente Presenti</label>
+          <select class="form-control" id="sect" name="status" [(ngModel)]="formRemoveOmbrellone.id">
+            <option *ngFor="let ombrellone of allFreeOmbrellone | async" [value]="ombrellone.id">
+              ROW: {{ombrellone.numberRow}} COLUMN: {{ombrellone.numberColumn}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button class="btn" (click)="onDeleteOmbrellone()">
+            Elimina Ombrellone
+          </button>
+        </div>
+
+        <div class="alert-success" *ngIf="sectionDeleted">
+          Sezione eliminato con successo
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class=form-wrapper>
     <form *ngIf="isAdmin || isEventManager" name="form" (ngSubmit)="onCreateEvent()" #f="ngForm" novalidate>
       <div class="title">
         <h1>Crea un nuovo Evento</h1>
@@ -139,7 +165,7 @@
       </div>
     </form>
   </div>
-  <!-- TODO fix, not correct!-->
+
   <div class=form-wrapper>
     <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
       <div class="title">

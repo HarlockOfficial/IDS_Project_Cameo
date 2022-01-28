@@ -56,6 +56,10 @@ export class AdminBoardComponent implements OnInit {
     newRole: null,
   }
 
+  formRemoveOmbrellone: any = {
+    id: null,
+  }
+
   isAdmin!: boolean;
   isEventManager!: boolean;
   ombrelloneCreated!: boolean;
@@ -67,6 +71,7 @@ export class AdminBoardComponent implements OnInit {
   sectionCall!: Observable<MenuSection[]>;
   eventList!: Evento[];
   allUserList!: Observable<User[]>;
+  allFreeOmbrellone!: Observable<Ombrellone[]>;
 
   constructor(private userService: UserService, private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
@@ -83,6 +88,7 @@ export class AdminBoardComponent implements OnInit {
     this.onGetAllSection(this.tokenStorage.getToken()!);
     this.onGetAllEvents();
     this.onGetAllUser();
+    this.onGetAllOmbrellone();
   }
 
   onGetAllSection(token: string) {
@@ -96,6 +102,10 @@ export class AdminBoardComponent implements OnInit {
         this.eventList = data;
       }
     );
+  }
+
+  onGetAllOmbrellone() {
+    this.allFreeOmbrellone = this.ombrelloneService.allOmbrelloni();
   }
 
   onAddOmbrellone() {
@@ -212,6 +222,14 @@ export class AdminBoardComponent implements OnInit {
 
   onDeleteSection() {
     this.menuService.deleteSection(this.formRemoveMenuSection.id, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
+  }
+
+  onDeleteOmbrellone() {
+    this.ombrelloneService.removeOmbrellone(this.formRemoveOmbrellone.id, this.tokenStorage.getToken()!).subscribe(
       data => {
         console.log(data);
       }

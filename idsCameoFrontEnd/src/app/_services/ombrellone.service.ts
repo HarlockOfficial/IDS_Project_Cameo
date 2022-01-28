@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ombrellone } from '../interfaces/ombrellone';
 
@@ -29,13 +29,22 @@ export class OmbrelloneService {
     let params = new HttpParams()
       .append('fromDate', start)
       .append('toDate', end);
-    return this.http.get<Ombrellone[]>(API + 'ombrellone/free', { headers: headerDict, params: params});
+    return this.http.get<Ombrellone[]>(API + 'ombrellone/free', { headers: headerDict, params: params });
+  }
+
+  allOmbrelloni() {
+    return this.http.get<Ombrellone[]>(API + 'ombrellone/all', { headers: headerDict });
   }
 
   addOmbrellone(ombrellone: Ombrellone, token: string): Observable<any> {
     const configs = { 'token': token };
 
     return this.http.post(API + 'ombrellone', ombrellone, { headers: configs });
+  }
+
+  removeOmbrellone(id: string, token: string) {
+    const configs = { 'token': token };
+    return this.http.delete(API + `ombrellone/${id}`, { headers: configs });
   }
 
 }
