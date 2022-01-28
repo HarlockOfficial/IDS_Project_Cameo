@@ -6,22 +6,17 @@ import cameo.impianto_balneare.repository.PrenotazioneSpiaggiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PrenotazioneService {
     private final TokenService tokenService;
-    private final EventService eventService;
     private final PrenotazioneRepository prenotazioneRepository;
     private final PrenotazioneSpiaggiaRepository prenotazioneSpiaggiaRepository;
 
     @Autowired
-    public PrenotazioneService(TokenService tokenService, EventService eventService, PrenotazioneRepository prenotazioneRepository, PrenotazioneSpiaggiaRepository prenotazioneSpiaggiaRepository) {
+    public PrenotazioneService(TokenService tokenService, PrenotazioneRepository prenotazioneRepository, PrenotazioneSpiaggiaRepository prenotazioneSpiaggiaRepository) {
         this.tokenService = tokenService;
-        this.eventService = eventService;
         this.prenotazioneRepository = prenotazioneRepository;
         this.prenotazioneSpiaggiaRepository = prenotazioneSpiaggiaRepository;
     }
@@ -59,16 +54,12 @@ public class PrenotazioneService {
         var user = tokenService.getUserFromUUID(token);
         var p = prenotazione.get();
         if (user.getRole() == Role.ADMIN || p.getUser().equals(user)) {
-            // delete prenotazioni ombrellone
+            // delete prenotazioni ombrellone (otherwise foreign key check fails)
             var spiaggiaPrenotazioneSet = p.getSpiaggiaPrenotazioniList();
-            prenotazioneSpiaggiaRepository.deleteAll(spiaggiaPrenotazioneSet);
-            p.setSpiaggiaPrenotazioniList(new HashSet<>());
-            // delete prenotazioni eventi
-            for (Event event : p.getEventiPrenotatiList()) {
-                eventService.deletePrenotazione(event, p);
+            if(spiaggiaPrenotazioneSet != null && !spiaggiaPrenotazioneSet.isEmpty()) {
+                prenotazioneSpiaggiaRepository.deleteAllInBatch(spiaggiaPrenotazioneSet);
             }
-            prenotazioneRepository.delete(p);
-            p.setSpiaggiaPrenotazioniList(spiaggiaPrenotazioneSet);
+            prenotazioneRepository.deleteAllInBatch(Collections.singleton(p));
             return p;
         }
         return null;
