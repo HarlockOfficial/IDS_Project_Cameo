@@ -48,10 +48,10 @@ public class UserService {
 
     public User updateUser(User user, String tokenId) {
         var isChangeRequestedByAdmin = tokenService.checkToken(tokenId, Role.ADMIN);
-        if (!isChangeRequestedByAdmin && !tokenService.getUserFromUUID(tokenId).getId().equals(user.getId())) {
+        if (!isChangeRequestedByAdmin && !tokenService.getUserFromUUID(tokenId).equals(user)) {
             return null;
         }
-        var userToUpdate = userRepository.findAll().stream().filter(u -> u.getId().equals(user.getId())).findFirst();
+        var userToUpdate = userRepository.findAll().stream().filter(u -> u.equals(user)).findFirst();
         if (userToUpdate.isPresent()) {
             var userToEdit = userToUpdate.get();
             userToEdit.setEmail(user.getEmail());

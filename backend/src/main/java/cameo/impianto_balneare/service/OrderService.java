@@ -73,9 +73,9 @@ public class OrderService {
         return getAllOrderOfDay(ZonedDateTime.now(), token);
     }
 
-    public MenuOrder updateOrderStatus(UUID order_id, String token) {
+    public MenuOrder updateOrderStatus(UUID id, String token) {
         if(checkToken(token)) return null;
-        var orderToUpdate = menuOrderRepository.findAll().stream().filter(e -> e.getId().equals(order_id)).findFirst();
+        var orderToUpdate = menuOrderRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         if (orderToUpdate.isPresent()) {
             var order =orderToUpdate.get();
             order.setOrderStatus(order.getOrderStatus().next());
@@ -95,7 +95,7 @@ public class OrderService {
         var orderToGet = menuOrderRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if(orderToGet.isPresent()) {
             var order = orderToGet.get();
-            if(order.getUser().getId().equals(tokenService.getUserFromUUID(token).getId())) {
+            if(order.getUser().equals(tokenService.getUserFromUUID(token))) {
                 return order;
             }
         }

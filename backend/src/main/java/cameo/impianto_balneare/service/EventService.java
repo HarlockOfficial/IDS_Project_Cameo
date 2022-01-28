@@ -47,7 +47,7 @@ public class EventService {
         if (!tokenService.checkToken(tokenId, Role.EVENT_MANAGER) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var eventToUpdate = eventRepository.findAll().stream().filter(e -> e.getId().equals(event.getId())).findFirst();
+        var eventToUpdate = eventRepository.findAll().stream().filter(e -> e.equals(event)).findFirst();
         if (eventToUpdate.isPresent()) {
             var eventToEdit = eventToUpdate.get();
             eventToEdit.setDate(event.getDate());

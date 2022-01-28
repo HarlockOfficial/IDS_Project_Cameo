@@ -38,7 +38,7 @@ public class MenuElementService {
         if (tokenCheck(tokenId)) {
             return null;
         }
-        var elementToUpdate = menuElementRepository.findAll().stream().filter(e->e.getId().equals(element.getId())).findFirst();
+        var elementToUpdate = menuElementRepository.findAll().stream().filter(e->e.equals(element)).findFirst();
         if (elementToUpdate.isPresent()) {
             var elementToEdit = elementToUpdate.get();
             elementToEdit.setName(element.getName());

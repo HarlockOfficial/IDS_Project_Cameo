@@ -45,7 +45,7 @@ public class TokenService {
     private void deleteToken(User user){
         if (user == null) return;
         var tokenList = tokenRepository.findAll()
-                .stream().filter(t -> t.getUser().getId().equals(user.getId()))
+                .stream().filter(t -> t.getUser().equals(user))
                 .collect(Collectors.toList());
         if (tokenList.isEmpty()) return;
         tokenRepository.deleteAll(tokenList);

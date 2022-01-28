@@ -3,6 +3,7 @@ package cameo.impianto_balneare.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.*;
@@ -30,5 +31,18 @@ public class MenuSection {
         this.id = UUID.randomUUID();
         menuElementList = new HashSet<>();
         isSectionVisible = true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        MenuSection that = (MenuSection) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

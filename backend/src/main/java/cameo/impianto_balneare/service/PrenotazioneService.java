@@ -31,7 +31,7 @@ public class PrenotazioneService {
             return prenotazione.orElse(null);
         }
         if (prenotazione.isPresent() &&
-                prenotazione.get().getUser().getId().equals(tokenService.getUserFromUUID(token).getId())) {
+                prenotazione.get().getUser().equals(tokenService.getUserFromUUID(token))) {
             return prenotazione.get();
         }
         return null;
@@ -43,7 +43,7 @@ public class PrenotazioneService {
         if (prenotazione.isEmpty()) {
             return null;
         }
-        if (user.getRole() == Role.ADMIN || prenotazione.get().getUser().getId().equals(user.getId())) {
+        if (user.getRole() == Role.ADMIN || prenotazione.get().getUser().equals(user)) {
             prenotazione.get().setStatoPrenotazione(StatoPrenotazione.CONFERMATO);
             return prenotazioneRepository.save(prenotazione.get());
         }
@@ -101,7 +101,7 @@ public class PrenotazioneService {
         if (!tokenService.checkToken(token, Role.ADMIN) && !tokenService.checkToken(token, Role.RECEPTION)) {
             return null;
         }
-        var prenotazioneToUpdate = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(prenotazione.getId())).findFirst();
+        var prenotazioneToUpdate = prenotazioneRepository.findAll().stream().filter(p -> p.equals(prenotazione)).findFirst();
         if (prenotazioneToUpdate.isEmpty()) {
             return null;
         }

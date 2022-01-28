@@ -56,7 +56,7 @@ public class OmbrelloneService {
                 .map(PrenotazioneSpiaggia::getOmbrellone).collect(Collectors.toList());
         var ombrelloniList = getAllOmbrelloni();
         ombrelloniOccupati.forEach(e ->
-            ombrelloniList.stream().filter(om -> om.getId().equals(e.getId()))
+            ombrelloniList.stream().filter(om -> om.equals(e))
                     .findFirst().ifPresent(ombrelloniList::remove)
         );
         return ombrelloniList;
@@ -106,7 +106,7 @@ public class OmbrelloneService {
         if (!tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var ombrelloneToUpdate = ombrelloneRepository.findAll().stream().filter(e -> e.getId().equals(ombrellone.getId())).findFirst();
+        var ombrelloneToUpdate = ombrelloneRepository.findAll().stream().filter(e -> e.equals(ombrellone)).findFirst();
         if (ombrelloneToUpdate.isPresent()) {
             var ombrelloneToEdit = ombrelloneToUpdate.get();
             ombrelloneToEdit.setNumberColumn(ombrellone.getNumberColumn());
@@ -149,8 +149,8 @@ public class OmbrelloneService {
         return null;
     }
 
-    public List<Prenotazione> getPrenotazioneByOmbrellone(UUID ombrelloneId, ZonedDateTime dataInizio, ZonedDateTime dataFine, String tokenId) {
-        var ombrellone = ombrelloneRepository.findAll().stream().filter(e -> e.getId().equals(ombrelloneId)).findFirst();
+    public List<Prenotazione> getPrenotazioneByOmbrellone(UUID id, ZonedDateTime dataInizio, ZonedDateTime dataFine, String tokenId) {
+        var ombrellone = ombrelloneRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         if (!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.checkToken(tokenId, Role.RECEPTION)) {
             return null;
         }

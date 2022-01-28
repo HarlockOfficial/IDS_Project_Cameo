@@ -45,7 +45,7 @@ public class MenuSectionService {
         if (!tokenService.checkToken(tokenId, Role.BAR) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var sectionToUpdate = menuSectionRepository.findAll().stream().filter(e->e.getId().equals(section.getId())).findFirst();
+        var sectionToUpdate = menuSectionRepository.findAll().stream().filter(e->e.equals(section)).findFirst();
         if (sectionToUpdate.isPresent()) {
             var sectionToEdit = sectionToUpdate.get();
             sectionToEdit.setSectionName(section.getSectionName());

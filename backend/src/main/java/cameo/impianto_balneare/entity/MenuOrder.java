@@ -2,6 +2,7 @@ package cameo.impianto_balneare.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -37,5 +38,18 @@ public class MenuOrder {
         dateTime = ZonedDateTime.now();
         orderStatus = OrderStatus.ORDERED;
         menuElements = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        MenuOrder menuOrder = (MenuOrder) o;
+        return id != null && Objects.equals(id, menuOrder.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

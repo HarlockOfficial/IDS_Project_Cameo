@@ -1,8 +1,9 @@
 package cameo.impianto_balneare.entity;
 
-//import cameo.impianto_balneare.Quartz.Entity.MailQueue;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.*;
@@ -28,5 +29,18 @@ public class Newsletter {
     protected Newsletter() {
         this.id = UUID.randomUUID();
         times = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Newsletter that = (Newsletter) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
