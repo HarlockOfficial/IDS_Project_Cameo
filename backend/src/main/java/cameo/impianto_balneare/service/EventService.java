@@ -1,6 +1,7 @@
 package cameo.impianto_balneare.service;
 
 import cameo.impianto_balneare.entity.Event;
+import cameo.impianto_balneare.entity.Prenotazione;
 import cameo.impianto_balneare.entity.Role;
 import cameo.impianto_balneare.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -72,7 +72,8 @@ public class EventService {
         return null;
     }
 
-    public void saveAll(Set<Event> eventList) {
-        eventRepository.saveAll(eventList);
+    public void deletePrenotazione(Event event, Prenotazione p) {
+        event.getPrenotazione().remove(p);
+        eventRepository.save(event);
     }
 }

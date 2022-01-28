@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,13 +53,22 @@ public class PrenotazioneService {
 
     public Prenotazione deletePrenotazione(UUID id, String token) {
         var prenotazione = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(id)).findFirst();
-        var user = tokenService.getUserFromUUID(token);
         if (prenotazione.isEmpty()) {
             return null;
         }
+        var user = tokenService.getUserFromUUID(token);
         var p = prenotazione.get();
-        if (user.getRole() == Role.ADMIN || p.getUser().getId().equals(user.getId())) {
+        if (user.getRole() == Role.ADMIN || p.getUser().equals(user)) {
+            // delete prenotazioni ombrellone
+            var spiaggiaPrenotazioneSet = p.getSpiaggiaPrenotazioniList();
+            prenotazioneSpiaggiaRepository.deleteAll(spiaggiaPrenotazioneSet);
+            p.setSpiaggiaPrenotazioniList(new HashSet<>());
+            // delete prenotazioni eventi
+            for (Event event : p.getEventiPrenotatiList()) {
+                eventService.deletePrenotazione(event, p);
+            }
             prenotazioneRepository.delete(p);
+            p.setSpiaggiaPrenotazioniList(spiaggiaPrenotazioneSet);
             return p;
         }
         return null;
@@ -93,7 +103,7 @@ public class PrenotazioneService {
         });
         //TODO The following line inserts a vulnerability,
         // think about a better way to update the reference on the other side
-        eventService.saveAll(eventList);
+        //eventService.saveAll(eventList);
         return prenotazioneRepository.save(out);
     }
 

@@ -36,6 +36,7 @@ public class Event {
     @Column
     private float price;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(targetEntity = Prenotazione.class, mappedBy = "eventiPrenotatiList")
     private Set<Prenotazione> prenotazione;
 
