@@ -4,6 +4,7 @@ import { UserService } from '../_services/user.service';
 import { User } from '../interfaces/user';
 import { Prenotazione } from '../interfaces/prenotazione';
 import { Observable } from 'rxjs';
+import { PrenotazioneService } from '../_services/prenotazione.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -16,7 +17,7 @@ export class ProfileComponent implements OnInit {
   myPrenotazioni!: Observable<Prenotazione[]>;
   isAdmin = false;
 
-  constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
+  constructor(private prenotazioneService: PrenotazioneService, private userService: UserService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
     this.currentUser = this.tokenStorage.getUser()!;
@@ -43,16 +44,15 @@ export class ProfileComponent implements OnInit {
   }
 
   onGetMyPrenotazioni() {
-    /*
-    this.userService.myPrenotazioni(this.tokenStorage.getToken()!)?.subscribe(
-      data => {
-        this.myPrenotazioni = data;
-      }
-    ) */
     this.myPrenotazioni = this.userService.myPrenotazioni(this.tokenStorage.getToken()!)!;
   }
 
-  reloadPage(): void {
-    window.location.reload();
+  //TODO; Da rivedere, funziona ma poi effettivamente non viene rimossa ??
+  removePrenotazione(id: string) {
+    this.prenotazioneService.deletePrenotazione(id, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
   }
 }

@@ -8,27 +8,27 @@
         <div class="form-group">
           <label for="numberRow">Numero riga ombrellone</label>
           <input type="text" class="form-control" name="numberRow" [(ngModel)]="formOmbrellone.numberRow" required
-                 #numberRow="ngModel"/>
+            #numberRow="ngModel" />
         </div>
         <div class="form-group">
           <label for="numberColumn">Numero colonna ombrellone</label>
-          <input type="text" class="form-control" name="numberColumn" [(ngModel)]="formOmbrellone.numberColumn"
-                 required #numberColumn="ngModel"/>
+          <input type="text" class="form-control" name="numberColumn" [(ngModel)]="formOmbrellone.numberColumn" required
+            #numberColumn="ngModel" />
         </div>
         <div class="form-group">
           <label for="price">Prezzo</label>
           <input type="text" class="form-control" name="price" [(ngModel)]="formOmbrellone.price" required
-                 #price="ngModel"/>
+            #price="ngModel" />
         </div>
         <div class="form-group">
           <label for="startDate">Data inizio</label>
           <input type="date" class="form-control" name="startDate" [(ngModel)]="formOmbrellone.startDate" required
-                 #startDate="ngModel"/>
+            #startDate="ngModel" />
         </div>
         <div class="form-group">
           <label for="endDate">Data fine</label>
           <input type="date" class="form-control" name="endDate" [(ngModel)]="formOmbrellone.endDate" required
-                 #endDate="ngModel"/>
+            #endDate="ngModel" />
         </div>
 
         <div class="form-group">
@@ -52,28 +52,27 @@
       <div class="form-inside">
         <div class="form-group">
           <label for="name">Nome</label>
-          <input type="text" class="form-control" name="name" [(ngModel)]="formEvento.name" required
-                 #name="ngModel"/>
+          <input type="text" class="form-control" name="name" [(ngModel)]="formEvento.name" required #name="ngModel" />
         </div>
         <div class="form-group">
           <label for="location">Posizione</label>
           <input type="text" class="form-control" name="location" [(ngModel)]="formEvento.location" required
-                 #location="ngModel"/>
+            #location="ngModel" />
         </div>
         <div class="form-group">
           <label for="date">Data</label>
           <input type="date" class="form-control" name="date" [(ngModel)]="formEvento.date" required
-                 #dataFine="ngModel"/>
+            #dataFine="ngModel" />
         </div>
         <div class="form-group">
           <label for="description">Descrizione</label>
           <input type="text" class="form-control" name="description" [(ngModel)]="formEvento.description" required
-                 #description="ngModel"/>
+            #description="ngModel" />
         </div>
         <div class="form-group">
           <label for="price">Prezzo</label>
           <input type="text" class="form-control" name="price" [(ngModel)]="formEvento.price" required
-                 #price="ngModel"/>
+            #price="ngModel" />
         </div>
 
         <div class="form-group">
@@ -97,7 +96,8 @@
       <div class="form-inside">
         <div class="form-group">
           <label for="evento">Eventi Attualmente Presenti</label>
-          <select class="form-control" id="evento" name="evento" [(ngModel)]="formEvento.evento" required #evento="ngModel">
+          <select class="form-control" id="evento" name="evento" [(ngModel)]="formEvento.evento" required
+            #evento="ngModel">
             <option *ngFor="let evento of eventList" [value]="evento.id">
               {{evento.name}}
             </option>
@@ -124,8 +124,8 @@
       <div class="form-inside">
         <div class="form-group">
           <label for="sectionName">Nome</label>
-          <input type="text" class="form-control" name="sectionName" [(ngModel)]="formMenuSection.sectionName"
-                 required #name="ngModel"/>
+          <input type="text" class="form-control" name="sectionName" [(ngModel)]="formMenuSection.sectionName" required
+            #name="ngModel" />
         </div>
         <div class="form-group">
           <button class="btn">
@@ -175,17 +175,17 @@
         <div class="form-group">
           <label for="name">Nome</label>
           <input type="text" class="form-control" name="name" [(ngModel)]="formMenuElement.name" required
-                 #name="ngModel"/>
+            #name="ngModel" />
         </div>
         <div class="form-group">
           <label for="description">Descrizione</label>
-          <input type="text" class="form-control" name="description" [(ngModel)]="formMenuElement.description"
-                 required #name="ngModel"/>
+          <input type="text" class="form-control" name="description" [(ngModel)]="formMenuElement.description" required
+            #name="ngModel" />
         </div>
         <div class="form-group">
           <label for="price">Prezzo</label>
           <input type="text" class="form-control" name="price" [(ngModel)]="formMenuElement.price" required
-                 #name="ngModel"/>
+            #name="ngModel" />
         </div>
 
         <div class="form-group">
@@ -208,4 +208,21 @@
       </div>
     </form>
   </div>
+
+  <div class="user-wrapper">
+    <div class="title">
+      <h1>Crea un nuovo elemento del menu</h1>
+    </div>
+    <div *ngFor="let user of allUserList | async">
+      <p>User: {{user.username}} Role: {{user.role}}</p>
+      <select class="form-control" name="status" [(ngModel)]="formRoleChange.role">
+        <option [value]="'USER'">USER</option>
+        <option [value]="'ADMIN'">ADMIN</option>
+        <option [value]="'BAR'">BAR</option>
+        <option [value]="'EVENT_MANAGER'">EVENT_MANAGER</option>
+      </select>
+      <button class="btn" (click)="changeUserRole(user)">Cambia</button>
+    </div>
+  </div>
+
 </div>

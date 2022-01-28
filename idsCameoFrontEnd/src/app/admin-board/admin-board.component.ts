@@ -9,7 +9,9 @@ import { MenuService } from '../_services/menu.service';
 import { Router } from '@angular/router';
 import { MenuElement } from '../interfaces/menuElement';
 import { Observable } from 'rxjs';
-
+import { UserService } from '../_services/user.service';
+import { User } from '../interfaces/user';
+import { Prenotazione } from '../interfaces/prenotazione';
 @Component({
   selector: 'app-admin-board',
   templateUrl: './admin-board.component.html',
@@ -50,6 +52,10 @@ export class AdminBoardComponent implements OnInit {
     id: null,
   }
 
+  formRoleChange: any = {
+    newRole: null,
+  }
+
   isAdmin!: boolean;
   isEventManager!: boolean;
   ombrelloneCreated!: boolean;
@@ -59,9 +65,9 @@ export class AdminBoardComponent implements OnInit {
   eventDeleted!: boolean;
   sectionCall!: Observable<MenuSection[]>;
   eventList!: Evento[];
-  constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) {
+  allUserList!: Observable<User[]>;
 
-  }
+  constructor(private userService: UserService, private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -75,6 +81,7 @@ export class AdminBoardComponent implements OnInit {
 
     this.onGetAllSection(this.tokenStorage.getToken()!);
     this.onGetAllEvents();
+    this.onGetAllUser();
   }
 
   onGetAllSection(token: string) {
@@ -188,4 +195,18 @@ export class AdminBoardComponent implements OnInit {
       );
     }
   }
+
+  onGetAllUser() {
+    this.allUserList = this.userService.userInfo(this.tokenStorage.getToken())!;
+  }
+
+  changeUserRole(user: User) {
+    user.role = this.formRoleChange.role;
+    this.userService.changeUserRole(user, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+      }
+    );
+  }
+
 }
