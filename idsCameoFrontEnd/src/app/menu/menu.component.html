@@ -1,13 +1,26 @@
-<h1>Menu</h1>
-<ul>
-  <li *ngFor="let recipient of listaMenu | keyvalue">
-      <h2>{{recipient.key.sectionName}}</h2>
+<div *ngIf="isOrder">
+  <h1>I miei ordini</h1>
+  <li *ngFor="let element of listaOrdine">
+    {{element.name}}
+    {{element.price}}
+    <button (click)="removeFromOrder(element)">Rimuovi</button>
+  </li>
+  <button *ngIf="isOrder" class="addToCart" (click)="addToCart()">Aggiungi l'ordine al carrello</button>
+</div>
+
+<div>
+  <h1>Lista Menu</h1>
+  <ul>
+    <li *ngFor="let section of listaMenu | keyvalue">
+      <h2>{{section.key.sectionName}}</h2>
       <ul>
-        <li *ngFor="let value of recipient.value">
-          {{value.name}}
-          {{value.description}}
-          {{value.price}}
+        <li *ngFor="let element of section.value">
+          {{element.name}}
+          {{element.description}}
+          {{element.price}}
+          <button (click)="addToOrder(element)">Aggiungi all'ordine</button>
         </li>
       </ul>
-  </li>
-</ul>
+    </li>
+  </ul>
+</div>

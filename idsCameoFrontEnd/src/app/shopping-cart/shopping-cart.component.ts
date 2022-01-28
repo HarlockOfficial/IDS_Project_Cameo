@@ -5,6 +5,7 @@ import { PrenotazioneSpiaggia } from '../interfaces/prenotazioneSpiaggia';
 import { Evento } from '../interfaces/evento';
 import { StatoPrenotazione } from '../interfaces/StatoPrenotazione';
 import { TokenStorageService } from '../_services/token-storage.service';
+import { Order } from '../interfaces/order';
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
@@ -13,12 +14,20 @@ import { TokenStorageService } from '../_services/token-storage.service';
 export class ShoppingCartComponent implements OnInit {
 
   prenotazione!: Prenotazione;
+  ordine!: Order;
   isPrenotazione: boolean = false;
+  isOrdine: boolean = false;
   isAuth: boolean = false;
   constructor(private shoppingCartService: ShoppingCartService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.prenotazione = this.shoppingCartService.getPrenotazione();
+    this.ordine = this.shoppingCartService.getOrdine();
+    if (this.ordine.menuElements?.length! > 0) {
+      console.log("asd")
+      console.log(this.ordine.menuElements);
+      this.isOrdine = true;
+    }
     if (this.prenotazione.eventiPrenotatiList?.length! > 0 || this.prenotazione.spiaggiaPrenotazioniList?.length! > 0) {
       this.isPrenotazione = true;
     }
