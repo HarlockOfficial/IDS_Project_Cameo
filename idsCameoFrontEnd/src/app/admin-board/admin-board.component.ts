@@ -59,15 +59,23 @@ export class AdminBoardComponent implements OnInit {
     id: null,
   }
 
+  formRemoveMenuElement: any = {
+    id: null,
+  };
+
   isAdmin!: boolean;
   isEventManager!: boolean;
+  isBar!: boolean;
+  isAccoglienza!: boolean;
   ombrelloneCreated!: boolean;
   eventCreated!: boolean;
   sectionCreated!: boolean;
   elementCreated!: boolean;
   eventDeleted!: boolean;
   sectionDeleted!: boolean;
+  elementDeleted!: boolean;
   sectionCall!: Observable<MenuSection[]>;
+  elementList: MenuElement[] = [];
   eventList!: Evento[];
   allUserList!: Observable<User[]>;
   allFreeOmbrellone!: Observable<Ombrellone[]>;
@@ -80,6 +88,10 @@ export class AdminBoardComponent implements OnInit {
       this.isAdmin = true;
     } else if (this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
       this.isEventManager = true;
+    } else if (this.tokenStorage.getUser()?.role == "BAR") {
+      this.isBar = true;
+    } else if (this.tokenStorage.getUser()?.role == "RECEPTION") {
+      this.isAccoglienza = true;
     } else {
       this.router.navigate(['/home']);
     }
@@ -92,6 +104,10 @@ export class AdminBoardComponent implements OnInit {
 
   onGetAllSection(token: string) {
     this.sectionCall = this.menuService.allSection(token);
+    this.sectionCall.forEach(sectionList => {
+      const elements = sectionList.flatMap(section => section.menuElementList)
+      this.elementList.push(...elements);
+    });
   }
 
   onGetAllEvents() {
@@ -122,6 +138,7 @@ export class AdminBoardComponent implements OnInit {
       this.ombrelloneService.addOmbrellone(newOmbrellone, token).subscribe(
         _ => {
           this.ombrelloneCreated = true;
+          this.onGetAllOmbrellone();
         }
       );
     }
@@ -215,6 +232,7 @@ export class AdminBoardComponent implements OnInit {
     this.userService.changeUserRole(user, this.tokenStorage.getToken()!).subscribe(
       data => {
         console.log(data);
+        this.onGetAllUser();
       }
     );
   }
@@ -223,6 +241,7 @@ export class AdminBoardComponent implements OnInit {
     this.menuService.deleteSection(this.formRemoveMenuSection.id, this.tokenStorage.getToken()!).subscribe(
       data => {
         console.log(data);
+        this.onGetAllSection(this.tokenStorage.getToken()!);
       }
     )
   }
@@ -235,4 +254,13 @@ export class AdminBoardComponent implements OnInit {
     )
   }
 
+  onDeleteElement() {
+    this.menuService.deleteElement(this.formRemoveMenuElement.id, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllSection(this.tokenStorage.getToken()!);
+        this.elementDeleted = true;
+      }
+    )
+  }
 }

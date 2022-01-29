@@ -186,7 +186,7 @@
         </div>
 
         <div class="alert-success" *ngIf="sectionDeleted">
-          Sezione eliminato con successo
+          Sezione eliminata con successo
         </div>
       </div>
     </form>
@@ -235,6 +235,32 @@
     </form>
   </div>
 
+  <div class=form-wrapper>
+    <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
+      <div class="title">
+        <h1>Elimina un elemento del menu</h1>
+      </div>
+      <div class="form-inside">
+        <div class="form-group">
+          <label for="element">Elementi Attualmente Presenti</label>
+          <select class="form-control" id="element" name="status" [(ngModel)]="formRemoveMenuElement.id">
+            <option *ngFor="let element of elementList" [value]="element.id">
+              {{element.name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button class="btn" (click)="onDeleteElement()">
+            Elimina Elemento
+          </button>
+        </div>
+
+        <div class="alert-success" *ngIf="elementDeleted">
+          Elemento eliminato con successo
+        </div>
+      </div>
+    </form>
+  </div>
+
   <div class="user-wrapper">
     <div class="title">
       <h1>Lista utenti</h1>
@@ -246,6 +272,7 @@
         <option [value]="'ADMIN'">ADMIN</option>
         <option [value]="'BAR'">BAR</option>
         <option [value]="'EVENT_MANAGER'">EVENT_MANAGER</option>
+        <option [value]="'RECEPTION'">RECEPTION</option>
       </select>
       <button class="btn" (click)="changeUserRole(user)">Cambia</button>
     </div>
