@@ -91,6 +91,8 @@ export class PrenotaComponent implements OnInit {
 
   addToCart() {
     this.listaOrdine.forEach(element => {
+      element.startDate = this.startDate;
+      element.endDate = this.endDate;
       this.shoppingCartService.addItem(element);
     });
     this.listaOrdine = [];
