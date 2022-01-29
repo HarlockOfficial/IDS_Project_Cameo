@@ -7,6 +7,7 @@ import {StatoPrenotazione} from '../interfaces/StatoPrenotazione';
 import {HttpClient} from '@angular/common/http';
 import {Order} from '../interfaces/order';
 import {MenuElement} from '../interfaces/menuElement';
+import {Observable} from "rxjs";
 
 const API = 'http://localhost:8080/';
 
@@ -100,5 +101,19 @@ export class ShoppingCartService {
   updateOrderStatus(order: Order, token: string) {
     const configs = { 'token': token };
     return this.http.put<Order>(API + 'order/' + order.id, null, { headers: configs });
+  }
+
+  getAllPrenotazioni(token: string) {
+    const configs = { 'token': token };
+    return this.http.get<Prenotazione[]>(API + 'book', { headers: configs });
+  }
+
+  checkIn(prenotazione: Prenotazione, token: string): Observable<Prenotazione> {
+    prenotazione.statoPrenotazione = StatoPrenotazione.PAGATO;
+    return this.updatePrenotazione(prenotazione, token);
+  }
+  private updatePrenotazione(prenotazione: Prenotazione, token: string): Observable<Prenotazione> {
+    const configs = { 'token': token };
+    return this.http.put<Prenotazione>(API + 'book/', prenotazione, { headers: configs });
   }
 }

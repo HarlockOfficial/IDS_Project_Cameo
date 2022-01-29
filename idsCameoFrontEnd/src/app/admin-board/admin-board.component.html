@@ -1,7 +1,7 @@
 <div class="div-container">
   <div class=form-wrapper>
     <form *ngIf="isAdmin" name="formOmbrellone" (ngSubmit)="onAddOmbrellone()" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Crea un nuovo ombrellone</h1>
       </div>
       <div class="form-inside">
@@ -46,7 +46,7 @@
 
   <div class=form-wrapper>
     <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Elimina un ombrellone</h1>
       </div>
       <div class="form-inside">
@@ -72,7 +72,7 @@
 
   <div class=form-wrapper>
     <form *ngIf="isAdmin || isEventManager" name="form" (ngSubmit)="onCreateEvent()" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Crea un nuovo Evento</h1>
       </div>
       <div class="form-inside">
@@ -116,7 +116,7 @@
 
   <div class=form-wrapper>
     <form *ngIf="isAdmin || isEventManager" name="form" (ngSubmit)="onDeleteEvent()" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Elimina un Evento</h1>
       </div>
       <div class="form-inside">
@@ -144,7 +144,7 @@
 
   <div class=form-wrapper>
     <form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateMenuSection()" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Crea una nuova sezione del menu</h1>
       </div>
       <div class="form-inside">
@@ -168,7 +168,7 @@
 
   <div class=form-wrapper>
     <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Elimina una sezione del menu</h1>
       </div>
       <div class="form-inside">
@@ -194,7 +194,7 @@
 
   <div class=form-wrapper>
     <form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateMenuElement()" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Crea un nuovo elemento del menu</h1>
       </div>
       <div class="form-inside">
@@ -237,7 +237,7 @@
 
   <div class=form-wrapper>
     <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
-      <div class="title">
+      <div class="form-title">
         <h1>Elimina un elemento del menu</h1>
       </div>
       <div class="form-inside">
@@ -279,55 +279,61 @@
   </div>
 
   <div class="order-wrapper" *ngIf="isAdmin || isBar">
-    <div class="title">
+    <div class="form-title">
       <h1>Lista ordinazioni pending</h1>
     </div>
     <div *ngFor="let order of allPendingOrderList">
-      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <p>Order: {{order.id}} User: {{order.user!.username}}</p>
       <button class="btn" (click)="updateOrderStatus(order)">In Progress</button>
     </div>
   </div>
 
-  <div class="order-wrapper" *ngIf="isAdmin || isBar">
-    <div class="title">
+  <div class="form-wrapper" *ngIf="isAdmin || isBar">
+    <div class="form-title">
       <h1>Lista ordinazioni in progress</h1>
     </div>
     <div *ngFor="let order of allInProgressOrderList">
-      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <p>Order: {{order.id}} User: {{order.user!.username}}</p>
       <button class="btn" (click)="updateOrderStatus(order)">Completato</button>
     </div>
   </div>
 
-  <div class="order-wrapper" *ngIf="isAdmin || isBar">
-    <div class="title">
+  <div class="form-wrapper" *ngIf="isAdmin || isBar">
+    <div class="form-title">
       <h1>Lista ordinazioni completate</h1>
     </div>
     <div *ngFor="let order of allCompletedOrderList">
-      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <p>Order: {{order.id}} User: {{order.user!.username}}</p>
       <button class="btn" (click)="updateOrderStatus(order)">Consegnato</button>
     </div>
   </div>
 
-  <div class="order-wrapper" *ngIf="isAdmin || isBar">
-    <div class="title">
+  <div class="form-wrapper" *ngIf="isAdmin || isBar">
+    <div class="form-title">
       <h1>Lista ordinazioni consegnate</h1>
     </div>
     <div *ngFor="let order of allDeliveredOrderList">
-      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <p>Order: {{order.id}} User: {{order.user!.username}}</p>
       <button class="btn" (click)="updateOrderStatus(order)">Pagato</button>
     </div>
   </div>
 
-  <div class="order-wrapper" *ngIf="isAdmin || isBar">
-    <div class="title">
+  <div class="form-wrapper" *ngIf="isAdmin || isBar">
+    <div class="form-title">
       <h1>Lista ordinazioni pagate</h1>
     </div>
     <div *ngFor="let order of allPaidOrderList">
-      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <p>Order: {{order.id}} User: {{order.user!.username}}</p>
     </div>
   </div>
 
-  <!-- TODO Accoglienza e admin: Visualizza prenotazioni -->
-  <!-- TODO Accoglienza e admin : Check-in -->
-
+  <div class="form-wrapper" *ngIf="isAdmin || isAccoglienza">
+    <div class="form-title">
+      <h1>Lista Prenotazioni</h1>
+    </div>
+    <div *ngFor="let prenotazione of prenotazioniList">
+      <p>Order: {{prenotazione.id}} User: {{prenotazione.user.username}}</p>
+      <button class="btn" (click)="checkIn(prenotazione)">Check In</button>
+    </div>
+  </div>
 </div>
