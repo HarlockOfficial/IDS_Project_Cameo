@@ -3,6 +3,8 @@ package cameo.impianto_balneare.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -24,6 +26,7 @@ public class MenuOrder {
     @Enumerated(EnumType.ORDINAL)
     private OrderStatus orderStatus;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(targetEntity = MenuElement.class)
     private Set<MenuElement> menuElements;
 

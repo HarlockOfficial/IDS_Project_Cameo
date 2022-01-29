@@ -47,7 +47,7 @@ public class PrenotazioneView implements GlobalExceptionHandler{
     public ResponseEntity<List<Prenotazione>> getPrenotazioni(@RequestHeader String token) {
         List<Prenotazione> lst = prenotazioneService.getPrenotazioni(token);
         if(lst == null || lst.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.noContent().build();
         return ResponseEntity.ok(lst);
     }
 
