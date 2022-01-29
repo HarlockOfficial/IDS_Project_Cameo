@@ -7,7 +7,7 @@ export interface Prenotazione {
     id?: string;
     user: User;
     statoPrenotazione: StatoPrenotazione;
-    date: Date;
+    date: Date|string;
     eventiPrenotatiList?: Evento[];
     spiaggiaPrenotazioniList?: PrenotazioneSpiaggia[];
 }

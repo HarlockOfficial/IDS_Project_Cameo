@@ -18,6 +18,7 @@ export class PrenotaComponent implements OnInit {
   startDate!: Date;
   endDate!: Date;
   isDate: boolean = false;
+  isDateNotValue: boolean = false;
 
   formDate: any = {
     startDate: null,
@@ -120,8 +121,10 @@ export class PrenotaComponent implements OnInit {
   registerDate() {
     this.startDate = this.formDate.startDate;
     this.endDate = this.formDate.endDate;
-    console.log(this.startDate);
-    console.log(this.endDate);
+    if(this.startDate> this.endDate){
+      this.isDateNotValue = true;
+      return;
+    }
     this.isDate = true;
     this.onGetOmbrelloni();
   }
