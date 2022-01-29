@@ -332,7 +332,7 @@
       <h1>Lista Prenotazioni</h1>
     </div>
     <div *ngFor="let prenotazione of prenotazioniList">
-      <p>Order: {{prenotazione.id}} User: {{prenotazione.user.username}}</p>
+      <p>Order: {{prenotazione.id}} User: {{prenotazione.user!.username}}</p>
       <button class="btn" (click)="checkIn(prenotazione)">Check In</button>
     </div>
   </div>

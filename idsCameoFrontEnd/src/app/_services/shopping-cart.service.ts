@@ -60,7 +60,8 @@ export class ShoppingCartService {
       (<Prenotazione>elemento).spiaggiaPrenotazioniList?.forEach((data) => {
         data.startDate = new Date(data.startDate).toISOString();
         data.endDate = new Date(data.endDate).toISOString();
-      }); 
+      });
+      (elemento as Prenotazione).statoPrenotazione = StatoPrenotazione.CONFERMATO;
       return this.http.post(API + 'book', elemento, { headers: configs });
     }
     else {
