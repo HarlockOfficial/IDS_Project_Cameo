@@ -70,10 +70,11 @@ public class PrenotazioneService {
         List<Prenotazione> prenotazioni = new ArrayList<>(user.getPrenotazioni());
         if (user.getRole() == Role.ADMIN || user.getRole() == Role.RECEPTION) {
             prenotazioni = prenotazioneRepository.findAll();
-        }if (user.getRole() != Role.USER && user.getRole() != Role.ADMIN && user.getRole() != Role.RECEPTION) {
-            return null;
         }
-        return prenotazioni;
+        if (user.getRole() == Role.USER) {
+            return prenotazioni;
+        }
+        return null;
     }
 
     public Prenotazione createPrenotazione(Prenotazione prenotazione, String token) {
