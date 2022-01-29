@@ -77,7 +77,7 @@ public class OrderService {
         if(checkToken(token)) return null;
         var orderToUpdate = menuOrderRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         if (orderToUpdate.isPresent()) {
-            var order =orderToUpdate.get();
+            var order = orderToUpdate.get();
             order.setOrderStatus(order.getOrderStatus().next());
             return menuOrderRepository.save(order);
         }
