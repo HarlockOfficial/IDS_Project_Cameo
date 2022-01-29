@@ -278,4 +278,56 @@
     </div>
   </div>
 
+  <div class="order-wrapper" *ngIf="isAdmin || isBar">
+    <div class="title">
+      <h1>Lista ordinazioni pending</h1>
+    </div>
+    <div *ngFor="let order of allPendingOrderList">
+      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <button class="btn" (click)="updateOrderStatus(order)">In Progress</button>
+    </div>
+  </div>
+
+  <div class="order-wrapper" *ngIf="isAdmin || isBar">
+    <div class="title">
+      <h1>Lista ordinazioni in progress</h1>
+    </div>
+    <div *ngFor="let order of allInProgressOrderList">
+      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <button class="btn" (click)="updateOrderStatus(order)">Completato</button>
+    </div>
+  </div>
+
+  <div class="order-wrapper" *ngIf="isAdmin || isBar">
+    <div class="title">
+      <h1>Lista ordinazioni completate</h1>
+    </div>
+    <div *ngFor="let order of allCompletedOrderList">
+      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <button class="btn" (click)="updateOrderStatus(order)">Consegnato</button>
+    </div>
+  </div>
+
+  <div class="order-wrapper" *ngIf="isAdmin || isBar">
+    <div class="title">
+      <h1>Lista ordinazioni consegnate</h1>
+    </div>
+    <div *ngFor="let order of allDeliveredOrderList">
+      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+      <button class="btn" (click)="updateOrderStatus(order)">Pagato</button>
+    </div>
+  </div>
+
+  <div class="order-wrapper" *ngIf="isAdmin || isBar">
+    <div class="title">
+      <h1>Lista ordinazioni pagate</h1>
+    </div>
+    <div *ngFor="let order of allPaidOrderList">
+      <p>Order: {{order.id}} User: {{order.user.username}}</p>
+    </div>
+  </div>
+
+  <!-- TODO Accoglienza e admin: Visualizza prenotazioni -->
+  <!-- TODO Accoglienza e admin : Check-in -->
+
 </div>

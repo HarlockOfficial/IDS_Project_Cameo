@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Evento } from '../interfaces/evento';
-import { Prenotazione } from '../interfaces/prenotazione';
-import { PrenotazioneSpiaggia } from '../interfaces/prenotazioneSpiaggia';
-import { TokenStorageService } from '../_services/token-storage.service';
-import { StatoPrenotazione } from '../interfaces/StatoPrenotazione';
-import { HttpClient } from '@angular/common/http';
-import { Order } from '../interfaces/order';
-import { MenuElement } from '../interfaces/menuElement';
+import {Injectable} from '@angular/core';
+import {Evento} from '../interfaces/evento';
+import {Prenotazione} from '../interfaces/prenotazione';
+import {PrenotazioneSpiaggia} from '../interfaces/prenotazioneSpiaggia';
+import {TokenStorageService} from './token-storage.service';
+import {StatoPrenotazione} from '../interfaces/StatoPrenotazione';
+import {HttpClient} from '@angular/common/http';
+import {Order} from '../interfaces/order';
+import {MenuElement} from '../interfaces/menuElement';
+
 const API = 'http://localhost:8080/';
 
 @Injectable({
@@ -46,8 +47,7 @@ export class ShoppingCartService {
       this.prenotazione.eventiPrenotatiList!.push(ev);
     }
     else {
-      const menuElement = element as MenuElement[];
-      this.ordine.menuElements = menuElement;
+      this.ordine.menuElements = element as MenuElement[];
     }
   }
 
@@ -64,11 +64,41 @@ export class ShoppingCartService {
     }
   }
 
+  private getOrdineFromServer(token: string, status: string) {
+    const configs = { 'token': token };
+    return this.http.get<Order[]>(API + 'order/' + status, { headers: configs });
+  }
+
+  getOrdineOrdered(token: string) {
+    return this.getOrdineFromServer(token, "ordered");
+  }
+
+  getOrdineInProgress(token: string) {
+    return this.getOrdineFromServer(token, "in_progress");
+  }
+
+  getOrdineFinished(token: string) {
+    return this.getOrdineFromServer(token, "finished");
+  }
+
+  getOrdineDelivered(token: string) {
+    return this.getOrdineFromServer(token, "delivered");
+  }
+
+  getOrdinePaid(token: string) {
+    return this.getOrdineFromServer(token, "paid");
+  }
+
   getPrenotazione() {
     return this.prenotazione;
   }
 
   getOrdine() {
     return this.ordine;
+  }
+
+  updateOrderStatus(order: Order, token: string) {
+    const configs = { 'token': token };
+    return this.http.put<Order>(API + 'order/' + order.id, null, { headers: configs });
   }
 }

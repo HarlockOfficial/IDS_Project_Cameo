@@ -34,6 +34,11 @@ export class MenuService {
     return this.http.get<MenuSection[]>(API + 'menu/section', { headers: configs });
   }
 
+  allElement(token: string): Observable<MenuElement[]> {
+    const configs = { 'token': token };
+    return this.http.get<MenuElement[]>(API + 'menu/element', { headers: configs });
+  }
+
   deleteSection(sectionId: string, token: string): Observable<any> {
     const configs = { 'token': token };
     return this.http.delete(API + `menu/section/${sectionId}`, { headers: configs });

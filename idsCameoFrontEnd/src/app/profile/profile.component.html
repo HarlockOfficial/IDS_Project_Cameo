@@ -30,7 +30,7 @@
     </p>
 </div>
 
-<button *ngIf="isAdmin"><a routerLink="/dashboard">DashBoard</a></button>
+<button *ngIf="isAdmin || isBar || isAccoglienza || isEventManager"><a routerLink="/dashboard">DashBoard</a></button>
 
 <div class="prenotazione-wrapper" *ngFor="let prenotazione of myPrenotazioni | async">
     <p class="prenotazione-info">Data della prenotazione: {{prenotazione.date}}</p>

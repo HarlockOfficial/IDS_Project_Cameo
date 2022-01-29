@@ -11,6 +11,9 @@ import { MenuElement } from '../interfaces/menuElement';
 import { Observable } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { User } from '../interfaces/user';
+import {ShoppingCartService} from "../_services/shopping-cart.service";
+import {Order} from "../interfaces/order";
+
 @Component({
   selector: 'app-admin-board',
   templateUrl: './admin-board.component.html',
@@ -79,8 +82,13 @@ export class AdminBoardComponent implements OnInit {
   eventList!: Evento[];
   allUserList!: Observable<User[]>;
   allFreeOmbrellone!: Observable<Ombrellone[]>;
+  allPendingOrderList!: Order[];
+  allInProgressOrderList!: Order[];
+  allCompletedOrderList!: Order[];
+  allDeliveredOrderList!: Order[];
+  allPaidOrderList!: Order[];
 
-  constructor(private userService: UserService, private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private shoppingCartService: ShoppingCartService, private userService: UserService, private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -100,20 +108,25 @@ export class AdminBoardComponent implements OnInit {
     this.onGetAllEvents();
     this.onGetAllUser();
     this.onGetAllOmbrellone();
+    this.onGetAllMenuElement();
+    this.onGetAllOrders();
   }
 
   onGetAllSection(token: string) {
     this.sectionCall = this.menuService.allSection(token);
-    this.sectionCall.forEach(sectionList => {
-      const elements = sectionList.flatMap(section => section.menuElementList)
-      this.elementList.push(...elements);
-    });
+  }
+
+  onGetAllMenuElement() {
+    this.menuService.allElement(this.tokenStorage.getToken()!)!.subscribe(
+      (data: MenuElement[]) => {
+        this.elementList.push(...data);
+      }
+    );
   }
 
   onGetAllEvents() {
     this.eventService.getAllEventi()!.subscribe(
       data => {
-        console.log(data);
         this.eventList = data;
       }
     );
@@ -250,6 +263,7 @@ export class AdminBoardComponent implements OnInit {
     this.ombrelloneService.removeOmbrellone(this.formRemoveOmbrellone.id, this.tokenStorage.getToken()!).subscribe(
       data => {
         console.log(data);
+        this.onGetAllOmbrellone();
       }
     )
   }
@@ -258,8 +272,64 @@ export class AdminBoardComponent implements OnInit {
     this.menuService.deleteElement(this.formRemoveMenuElement.id, this.tokenStorage.getToken()!).subscribe(
       data => {
         console.log(data);
-        this.onGetAllSection(this.tokenStorage.getToken()!);
+        this.onGetAllMenuElement();
         this.elementDeleted = true;
+      }
+    )
+  }
+
+  private onGetAllOrderedOrders() {
+    this.shoppingCartService.getOrdineOrdered(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allPendingOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllInProgressOrders() {
+    this.shoppingCartService.getOrdineInProgress(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allInProgressOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllCompletedOrders() {
+    this.shoppingCartService.getOrdineFinished(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allCompletedOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllDeliveredOrders() {
+    this.shoppingCartService.getOrdineDelivered(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allDeliveredOrderList = data;
+      }
+    )
+  }
+  private onGetAllPaidOrders() {
+    this.shoppingCartService.getOrdinePaid(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allPaidOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllOrders() {
+    this.onGetAllOrderedOrders();
+    this.onGetAllInProgressOrders();
+    this.onGetAllCompletedOrders();
+    this.onGetAllDeliveredOrders();
+    this.onGetAllPaidOrders();
+  }
+
+  updateOrderStatus(order: Order) {
+    this.shoppingCartService.updateOrderStatus(order, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllOrders();
       }
     )
   }

@@ -18,7 +18,7 @@ export class UserService {
       return null;
     }
     const configs = { 'token': token };
-    return this.http.get<User[]>(API + 'user', { headers: configs });;
+    return this.http.get<User[]>(API + 'user', { headers: configs });
   }
 
 
@@ -28,7 +28,7 @@ export class UserService {
       return null;
     }
     const configs = { 'token': token };
-    return this.http.get<Prenotazione[]>(API + 'book', { headers: configs });;
+    return this.http.get<Prenotazione[]>(API + 'book', { headers: configs });
   }
 
   changeUserRole(user: User, token: string) {

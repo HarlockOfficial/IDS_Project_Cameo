@@ -16,6 +16,9 @@ export class ProfileComponent implements OnInit {
   errorMessage = '';
   myPrenotazioni!: Observable<Prenotazione[]>;
   isAdmin = false;
+  isBar = false;
+  isAccoglienza = false;
+  isEventManager = false;
 
   constructor(private prenotazioneService: PrenotazioneService, private userService: UserService, private tokenStorage: TokenStorageService) { }
 
@@ -35,6 +38,12 @@ export class ProfileComponent implements OnInit {
         this.tokenStorage.saveUser(this.currentUser);
         if (filteredData.role == 'ADMIN') {
           this.isAdmin = true;
+        } else if (filteredData.role == 'BAR') {
+          this.isBar = true;
+        } else if (filteredData.role == 'RECEPTION') {
+          this.isAccoglienza = true;
+        } else if (filteredData.role == 'EVENT_MANAGER') {
+          this.isEventManager = true;
         }
       },
       err => {
