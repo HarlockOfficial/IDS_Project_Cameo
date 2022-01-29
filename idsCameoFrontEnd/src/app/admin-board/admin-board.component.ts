@@ -278,6 +278,15 @@ export class AdminBoardComponent implements OnInit {
     )
   }
 
+  updateOrderStatus(order: Order) {
+    this.shoppingCartService.updateOrderStatus(order, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllOrders();
+      }
+    )
+  }
+
   private onGetAllOrderedOrders() {
     this.shoppingCartService.getOrdineOrdered(this.tokenStorage.getToken()!).subscribe(
       data => {
