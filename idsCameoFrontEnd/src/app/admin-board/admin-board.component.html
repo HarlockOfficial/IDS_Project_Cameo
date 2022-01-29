@@ -327,7 +327,13 @@
     </div>
   </div>
 
-  <!-- TODO Accoglienza e admin: Visualizza prenotazioni -->
-  <!-- TODO Accoglienza e admin : Check-in -->
-
+  <div class="form-wrapper" *ngIf="isAdmin || isAccoglienza">
+    <div class="form-title">
+      <h1>Lista Prenotazioni</h1>
+    </div>
+    <div *ngFor="let prenotazione of prenotazioniList">
+      <p>Order: {{prenotazione.id}} User: {{prenotazione.user.username}}</p>
+      <button class="btn" (click)="checkIn(prenotazione)">Check In</button>
+    </div>
+  </div>
 </div>
