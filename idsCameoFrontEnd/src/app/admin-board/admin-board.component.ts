@@ -8,7 +8,11 @@ import { MenuSection } from '../interfaces/menuSection';
 import { MenuService } from '../_services/menu.service';
 import { Router } from '@angular/router';
 import { MenuElement } from '../interfaces/menuElement';
-
+import { Observable } from 'rxjs';
+import { UserService } from '../_services/user.service';
+import { User } from '../interfaces/user';
+import {ShoppingCartService} from "../_services/shopping-cart.service";
+import {Order} from "../interfaces/order";
 
 @Component({
   selector: 'app-admin-board',
@@ -46,25 +50,90 @@ export class AdminBoardComponent implements OnInit {
     isElementVisible: null,
   }
 
+  formRemoveMenuSection: any = {
+    id: null,
+  }
+
+  formRoleChange: any = {
+    newRole: null,
+  }
+
+  formRemoveOmbrellone: any = {
+    id: null,
+  }
+
+  formRemoveMenuElement: any = {
+    id: null,
+  };
+
   isAdmin!: boolean;
   isEventManager!: boolean;
+  isBar!: boolean;
+  isAccoglienza!: boolean;
   ombrelloneCreated!: boolean;
   eventCreated!: boolean;
   sectionCreated!: boolean;
   elementCreated!: boolean;
+  eventDeleted!: boolean;
+  sectionDeleted!: boolean;
+  elementDeleted!: boolean;
+  sectionCall!: Observable<MenuSection[]>;
+  elementList: MenuElement[] = [];
+  eventList!: Evento[];
+  allUserList!: Observable<User[]>;
+  allFreeOmbrellone!: Observable<Ombrellone[]>;
+  allPendingOrderList!: Order[];
+  allInProgressOrderList!: Order[];
+  allCompletedOrderList!: Order[];
+  allDeliveredOrderList!: Order[];
+  allPaidOrderList!: Order[];
 
-  constructor(private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private shoppingCartService: ShoppingCartService, private userService: UserService, private menuService: MenuService, private eventService: EventiService, private ombrelloneService: OmbrelloneService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
+
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
       this.isAdmin = true;
-    }
-    else if (this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
+    } else if (this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
       this.isEventManager = true;
-    }
-    else {
+    } else if (this.tokenStorage.getUser()?.role == "BAR") {
+      this.isBar = true;
+    } else if (this.tokenStorage.getUser()?.role == "RECEPTION") {
+      this.isAccoglienza = true;
+    } else {
       this.router.navigate(['/home']);
     }
+
+    this.onGetAllSection(this.tokenStorage.getToken()!);
+    this.onGetAllEvents();
+    this.onGetAllUser();
+    this.onGetAllOmbrellone();
+    this.onGetAllMenuElement();
+    this.onGetAllOrders();
+  }
+
+  onGetAllSection(token: string) {
+    this.sectionCall = this.menuService.allSection(token);
+  }
+
+  onGetAllMenuElement() {
+    this.menuService.allElement(this.tokenStorage.getToken()!)!.subscribe(
+      (data: MenuElement[]) => {
+        this.elementList.push(...data);
+      }
+    );
+  }
+
+  onGetAllEvents() {
+    this.eventService.getAllEventi()!.subscribe(
+      data => {
+        this.eventList = data;
+      }
+    );
+  }
+
+  onGetAllOmbrellone() {
+    this.allFreeOmbrellone = this.ombrelloneService.allOmbrelloni();
   }
 
   onAddOmbrellone() {
@@ -80,8 +149,9 @@ export class AdminBoardComponent implements OnInit {
       const token = this.tokenStorage.getToken()!;
 
       this.ombrelloneService.addOmbrellone(newOmbrellone, token).subscribe(
-        data => {
+        _ => {
           this.ombrelloneCreated = true;
+          this.onGetAllOmbrellone();
         }
       );
     }
@@ -100,8 +170,9 @@ export class AdminBoardComponent implements OnInit {
       const token = this.tokenStorage.getToken()!;
 
       this.eventService.addEvento(newEvent, token).subscribe(
-        data => {
+        _ => {
           this.eventCreated = true;
+          this.onGetAllEvents();
         }
       );
     }
@@ -117,8 +188,9 @@ export class AdminBoardComponent implements OnInit {
       const token = this.tokenStorage.getToken()!;
 
       this.menuService.addMenuSection(newMenuSection, token).subscribe(
-        data => {
+        _ => {
           this.sectionCreated = true;
+          this.onGetAllSection(token);
         }
       );
     }
@@ -126,22 +198,139 @@ export class AdminBoardComponent implements OnInit {
 
   onCreateMenuElement() {
     if (this.tokenStorage.getUser()?.role == "ADMIN") {
-      const newMenuElement: MenuElement = {
-        name: this.formMenuElement.name,
-        description: this.formMenuElement.description,
-        price: this.formMenuElement.price,
-        menuSection: this.formMenuElement.menuSection,
-        isElementVisible: true,
-      };
+      this.sectionCall.forEach(e => {
+        const x = e.filter(elem => (elem.id == this.formMenuElement.menuSection))
+        const sect = x[0] as MenuSection;
 
+        const newMenuElement: MenuElement = {
+          name: this.formMenuElement.name,
+          description: this.formMenuElement.description,
+          price: this.formMenuElement.price,
+          section: sect!,
+          isElementVisible: true,
+        };
+        console.log(newMenuElement);
+        const token = this.tokenStorage.getToken()!;
+
+        this.menuService.addMenuElement(newMenuElement, token).subscribe(
+          _ => {
+            this.elementCreated = true;
+            this.onGetAllSection(token);
+          }
+        );
+        return;
+      });
+    }
+  }
+
+  onDeleteEvent() {
+    if (this.tokenStorage.getUser()?.role == "ADMIN" || this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
       const token = this.tokenStorage.getToken()!;
-
-      this.menuService.addMenuElement(newMenuElement, token).subscribe(
-        data => {
-          this.elementCreated = true;
+      console.log(this.formEvento.evento);
+      this.eventService.deleteEvent(this.formEvento.evento, token).subscribe(
+        _ => {
+          this.eventDeleted = true;
+          this.onGetAllEvents();
         }
       );
     }
   }
 
+  onGetAllUser() {
+    this.allUserList = this.userService.userInfo(this.tokenStorage.getToken())!;
+  }
+
+  changeUserRole(user: User) {
+    user.role = this.formRoleChange.role;
+    this.userService.changeUserRole(user, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllUser();
+      }
+    );
+  }
+
+  onDeleteSection() {
+    this.menuService.deleteSection(this.formRemoveMenuSection.id, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllSection(this.tokenStorage.getToken()!);
+      }
+    )
+  }
+
+  onDeleteOmbrellone() {
+    this.ombrelloneService.removeOmbrellone(this.formRemoveOmbrellone.id, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllOmbrellone();
+      }
+    )
+  }
+
+  onDeleteElement() {
+    this.menuService.deleteElement(this.formRemoveMenuElement.id, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllMenuElement();
+        this.elementDeleted = true;
+      }
+    )
+  }
+
+  private onGetAllOrderedOrders() {
+    this.shoppingCartService.getOrdineOrdered(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allPendingOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllInProgressOrders() {
+    this.shoppingCartService.getOrdineInProgress(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allInProgressOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllCompletedOrders() {
+    this.shoppingCartService.getOrdineFinished(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allCompletedOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllDeliveredOrders() {
+    this.shoppingCartService.getOrdineDelivered(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allDeliveredOrderList = data;
+      }
+    )
+  }
+  private onGetAllPaidOrders() {
+    this.shoppingCartService.getOrdinePaid(this.tokenStorage.getToken()!).subscribe(
+      data => {
+        this.allPaidOrderList = data;
+      }
+    )
+  }
+
+  private onGetAllOrders() {
+    this.onGetAllOrderedOrders();
+    this.onGetAllInProgressOrders();
+    this.onGetAllCompletedOrders();
+    this.onGetAllDeliveredOrders();
+    this.onGetAllPaidOrders();
+  }
+
+  updateOrderStatus(order: Order) {
+    this.shoppingCartService.updateOrderStatus(order, this.tokenStorage.getToken()!).subscribe(
+      data => {
+        console.log(data);
+        this.onGetAllOrders();
+      }
+    )
+  }
 }

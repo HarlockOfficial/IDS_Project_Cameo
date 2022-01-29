@@ -6,12 +6,6 @@ import { MenuElement } from '../interfaces/menuElement';
 
 const API = 'http://localhost:8080/';
 
-const headerDict = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +13,7 @@ export class MenuService {
 
   constructor(private http: HttpClient) { }
 
-  allMenu(): Observable<Map<MenuSection, MenuElement[]>> | null {
+  allMenu(): Observable<MenuElement[]> | null {
     return this.http.get<any>(API + 'menu');
   }
 
@@ -33,5 +27,25 @@ export class MenuService {
     const configs = { 'token': token };
 
     return this.http.post(API + 'menu/element', menuElement, { headers: configs });
+  }
+
+  allSection(token: string): Observable<MenuSection[]> {
+    const configs = { 'token': token };
+    return this.http.get<MenuSection[]>(API + 'menu/section', { headers: configs });
+  }
+
+  allElement(token: string): Observable<MenuElement[]> {
+    const configs = { 'token': token };
+    return this.http.get<MenuElement[]>(API + 'menu/element', { headers: configs });
+  }
+
+  deleteSection(sectionId: string, token: string): Observable<any> {
+    const configs = { 'token': token };
+    return this.http.delete(API + `menu/section/${sectionId}`, { headers: configs });
+  }
+
+  deleteElement(elementId: string, token: string): Observable<any> {
+    const configs = { 'token': token };
+    return this.http.delete(API + `menu/element/${elementId}`, { headers: configs });
   }
 }

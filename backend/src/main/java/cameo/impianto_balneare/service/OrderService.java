@@ -73,11 +73,11 @@ public class OrderService {
         return getAllOrderOfDay(ZonedDateTime.now(), token);
     }
 
-    public MenuOrder updateOrderStatus(UUID order_id, String token) {
+    public MenuOrder updateOrderStatus(UUID id, String token) {
         if(checkToken(token)) return null;
-        var orderToUpdate = menuOrderRepository.findById(order_id);
+        var orderToUpdate = menuOrderRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         if (orderToUpdate.isPresent()) {
-            var order =orderToUpdate.get();
+            var order = orderToUpdate.get();
             order.setOrderStatus(order.getOrderStatus().next());
             return menuOrderRepository.save(order);
         }
@@ -92,10 +92,10 @@ public class OrderService {
 
     public MenuOrder getUserOrder(UUID id, String token) {
         if(!tokenService.checkToken(token, Role.USER)) return null;
-        var orderToGet = menuOrderRepository.findById(id);
+        var orderToGet = menuOrderRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if(orderToGet.isPresent()) {
             var order = orderToGet.get();
-            if(order.getUser().getId().equals(tokenService.getUserFromUUID(token).getId())) {
+            if(order.getUser().equals(tokenService.getUserFromUUID(token))) {
                 return order;
             }
         }
@@ -104,7 +104,7 @@ public class OrderService {
 
     public MenuOrder deleteOrder(UUID id, String token) {
         if(checkToken(token)) return null;
-        var orderToDelete = menuOrderRepository.findById(id);
+        var orderToDelete = menuOrderRepository.findAll().stream().filter(e-> e.getId().equals(id)).findFirst();
         if(orderToDelete.isPresent()) {
             var order = orderToDelete.get();
             menuOrderRepository.delete(order);

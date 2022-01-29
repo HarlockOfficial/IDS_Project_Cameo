@@ -2,12 +2,11 @@ package cameo.impianto_balneare.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name="menu_order")
@@ -26,7 +25,7 @@ public class MenuOrder {
     private OrderStatus orderStatus;
 
     @ManyToMany(targetEntity = MenuElement.class)
-    private List<MenuElement> menuElements;
+    private Set<MenuElement> menuElements;
 
     @ManyToOne(targetEntity = User.class)
     private User user;
@@ -38,6 +37,19 @@ public class MenuOrder {
         id = UUID.randomUUID();
         dateTime = ZonedDateTime.now();
         orderStatus = OrderStatus.ORDERED;
-        menuElements = new ArrayList<>();
+        menuElements = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        MenuOrder menuOrder = (MenuOrder) o;
+        return id != null && Objects.equals(id, menuOrder.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

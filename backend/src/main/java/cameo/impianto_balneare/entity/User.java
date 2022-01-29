@@ -3,13 +3,13 @@ package cameo.impianto_balneare.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -43,20 +43,36 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = MenuOrder.class, mappedBy = "user", cascade = CascadeType.ALL)
-    private List<MenuOrder> menuOrders;
+    private Set<MenuOrder> menuOrders;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = Prenotazione.class, mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Prenotazione> prenotazioni;
+    private Set<Prenotazione> prenotazioni;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = Token.class, mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Token> token;
+    private Set<Token> token;
 
     protected User() {
         id = UUID.randomUUID();
         role = Role.USER;
-        menuOrders = new ArrayList<>();
-        prenotazioni = new ArrayList<>();
-        token = new ArrayList<>();
+        menuOrders = new HashSet<>();
+        prenotazioni = new HashSet<>();
+        token = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

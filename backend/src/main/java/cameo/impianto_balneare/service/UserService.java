@@ -36,7 +36,7 @@ public class UserService {
 
     public User getUser(UUID id, String tokenId) {
         if (tokenService.checkToken(tokenId, Role.ADMIN)) {
-            var user = userRepository.findById(id);
+            var user = userRepository.findAll().stream().filter(u -> u.getId().equals(id)).findFirst();
             return user.orElse(null);
         }
         var requestUser = tokenService.getUserFromUUID(tokenId);
@@ -48,10 +48,10 @@ public class UserService {
 
     public User updateUser(User user, String tokenId) {
         var isChangeRequestedByAdmin = tokenService.checkToken(tokenId, Role.ADMIN);
-        if (!isChangeRequestedByAdmin && !tokenService.getUserFromUUID(tokenId).getId().equals(user.getId())) {
+        if (!isChangeRequestedByAdmin && !tokenService.getUserFromUUID(tokenId).equals(user)) {
             return null;
         }
-        var userToUpdate = userRepository.findById(user.getId());
+        var userToUpdate = userRepository.findAll().stream().filter(u -> u.equals(user)).findFirst();
         if (userToUpdate.isPresent()) {
             var userToEdit = userToUpdate.get();
             userToEdit.setEmail(user.getEmail());
@@ -71,7 +71,7 @@ public class UserService {
         if (!tokenService.checkToken(tokenId, Role.ADMIN) && !tokenService.getUserFromUUID(tokenId).getId().equals(id)) {
             return null;
         }
-        var userToDelete = userRepository.findById(id);
+        var userToDelete = userRepository.findAll().stream().filter(u -> u.getId().equals(id)).findFirst();
         if (userToDelete.isPresent()) {
             userRepository.delete(userToDelete.get());
             return userToDelete.get();

@@ -1,13 +1,12 @@
 package cameo.impianto_balneare.entity;
 
-//import cameo.impianto_balneare.Quartz.Entity.MailQueue;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name="newsletter")
@@ -25,10 +24,23 @@ public class Newsletter {
     private Event event;
 
     @OneToMany(targetEntity = DateTimeWrapper.class, mappedBy = "newsletter", cascade = CascadeType.ALL)
-    private List<DateTimeWrapper> times;
+    private Set<DateTimeWrapper> times;
 
     protected Newsletter() {
         this.id = UUID.randomUUID();
-        times = new ArrayList<>();
+        times = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Newsletter that = (Newsletter) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

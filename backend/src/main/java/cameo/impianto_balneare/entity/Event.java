@@ -3,12 +3,12 @@ package cameo.impianto_balneare.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "event")
@@ -36,14 +36,28 @@ public class Event {
     @Column
     private float price;
 
-    @ManyToMany(targetEntity = Prenotazione.class)
-    private List<Prenotazione> prenotazione;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(targetEntity = Prenotazione.class, mappedBy = "eventiPrenotatiList")
+    private Set<Prenotazione> prenotazione;
 
     @OneToOne
     private Newsletter newsletter;
 
     protected Event() {
         id = UUID.randomUUID();
-        prenotazione = new ArrayList<>();
+        prenotazione = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Event event = (Event) o;
+        return id != null && Objects.equals(id, event.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

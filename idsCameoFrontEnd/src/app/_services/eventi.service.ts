@@ -18,13 +18,19 @@ export class EventiService {
 
   constructor(private http: HttpClient) { }
 
-  allEventi(): Observable<Evento[]> | null {
-    return this.http.get<Evento[]>(API + 'event', { headers: headerDict });;
+  getAllEventi(): Observable<Evento[]> | null {
+    return this.http.get<Evento[]>(API + 'event', { headers: headerDict });
   }
 
-  addEvento(evento: Evento, token: string): Observable<any> {
+  addEvento(evento: Evento, token: string): Observable<Evento> {
     const configs = { 'token': token };
 
-    return this.http.post(API + 'event', evento, { headers: configs });
+    return this.http.post<Evento>(API + 'event', evento, { headers: configs });
+  }
+
+  deleteEvent(id:string, token:string): Observable<Evento> {
+    const configs = { 'token': token };
+
+    return this.http.delete<Evento>(API + 'event/' + id, { headers: configs });
   }
 }

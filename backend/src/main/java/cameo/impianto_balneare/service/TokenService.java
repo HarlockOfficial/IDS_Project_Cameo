@@ -27,7 +27,7 @@ public class TokenService {
 
     public User getUserFromUUID(String tokenId) {
         if (tokenId == null) return null;
-        var token = tokenRepository.findById(UUID.fromString(tokenId));
+        var token = tokenRepository.findAll().stream().filter(t -> t.getId().equals(UUID.fromString(tokenId))).findFirst();
         return token.map(Token::getUser).orElse(null);
     }
 
@@ -45,7 +45,7 @@ public class TokenService {
     private void deleteToken(User user){
         if (user == null) return;
         var tokenList = tokenRepository.findAll()
-                .stream().filter(t -> t.getUser().getId().equals(user.getId()))
+                .stream().filter(t -> t.getUser().equals(user))
                 .collect(Collectors.toList());
         if (tokenList.isEmpty()) return;
         tokenRepository.deleteAll(tokenList);

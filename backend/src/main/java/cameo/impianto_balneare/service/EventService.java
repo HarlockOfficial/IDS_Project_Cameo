@@ -1,6 +1,7 @@
 package cameo.impianto_balneare.service;
 
 import cameo.impianto_balneare.entity.Event;
+import cameo.impianto_balneare.entity.Prenotazione;
 import cameo.impianto_balneare.entity.Role;
 import cameo.impianto_balneare.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class EventService {
     }
 
     public Event getEvent(UUID id) {
-        var event = eventRepository.findById(id);
+        var event = eventRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         return event.orElse(null);
     }
 
@@ -46,7 +47,7 @@ public class EventService {
         if (!tokenService.checkToken(tokenId, Role.EVENT_MANAGER) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var eventToUpdate = eventRepository.findById(event.getId());
+        var eventToUpdate = eventRepository.findAll().stream().filter(e -> e.equals(event)).findFirst();
         if (eventToUpdate.isPresent()) {
             var eventToEdit = eventToUpdate.get();
             eventToEdit.setDate(event.getDate());
@@ -63,11 +64,16 @@ public class EventService {
         if (!tokenService.checkToken(tokenId, Role.EVENT_MANAGER) && !tokenService.checkToken(tokenId, Role.ADMIN)) {
             return null;
         }
-        var eventToDelete = eventRepository.findById(id);
+        var eventToDelete = eventRepository.findAll().stream().filter(e -> e.getId().equals(id)).findFirst();
         if (eventToDelete.isPresent()) {
             eventRepository.delete(eventToDelete.get());
             return eventToDelete.get();
         }
         return null;
+    }
+
+    public void deletePrenotazione(Event event, Prenotazione p) {
+        event.getPrenotazione().remove(p);
+        eventRepository.save(event);
     }
 }

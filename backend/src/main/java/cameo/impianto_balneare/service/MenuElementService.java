@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuElementService {
@@ -28,6 +29,7 @@ public class MenuElementService {
                 element.getName().equalsIgnoreCase(menuElement.getName()))) {
             return null;
         }
+        element.setElementVisible(true);
         return menuElementRepository.save(element);
     }
 
@@ -36,7 +38,7 @@ public class MenuElementService {
         if (tokenCheck(tokenId)) {
             return null;
         }
-        var elementToUpdate = menuElementRepository.findById(element.getId());
+        var elementToUpdate = menuElementRepository.findAll().stream().filter(e->e.equals(element)).findFirst();
         if (elementToUpdate.isPresent()) {
             var elementToEdit = elementToUpdate.get();
             elementToEdit.setName(element.getName());
@@ -51,7 +53,7 @@ public class MenuElementService {
         if (tokenCheck(tokenId)) {
             return null;
         }
-        var elementToDelete = menuElementRepository.findById(id);
+        var elementToDelete = menuElementRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if (elementToDelete.isPresent()) {
             menuElementRepository.delete(elementToDelete.get());
             return elementToDelete.get();
@@ -63,7 +65,7 @@ public class MenuElementService {
         if (tokenCheck(token)) {
             return null;
         }
-        var elementToToggle = menuElementRepository.findById(id);
+        var elementToToggle = menuElementRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst();
         if (elementToToggle.isPresent()) {
             var elementToEdit = elementToToggle.get();
             elementToEdit.setElementVisible(!elementToEdit.isElementVisible());
@@ -74,9 +76,14 @@ public class MenuElementService {
 
     public List<MenuElement> getMenuElements(String token) {
         if(tokenCheck(token)) {
-            return null;
+            return menuElementRepository.findAll().stream()
+                    .filter(MenuElement::isElementVisible).collect(Collectors.toList());
         }
         return menuElementRepository.findAll();
+    }
+
+    public List<MenuElement> getMenuElements() {
+        return getMenuElements(null);
     }
 
     private boolean tokenCheck(String token){

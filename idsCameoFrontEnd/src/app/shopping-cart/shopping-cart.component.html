@@ -1,1 +1,64 @@
-<p>shopping-cart works!</p>
+<h1>Carrello</h1>
+<div *ngIf="!isPrenotazione || !isOrdine">
+    <h1>Il carrello è vuoto</h1>
+</div>
+
+<div class="prenotazione-wrapper">
+    <div *ngIf="isOrdine || isPrenotazione" class="carrello-wrapper">
+        <p>Ordini Menu: </p>
+        <div *ngIf="isOrdine">
+            <div class="card">
+                <div *ngFor="let item of ordine.menuElements">
+                    <div class="container">
+                        <p>{{item.name}}</p>
+                        <p>Prezzo: {{item.price}}€</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isPrenotazione">
+        <p>Prenotazioni: </p>
+        <div class="prenotazione-wrapper">
+            <div *ngFor="let item of prenotazione.spiaggiaPrenotazioniList">
+                <p class="prenotazione-info">Data inizio: {{item.startDate}}</p>
+                <p class="prenotazione-info">Data fine: {{item.endDate}}</p>
+                <div class="card">
+                    <h4>Ombrellone</h4>
+                    <div class="container">
+                        <p>Da: {{item.startDate}}</p>
+                        <p>A: {{item.endDate}}</p>
+                        <p>Lettini:{{item.lettini}}</p>
+                        <p>Sdraio:{{item.sdraio}}</p>
+                        <p>In riga:{{item.ombrellone.numberRow}}</p>
+                        <p>In colonna:{{item.ombrellone.numberColumn}}</p>
+                        <p>Prezzo:{{item.ombrellone.price}}</p>
+                        <button class="removeFromOrder" (click)="removeFromPrenotazione(item, 'o')">rimuovi</button>
+                    </div>
+                </div>
+            </div>
+            <div class="event-wrapper">
+                <div *ngFor="let item of prenotazione.eventiPrenotatiList; index as i">
+                    <div class="card">
+                        <h4>Evento</h4>
+                        <div class="container">
+                            <p>Nome: {{item.name}}</p>
+                            <p>Prezzo: {{item.price}}</p>
+                            <p>Descrizione:{{item.description}}</p>
+                            <p>Posizione:{{item.location}}</p>
+                            <button class="removeFromOrder" (click)="removeFromPrenotazione(item, 'e')">rimuovi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="!isAuth">
+        <a routerLink="/login">NON SEI LOGGATO, LOGGATI PER EFFETTUARE IL CHECKOUT</a>
+    </div>
+    <div *ngIf="isAuth && (isPrenotazione || isOrdine)">
+        <button class="checkout" (click)="checkOutCarrello()">Checkout</button>
+    </div>
+</div>

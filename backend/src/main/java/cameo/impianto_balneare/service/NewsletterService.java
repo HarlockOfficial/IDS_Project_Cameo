@@ -52,7 +52,7 @@ public class NewsletterService {
 
     public Newsletter getNewsletterById(UUID id, String token) {
         if(tokenService.checkToken(token, Role.ADMIN) || tokenService.checkToken(token, Role.EVENT_MANAGER)) {
-            return newsletterRepository.findById(id).orElse(null);
+            return newsletterRepository.findAll().stream().filter(e->e.getId().equals(id)).findFirst().orElse(null);
         }
         return null;
     }

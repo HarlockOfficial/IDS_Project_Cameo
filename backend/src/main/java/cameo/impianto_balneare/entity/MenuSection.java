@@ -3,11 +3,10 @@ package cameo.impianto_balneare.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "menu_section")
@@ -26,11 +25,24 @@ public class MenuSection {
     private boolean isSectionVisible;
 
     @OneToMany(targetEntity = MenuElement.class, mappedBy = "section", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<MenuElement> menuElementList;
+    private Set<MenuElement> menuElementList;
 
     protected MenuSection() {
         this.id = UUID.randomUUID();
-        menuElementList = new ArrayList<>();
+        menuElementList = new HashSet<>();
         isSectionVisible = true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        MenuSection that = (MenuSection) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

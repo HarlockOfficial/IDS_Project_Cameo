@@ -1,15 +1,12 @@
 package cameo.impianto_balneare.service;
 
-import cameo.impianto_balneare.entity.Prenotazione;
-import cameo.impianto_balneare.entity.Role;
-import cameo.impianto_balneare.entity.StatoPrenotazione;
+import cameo.impianto_balneare.entity.*;
 import cameo.impianto_balneare.repository.PrenotazioneRepository;
 import cameo.impianto_balneare.repository.PrenotazioneSpiaggiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PrenotazioneService {
@@ -25,24 +22,24 @@ public class PrenotazioneService {
     }
 
     public Prenotazione getPrenotazioneById(UUID id, String token) {
-        var prenotazione = prenotazioneRepository.findById(id);
+        var prenotazione = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(id)).findFirst();
         if (tokenService.checkToken(token, Role.ADMIN)) {
             return prenotazione.orElse(null);
         }
         if (prenotazione.isPresent() &&
-                prenotazione.get().getUser().getId().equals(tokenService.getUserFromUUID(token).getId())) {
+                prenotazione.get().getUser().equals(tokenService.getUserFromUUID(token))) {
             return prenotazione.get();
         }
         return null;
     }
 
     public Prenotazione checkoutPrenotazione(UUID id, String token) {
-        var prenotazione = prenotazioneRepository.findById(id);
+        var prenotazione = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(id)).findFirst();
         var user = tokenService.getUserFromUUID(token);
         if (prenotazione.isEmpty()) {
             return null;
         }
-        if (user.getRole() == Role.ADMIN || prenotazione.get().getUser().getId().equals(user.getId())) {
+        if (user.getRole() == Role.ADMIN || prenotazione.get().getUser().equals(user)) {
             prenotazione.get().setStatoPrenotazione(StatoPrenotazione.CONFERMATO);
             return prenotazioneRepository.save(prenotazione.get());
         }
@@ -50,14 +47,19 @@ public class PrenotazioneService {
     }
 
     public Prenotazione deletePrenotazione(UUID id, String token) {
-        var prenotazione = prenotazioneRepository.findById(id);
-        var user = tokenService.getUserFromUUID(token);
+        var prenotazione = prenotazioneRepository.findAll().stream().filter(p -> p.getId().equals(id)).findFirst();
         if (prenotazione.isEmpty()) {
             return null;
         }
+        var user = tokenService.getUserFromUUID(token);
         var p = prenotazione.get();
-        if (user.getRole() == Role.ADMIN || p.getUser().getId().equals(user.getId())) {
-            prenotazioneRepository.delete(p);
+        if (user.getRole() == Role.ADMIN || p.getUser().equals(user)) {
+            // delete prenotazioni ombrellone (otherwise foreign key check fails)
+            var spiaggiaPrenotazioneSet = p.getSpiaggiaPrenotazioniList();
+            if(spiaggiaPrenotazioneSet != null && !spiaggiaPrenotazioneSet.isEmpty()) {
+                prenotazioneSpiaggiaRepository.deleteAllInBatch(spiaggiaPrenotazioneSet);
+            }
+            prenotazioneRepository.deleteAllInBatch(Collections.singleton(p));
             return p;
         }
         return null;
@@ -65,13 +67,13 @@ public class PrenotazioneService {
 
     public List<Prenotazione> getPrenotazioni(String tokenId) {
         var user = tokenService.getUserFromUUID(tokenId);
+        List<Prenotazione> prenotazioni = new ArrayList<>(user.getPrenotazioni());
         if (user.getRole() == Role.ADMIN || user.getRole() == Role.RECEPTION) {
-            return prenotazioneRepository.findAll();
-        }
-        if (user.getRole() != Role.USER) {
+            prenotazioni = prenotazioneRepository.findAll();
+        }if (user.getRole() != Role.USER && user.getRole() != Role.ADMIN && user.getRole() != Role.RECEPTION) {
             return null;
         }
-        return user.getPrenotazioni();
+        return prenotazioni;
     }
 
     public Prenotazione createPrenotazione(Prenotazione prenotazione, String token) {
@@ -79,22 +81,25 @@ public class PrenotazioneService {
         if (user.getRole() == Role.USER) {
             prenotazione.setUser(user);
         }
-        if(prenotazione.getSpiaggiaPrenotazioniList().size() != 0){
-            prenotazione.getSpiaggiaPrenotazioniList().forEach(prenotazioneSpiaggia -> {
-                if(prenotazioneSpiaggiaRepository.findById(prenotazioneSpiaggia.getId()).isEmpty()){
-                    prenotazioneSpiaggia.setPrenotazione(prenotazione);
-                    prenotazioneSpiaggiaRepository.save(prenotazioneSpiaggia);
-                }
-            });
-        }
-        return prenotazioneRepository.save(prenotazione);
+        var ombrelloniList = prenotazione.getSpiaggiaPrenotazioniList();
+        prenotazioneSpiaggiaRepository.saveAll(ombrelloniList);
+        var out = prenotazioneRepository.save(prenotazione);
+        ombrelloniList.forEach(ombrelloni -> ombrelloni.setPrenotazione(out));
+        prenotazioneSpiaggiaRepository.saveAll(ombrelloniList);
+        var eventList = prenotazione.getEventiPrenotatiList();
+        eventList.forEach(event -> {
+            var prenotazioniPendenti = event.getPrenotazione();
+            prenotazioniPendenti.add(out);
+            event.setPrenotazione(prenotazioniPendenti);
+        });
+        return prenotazioneRepository.save(out);
     }
 
     public Prenotazione updatePrenotazione(Prenotazione prenotazione, String token) {
         if (!tokenService.checkToken(token, Role.ADMIN) && !tokenService.checkToken(token, Role.RECEPTION)) {
             return null;
         }
-        var prenotazioneToUpdate = prenotazioneRepository.findById(prenotazione.getId());
+        var prenotazioneToUpdate = prenotazioneRepository.findAll().stream().filter(p -> p.equals(prenotazione)).findFirst();
         if (prenotazioneToUpdate.isEmpty()) {
             return null;
         }

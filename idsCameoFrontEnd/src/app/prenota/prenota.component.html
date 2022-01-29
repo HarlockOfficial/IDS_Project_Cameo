@@ -1,12 +1,55 @@
-<h1>Ombrelloni disponibli per essere prenotati</h1>
-<div *ngFor="let evento of listaOmbrelloni; index as i">
-    <div class="card">
-        <h4>Ombrellone</h4>
-        <div class="container">
-            <p>In riga: {{listaOmbrelloni[i].numberRow}}</p>
-            <p>In colonna: {{listaOmbrelloni[i].numberColumn}}</p>
-            <h4><b>Prezzo: {{listaOmbrelloni[i].price}}€</b></h4>
-            <button class="addToCart">Aggiungi al carrello</button>
+<div *ngIf="!isDate">
+    <h1>Scegli la data di inizio e fine</h1>
+    <div class="form-group">
+        <label for="startDate">Data inizio</label>
+        <input type="date" class="form-control" name="startDate" [(ngModel)]="formDate.startDate" required
+            #startDate="ngModel" />
+    </div>
+    <div class="form-group">
+        <label for="endDate">Data fine</label>
+        <input type="date" class="form-control" name="endDate" [(ngModel)]="formDate.endDate" required
+            #endDate="ngModel" />
+    </div>
+    <button (click)="registerDate()">Conferma</button>
+</div>
+
+
+<div *ngIf="isDate">
+    <h1>Ombrelloni disponibli per essere prenotati</h1>
+    <div class="ombrellone-wrapper">
+        <div *ngFor="let evento of listaOmbrelloni; index as i">
+            <div class="card">
+                <h4>Ombrellone</h4>
+                <div class="container">
+                    <p>In riga: {{listaOmbrelloni[i].numberRow}}</p>
+                    <p>In colonna: {{listaOmbrelloni[i].numberColumn}}</p>
+                    <h4><b>Prezzo: {{listaOmbrelloni[i].price}}€</b></h4>
+                    <button class="addToOrder" (click)="addToOrder(listaOmbrelloni[i])">Aggiungi all'ordine</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="ombrellone-wrapper" *ngIf="isOrder && isDate">
+    <h1>Le tue prenotazioni</h1>
+    <div *ngFor="let evento of listaOrdine; index as i">
+        <div class="card">
+            <h4>Ombrellone</h4>
+            <div class="container">
+                <p>In riga: {{listaOrdine[i].ombrellone.numberRow}}</p>
+                <p>In colonna: {{listaOrdine[i].ombrellone.numberColumn}}</p>
+                <p>Lettini: {{listaOrdine[i].lettini}}</p><button
+                    (click)="addOmbrelloneGadget(listaOrdine[i], 'l')">+</button><button
+                    (click)="removeOmbrelloneGadget(listaOrdine[i], 'l')">-</button>
+                <p>Sdraio: {{listaOrdine[i].sdraio}}<button
+                        (click)="addOmbrelloneGadget(listaOrdine[i], 's')">+</button><button
+                        (click)="removeOmbrelloneGadget(listaOrdine[i], 's')">-</button>
+                </p>
+                <h4><b>Prezzo: {{listaOrdine[i].ombrellone.price}}€</b></h4>
+                <button class="removeFromOrder" (click)="removeFromOrder(listaOrdine[i])">rimuovi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button *ngIf="isOrder" class="addToCart" (click)="addToCart()">Aggiungi l'ordine al carrello</button>
