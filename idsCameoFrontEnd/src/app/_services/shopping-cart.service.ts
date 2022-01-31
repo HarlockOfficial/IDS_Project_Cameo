@@ -55,8 +55,13 @@ export class ShoppingCartService {
   checkoutCarrello(elemento: Prenotazione | Order, token: string) {
     const configs = { 'token': token };
     if ((<Prenotazione>elemento).spiaggiaPrenotazioniList !== undefined || (<Prenotazione>elemento).eventiPrenotatiList !== undefined) {
-      console.log("aggiungo prenotazione")
-
+      console.log("aggiungo prenotazione");
+      (<Prenotazione>elemento).date = ((<Prenotazione>elemento).date as Date).toISOString();
+      (<Prenotazione>elemento).spiaggiaPrenotazioniList?.forEach((data) => {
+        data.startDate = new Date(data.startDate).toISOString();
+        data.endDate = new Date(data.endDate).toISOString();
+      });
+      (elemento as Prenotazione).statoPrenotazione = StatoPrenotazione.CONFERMATO;
       return this.http.post(API + 'book', elemento, { headers: configs });
     }
     else {

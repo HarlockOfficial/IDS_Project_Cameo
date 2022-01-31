@@ -15,7 +15,6 @@ import java.util.*;
 @Table(name = "prenotazione")
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"user"}, allowSetters = true)
 public class Prenotazione {
 
     @Id

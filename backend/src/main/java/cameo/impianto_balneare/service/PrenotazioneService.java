@@ -67,12 +67,11 @@ public class PrenotazioneService {
 
     public List<Prenotazione> getPrenotazioni(String tokenId) {
         var user = tokenService.getUserFromUUID(tokenId);
-        List<Prenotazione> prenotazioni = new ArrayList<>(user.getPrenotazioni());
         if (user.getRole() == Role.ADMIN || user.getRole() == Role.RECEPTION) {
-            prenotazioni = prenotazioneRepository.findAll();
+            return prenotazioneRepository.findAll();
         }
         if (user.getRole() == Role.USER) {
-            return prenotazioni;
+            return new ArrayList<>(user.getPrenotazioni());
         }
         return null;
     }
