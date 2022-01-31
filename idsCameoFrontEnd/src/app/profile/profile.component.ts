@@ -57,11 +57,10 @@ export class ProfileComponent implements OnInit {
     this.myPrenotazioni = this.userService.myPrenotazioni(this.tokenStorage.getToken()!)!;
   }
 
-  //TODO; Da rivedere, funziona ma poi effettivamente non viene rimossa ??
   removePrenotazione(id: string) {
     this.prenotazioneService.deletePrenotazione(id, this.tokenStorage.getToken()!).subscribe(
-      data => {
-        console.log(data);
+      _ => {
+        this.onGetMyPrenotazioni();
       }
     )
   }
