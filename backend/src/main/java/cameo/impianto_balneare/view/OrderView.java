@@ -74,8 +74,9 @@ public class OrderView implements GlobalExceptionHandler{
     }
 
     @RequestMapping(value = "/order/day/{dateTime}", method = RequestMethod.GET)
-    public ResponseEntity<List<MenuOrder>> getOrdersByDateTime(@PathVariable ZonedDateTime dateTime, @RequestHeader("token") String token){
-        var orders = orderService.getAllOrderOfDay(dateTime, token);
+    public ResponseEntity<List<MenuOrder>> getOrdersByDateTime(@PathVariable String dateTime, @RequestHeader("token") String token){
+        var date = ZonedDateTime.parse(dateTime);
+        var orders = orderService.getAllOrderOfDay(date, token);
         if(orders.isEmpty()){
             return ResponseEntity.noContent().build();
         }

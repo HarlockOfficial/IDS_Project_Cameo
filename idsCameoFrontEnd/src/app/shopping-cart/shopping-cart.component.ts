@@ -24,8 +24,6 @@ export class ShoppingCartComponent implements OnInit {
     this.prenotazione = this.shoppingCartService.getPrenotazione();
     this.ordine = this.shoppingCartService.getOrdine();
     if (this.ordine.menuElements?.length! > 0) {
-      console.log("asd")
-      console.log(this.ordine.menuElements);
       this.isOrdine = true;
     }
     if (this.prenotazione.eventiPrenotatiList?.length! > 0 || this.prenotazione.spiaggiaPrenotazioniList?.length! > 0) {
@@ -63,7 +61,6 @@ export class ShoppingCartComponent implements OnInit {
       this.checkoutOrdine();
     }
     else if (this.isPrenotazione) {
-      console.log("hey");
       this.checkoutPrenotazione();
     }
     else if (this.isOrdine) {
@@ -92,7 +89,6 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkoutOrdine() {
-    console.log("CHEKOUTTO MENU");
     this.ordine.orderStatus = "PAID";
     this.shoppingCartService.checkoutCarrello(this.ordine, this.tokenStorageService.getToken()!).subscribe(
       data => {

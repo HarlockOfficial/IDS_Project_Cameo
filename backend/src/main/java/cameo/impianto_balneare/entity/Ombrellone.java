@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -35,6 +37,7 @@ public class Ombrellone {
     @Column
     private ZonedDateTime endDate;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "ombrellone", cascade = CascadeType.ALL)
     private Set<PrenotazioneSpiaggia> listaPrenotazioni;
 
