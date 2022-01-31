@@ -113,9 +113,9 @@ public class OmbrelloneView implements GlobalExceptionHandler{
 
     @RequestMapping(value = "/ombrellone/{id}/book", method = RequestMethod.GET)
     public ResponseEntity<List<Prenotazione>> getPrenotazioniByOmbrellone(@PathVariable UUID id,
-                                                                          @RequestParam ZonedDateTime dataInizio,
-                                                                          @RequestParam ZonedDateTime dataFine, @RequestHeader("token") String token) {
-        var prenotazioni = ombrelloneService.getPrenotazioneByOmbrellone(id, dataInizio, dataFine, token);
+                                                                          @RequestParam ZonedDateTime startDate,
+                                                                          @RequestParam ZonedDateTime endDate, @RequestHeader("token") String token) {
+        var prenotazioni = ombrelloneService.getPrenotazioneByOmbrellone(id, startDate, endDate, token);
         if(prenotazioni == null || prenotazioni.size() == 0)
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(prenotazioni);
