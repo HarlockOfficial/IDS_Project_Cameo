@@ -55,7 +55,6 @@ export class ShoppingCartService {
   checkoutCarrello(elemento: Prenotazione | Order, token: string) {
     const configs = { 'token': token };
     if ((<Prenotazione>elemento).spiaggiaPrenotazioniList !== undefined || (<Prenotazione>elemento).eventiPrenotatiList !== undefined) {
-      console.log("aggiungo prenotazione");
       (<Prenotazione>elemento).date = ((<Prenotazione>elemento).date as Date).toISOString();
       (<Prenotazione>elemento).spiaggiaPrenotazioniList?.forEach((data) => {
         data.startDate = new Date(data.startDate).toISOString();
@@ -65,7 +64,6 @@ export class ShoppingCartService {
       return this.http.post(API + 'book', elemento, { headers: configs });
     }
     else {
-      console.log("aggiungo menu")
       return this.http.post(API + 'order', elemento, { headers: configs });
     }
   }

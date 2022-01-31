@@ -214,7 +214,6 @@ export class AdminBoardComponent implements OnInit {
           section: sect!,
           isElementVisible: true,
         };
-        console.log(newMenuElement);
         const token = this.tokenStorage.getToken()!;
 
         this.menuService.addMenuElement(newMenuElement, token).subscribe(
@@ -231,7 +230,6 @@ export class AdminBoardComponent implements OnInit {
   onDeleteEvent() {
     if (this.tokenStorage.getUser()?.role == "ADMIN" || this.tokenStorage.getUser()?.role == "EVENT_MANAGER") {
       const token = this.tokenStorage.getToken()!;
-      console.log(this.formEvento.evento);
       this.eventService.deleteEvent(this.formEvento.evento, token).subscribe(
         _ => {
           this.eventDeleted = true;
@@ -249,7 +247,6 @@ export class AdminBoardComponent implements OnInit {
     user.role = this.formRoleChange.role;
     this.userService.changeUserRole(user, this.tokenStorage.getToken()!).subscribe(
       data => {
-        console.log(data);
         this.onGetAllUser();
       }
     );
@@ -258,7 +255,6 @@ export class AdminBoardComponent implements OnInit {
   onDeleteSection() {
     this.menuService.deleteSection(this.formRemoveMenuSection.id, this.tokenStorage.getToken()!).subscribe(
       data => {
-        console.log(data);
         this.onGetAllSection(this.tokenStorage.getToken()!);
       }
     )
@@ -267,7 +263,6 @@ export class AdminBoardComponent implements OnInit {
   onDeleteOmbrellone() {
     this.ombrelloneService.removeOmbrellone(this.formRemoveOmbrellone.id, this.tokenStorage.getToken()!).subscribe(
       data => {
-        console.log(data);
         this.onGetAllOmbrellone();
       }
     )
@@ -276,7 +271,6 @@ export class AdminBoardComponent implements OnInit {
   onDeleteElement() {
     this.menuService.deleteElement(this.formRemoveMenuElement.id, this.tokenStorage.getToken()!).subscribe(
       data => {
-        console.log(data);
         this.onGetAllMenuElement();
         this.elementDeleted = true;
       }
@@ -286,7 +280,6 @@ export class AdminBoardComponent implements OnInit {
   updateOrderStatus(order: Order) {
     this.shoppingCartService.updateOrderStatus(order, this.tokenStorage.getToken()!).subscribe(
       data => {
-        console.log(data);
         this.onGetAllOrders();
       }
     )
@@ -360,7 +353,6 @@ export class AdminBoardComponent implements OnInit {
   checkIn(prenotazione: Prenotazione) {
     this.shoppingCartService.checkIn(prenotazione, this.tokenStorage.getToken()!).subscribe(
       data => {
-        console.log(data);
         this.onGetTodayPrenotazioni();
       }
     )

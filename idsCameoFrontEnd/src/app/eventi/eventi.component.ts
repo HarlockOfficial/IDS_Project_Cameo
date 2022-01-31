@@ -23,7 +23,6 @@ export class EventiComponent implements OnInit {
     this.eventiService.getAllEventi()?.subscribe(
       data => {
         this.listaEventi = data as Evento[];
-        console.log(this.listaEventi);
       }
     );
   }
@@ -42,7 +41,6 @@ export class EventiComponent implements OnInit {
     else {
       this.listaOrdine.forEach((element, index) => {
         if (element == evento) {
-          console.log("gia aggiunto");
           return;
         }
         else {

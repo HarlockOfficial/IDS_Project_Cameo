@@ -33,12 +33,9 @@ export class PrenotaComponent implements OnInit {
   onGetOmbrelloni(): void {
     this.ombrelloneService.allFreeOmbrelloni(this.startDate, this.endDate)?.subscribe(
       data => {
-        console.log(data);
         this.listaOmbrelloni = data;
-        console.log(this.listaOmbrelloni);
       },
       err => {
-        console.log(err);
         this.errorMessage = err.error.message;
       }
     );
@@ -65,7 +62,6 @@ export class PrenotaComponent implements OnInit {
     }
     else {
       this.listaOrdine.forEach((element) => {
-        console.log(element.ombrellone, ombrellone)
         if (element.ombrellone == ombrellone) {
           return;
         }
