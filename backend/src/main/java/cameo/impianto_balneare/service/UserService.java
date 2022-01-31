@@ -40,7 +40,7 @@ public class UserService {
             return user.orElse(null);
         }
         var requestUser = tokenService.getUserFromUUID(tokenId);
-        if(requestUser.getId().equals(id)) {
+        if (requestUser.getId().equals(id)) {
             return tokenService.getUserFromUUID(tokenId);
         }
         return null;
@@ -54,14 +54,27 @@ public class UserService {
         var userToUpdate = userRepository.findAll().stream().filter(u -> u.equals(user)).findFirst();
         if (userToUpdate.isPresent()) {
             var userToEdit = userToUpdate.get();
-            userToEdit.setEmail(user.getEmail());
-            userToEdit.setPassword(user.getPassword());
-            userToEdit.setBirthDate(user.getBirthDate());
-            userToEdit.setName(user.getName());
-            userToEdit.setSurname(user.getSurname());
-            userToEdit.setUsername(user.getUsername());
-            if (isChangeRequestedByAdmin)
+            if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                userToEdit.setEmail(user.getEmail());
+            }
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                userToEdit.setPassword(user.getPassword());
+            }
+            if (user.getBirthDate() != null) {
+                userToEdit.setBirthDate(user.getBirthDate());
+            }
+            if (user.getName() != null && !user.getName().isEmpty()) {
+                userToEdit.setName(user.getName());
+            }
+            if (user.getSurname() != null && !user.getSurname().isEmpty()) {
+                userToEdit.setSurname(user.getSurname());
+            }
+            if (user.getUsername() != null && !user.getUsername().isEmpty()) {
+                userToEdit.setUsername(user.getUsername());
+            }
+            if (isChangeRequestedByAdmin && user.getRole() != null) {
                 userToEdit.setRole(user.getRole());
+            }
             return userRepository.save(userToEdit);
         }
         return null;
