@@ -26,6 +26,7 @@ export class ProfileComponent implements OnInit {
     this.currentUser = this.tokenStorage.getUser()!;
     this.onGetUser();
     this.onGetMyPrenotazioni();
+    console.log(this.myPrenotazioni);
   }
 
   onGetUser(): void {
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit {
         const filteredData = data.find(e => e.username == myUser.username)!;
         this.currentUser = filteredData as User;
         this.tokenStorage.saveUser(this.currentUser);
+        console.log(this.currentUser);
         if (filteredData.role == 'ADMIN') {
           this.isAdmin = true;
         } else if (filteredData.role == 'BAR') {
@@ -55,11 +57,10 @@ export class ProfileComponent implements OnInit {
     this.myPrenotazioni = this.userService.myPrenotazioni(this.tokenStorage.getToken()!)!;
   }
 
-  //TODO; Da rivedere, funziona ma poi effettivamente non viene rimossa ??
   removePrenotazione(id: string) {
     this.prenotazioneService.deletePrenotazione(id, this.tokenStorage.getToken()!).subscribe(
-      data => {
-        this.onGetMyPrenotazioni()
+      _ => {
+        this.onGetMyPrenotazioni();
       }
     )
   }
