@@ -1,6 +1,7 @@
 <div class="div-container">
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin" name="formOmbrellone" (ngSubmit)="onAddOmbrellone()" #f="ngForm" novalidate>
+
+  <div *ngIf="isAdmin" class=form-wrapper>
+    <form name="formOmbrellone" (ngSubmit)="onAddOmbrellone()" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Crea un nuovo ombrellone</h1>
       </div>
@@ -44,8 +45,8 @@
     </form>
   </div>
 
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
+  <div *ngIf="isAdmin" class=form-wrapper>
+    <form name="form" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Elimina un ombrellone</h1>
       </div>
@@ -70,8 +71,8 @@
     </form>
   </div>
 
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin || isEventManager" name="form" (ngSubmit)="onCreateEvent()" #f="ngForm" novalidate>
+  <div *ngIf="isAdmin || isEventManager" class=form-wrapper>
+    <form name="form" (ngSubmit)="onCreateEvent()" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Crea un nuovo Evento</h1>
       </div>
@@ -114,8 +115,8 @@
     </form>
   </div>
 
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin || isEventManager" name="form" (ngSubmit)="onDeleteEvent()" #f="ngForm" novalidate>
+  <div *ngIf="isAdmin || isEventManager" class=form-wrapper>
+    <form name="form" (ngSubmit)="onDeleteEvent()" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Elimina un Evento</h1>
       </div>
@@ -142,8 +143,8 @@
     </form>
   </div>
 
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateMenuSection()" #f="ngForm" novalidate>
+  <div *ngIf="isAdmin" class=form-wrapper>
+    <form name="form" (ngSubmit)="onCreateMenuSection()" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Crea una nuova sezione del menu</h1>
       </div>
@@ -166,8 +167,8 @@
     </form>
   </div>
 
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
+  <div *ngIf="isAdmin" class=form-wrapper>
+    <form name="form" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Elimina una sezione del menu</h1>
       </div>
@@ -192,8 +193,8 @@
     </form>
   </div>
 
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin" name="form" (ngSubmit)="onCreateMenuElement()" #f="ngForm" novalidate>
+  <div *ngIf="isAdmin" class=form-wrapper>
+    <form name="form" (ngSubmit)="onCreateMenuElement()" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Crea un nuovo elemento del menu</h1>
       </div>
@@ -235,8 +236,8 @@
     </form>
   </div>
 
-  <div class=form-wrapper>
-    <form *ngIf="isAdmin" name="form" #f="ngForm" novalidate>
+  <div *ngIf="isAdmin" class=form-wrapper>
+    <form name="form" #f="ngForm" novalidate>
       <div class="form-title">
         <h1>Elimina un elemento del menu</h1>
       </div>
@@ -261,7 +262,7 @@
     </form>
   </div>
 
-  <div class="user-wrapper">
+  <div *ngIf="isAdmin" class="user-wrapper">
     <div class="title">
       <h1>Lista utenti</h1>
     </div>
