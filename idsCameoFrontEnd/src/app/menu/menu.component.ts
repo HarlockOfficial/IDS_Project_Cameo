@@ -39,6 +39,9 @@ export class MenuComponent implements OnInit {
               break;
             }
           }
+          if(elemsList.some(e=> e.name === data[i].name)){
+            continue;
+          }
           elemsList.push(data[i]);
           this.listaMenu.set(menuSection, elemsList);
         }
