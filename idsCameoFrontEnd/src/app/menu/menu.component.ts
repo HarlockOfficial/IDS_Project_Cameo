@@ -32,8 +32,12 @@ export class MenuComponent implements OnInit {
             continue;
           }
           let elemsList: MenuElement[] = [];
-          if (this.listaMenu.has(menuSection)) {
-            elemsList = this.listaMenu.get(menuSection)!;
+          const keys = this.listaMenu.keys();
+          for (let key of keys) {
+            if (key.sectionName === menuSection.sectionName) {
+              elemsList = this.listaMenu.get(key)!;
+              break;
+            }
           }
           elemsList.push(data[i]);
           this.listaMenu.set(menuSection, elemsList);
