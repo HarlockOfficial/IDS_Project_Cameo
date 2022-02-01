@@ -14,7 +14,7 @@ import java.util.*;
 @Table(name = "event")
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"prenotazione"}, allowSetters = true)
+@JsonIgnoreProperties(value = {"prenotazione", "newsletter"}, allowSetters = true)
 public class Event {
 
     @Id
@@ -40,7 +40,7 @@ public class Event {
     @ManyToMany(targetEntity = Prenotazione.class, mappedBy = "eventiPrenotatiList")
     private Set<Prenotazione> prenotazione;
 
-    @OneToOne
+    @OneToOne(targetEntity = Newsletter.class, cascade = CascadeType.ALL, mappedBy = "event")
     private Newsletter newsletter;
 
     protected Event() {
