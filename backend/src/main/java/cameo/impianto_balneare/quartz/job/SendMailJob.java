@@ -42,8 +42,13 @@ public class SendMailJob implements Job {
         var mailUUID = jobExecutionContext.getJobDetail().getJobDataMap().getString("mailUUID");
 
         var newsletter = newsletterService.getNewsletterById(UUID.fromString(mailUUID));
-
+        if(newsletter == null) {
+            return;
+        }
         var mailContent = newsletter.getMailContent();
+        if(mailContent == null || mailContent.isEmpty()) {
+            return;
+        }
         var event = newsletter.getEvent();
         var dateList = newsletter.getTimes();
 

@@ -18,13 +18,15 @@ import java.util.stream.Collectors;
 @Service
 public class NewsletterService {
     private final NewsletterRepository newsletterRepository;
+    private final EventService eventService;
     private final TokenService tokenService;
     private final SendMailService sendMailService;
     private final Scheduler scheduler;
 
     @Autowired
-    public NewsletterService(NewsletterRepository newsletterRepository, TokenService tokenService, SendMailService sendMailService, Scheduler scheduler) {
+    public NewsletterService(NewsletterRepository newsletterRepository, EventService eventService, TokenService tokenService, SendMailService sendMailService, Scheduler scheduler) {
         this.newsletterRepository = newsletterRepository;
+        this.eventService = eventService;
         this.tokenService = tokenService;
         this.sendMailService = sendMailService;
         this.scheduler = scheduler;
@@ -59,8 +61,24 @@ public class NewsletterService {
 
     public Newsletter addNewsletter(Newsletter newsletter, String token) throws SchedulerException {
         if(tokenService.checkToken(token, Role.ADMIN) || tokenService.checkToken(token, Role.EVENT_MANAGER)) {
-            scheduleJob(newsletter.getId());
-            return newsletterRepository.save(newsletter);
+            var event = newsletter.getEvent();
+            if(event != null) {
+                var storedEvent = eventService.getEvent(event.getId());
+                System.out.println(storedEvent);
+                if(storedEvent != null) {
+                    System.out.println("Evento trovato e sostituito");
+                    event = storedEvent;
+                } else {
+                    System.out.println("Evento creato");
+                    event = eventService.createEvent(event, token);
+                }
+                newsletter.setEvent(event);
+                System.out.println(newsletter.getEvent().getId());
+            }
+            System.out.println(newsletter.getId());
+            var newNewsletter = newsletterRepository.save(newsletter);
+            scheduleJob(newNewsletter.getId());
+            return newNewsletter;
         }
         return null;
     }

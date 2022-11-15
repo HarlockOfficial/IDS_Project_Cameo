@@ -32,11 +32,26 @@ export class MenuComponent implements OnInit {
             continue;
           }
           let elemsList: MenuElement[] = [];
-          if (this.listaMenu.has(menuSection)) {
-            elemsList = this.listaMenu.get(menuSection)!;
+          const keys = this.listaMenu.keys();
+          for (let key of keys) {
+            if (key.sectionName === menuSection.sectionName) {
+              elemsList = this.listaMenu.get(key)!;
+              break;
+            }
+          }
+          if (elemsList.some(e => e.name === data[i].name)) {
+            continue;
           }
           elemsList.push(data[i]);
           this.listaMenu.set(menuSection, elemsList);
+        }
+        const keys = this.listaMenu.keys();
+        const keysList: MenuSection[] = [];
+        for (let key of keys) {
+          if(keysList.some(e => e.sectionName === key.sectionName)){
+            this.listaMenu.delete(key);
+          }
+          keysList.push(key);
         }
       }
     );

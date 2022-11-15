@@ -69,7 +69,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkoutPrenotazione() {
-    this.prenotazione.statoPrenotazione = StatoPrenotazione.PAGATO;
+    this.prenotazione.statoPrenotazione = StatoPrenotazione.CONFERMATO;
     this.shoppingCartService.checkoutCarrello(this.prenotazione, this.tokenStorageService.getToken()!).subscribe(
       _ => {
         this.reloadPage();
@@ -87,7 +87,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkoutOrdine() {
-    this.ordine.orderStatus = "PAID";
+    this.ordine.orderStatus = "ORDERED";
     this.shoppingCartService.checkoutCarrello(this.ordine, this.tokenStorageService.getToken()!).subscribe(
       _ => {
         this.reloadPage();

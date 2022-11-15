@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {Ombrellone} from '../interfaces/ombrellone';
-import {OmbrelloneService} from '../_services/ombrellone.service';
-import {TokenStorageService} from '../_services/token-storage.service';
-import {Evento} from '../interfaces/evento';
-import {EventiService} from '../_services/eventi.service';
-import {MenuSection} from '../interfaces/menuSection';
-import {MenuService} from '../_services/menu.service';
-import {Router} from '@angular/router';
-import {MenuElement} from '../interfaces/menuElement';
-import {Observable} from 'rxjs';
-import {UserService} from '../_services/user.service';
-import {User} from '../interfaces/user';
-import {ShoppingCartService} from "../_services/shopping-cart.service";
-import {Order} from "../interfaces/order";
-import {Prenotazione} from "../interfaces/prenotazione";
-import {StatoPrenotazione} from "../interfaces/StatoPrenotazione";
+import { Component, OnInit } from '@angular/core';
+import { Ombrellone } from '../interfaces/ombrellone';
+import { OmbrelloneService } from '../_services/ombrellone.service';
+import { TokenStorageService } from '../_services/token-storage.service';
+import { Evento } from '../interfaces/evento';
+import { EventiService } from '../_services/eventi.service';
+import { MenuSection } from '../interfaces/menuSection';
+import { MenuService } from '../_services/menu.service';
+import { Router } from '@angular/router';
+import { MenuElement } from '../interfaces/menuElement';
+import { Observable } from 'rxjs';
+import { UserService } from '../_services/user.service';
+import { User } from '../interfaces/user';
+import { ShoppingCartService } from "../_services/shopping-cart.service";
+import { Order } from "../interfaces/order";
+import { Prenotazione } from "../interfaces/prenotazione";
+import { StatoPrenotazione } from "../interfaces/StatoPrenotazione";
 
 @Component({
   selector: 'app-admin-board',
@@ -335,16 +335,11 @@ export class AdminBoardComponent implements OnInit {
   private onGetTodayPrenotazioni() {
     this.shoppingCartService.getAllPrenotazioni(this.tokenStorage.getToken()!).subscribe(
       data => {
+        console.log(data);
         const dateNow = new Date();
         dateNow.setHours(0, 0, 0, 0);
         if (data != null) {
-          this.prenotazioniList = data.filter(pren => {
-            pren.spiaggiaPrenotazioniList != undefined && pren.spiaggiaPrenotazioniList.length != 0 &&
-            pren.spiaggiaPrenotazioniList.some(spiaggiaPrenotazione =>
-              spiaggiaPrenotazione.startDate <= dateNow && spiaggiaPrenotazione.endDate >= dateNow &&
-              spiaggiaPrenotazione.prenotazione!.statoPrenotazione == StatoPrenotazione.CONFERMATO
-            )
-          });
+          this.prenotazioniList = data;
         }
       }
     )

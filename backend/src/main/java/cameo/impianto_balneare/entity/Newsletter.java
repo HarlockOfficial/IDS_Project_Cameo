@@ -4,6 +4,8 @@ package cameo.impianto_balneare.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -20,10 +22,11 @@ public class Newsletter {
     @Column
     private String mailContent;
 
-    @OneToOne(targetEntity = Event.class, mappedBy = "newsletter")
+    @OneToOne(targetEntity = Event.class, cascade = CascadeType.ALL)
     private Event event;
 
-    @OneToMany(targetEntity = DateTimeWrapper.class, mappedBy = "newsletter", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(targetEntity = DateTimeWrapper.class, cascade = CascadeType.ALL)
     private Set<DateTimeWrapper> times;
 
     protected Newsletter() {
